@@ -147,9 +147,9 @@ namespace Org.BouncyCastle.Tests
             x509Crls.Add(rootCrl);
             x509Crls.Add(interCrl);
 
-//			CollectionCertStoreParameters ccsp = new CollectionCertStoreParameters(list);
-//			CertStore store = CertStore.GetInstance("Collection", ccsp);
-//			X509CollectionStoreParameters ccsp = new X509CollectionStoreParameters(list);
+            //			CollectionCertStoreParameters ccsp = new CollectionCertStoreParameters(list);
+            //			CertStore store = CertStore.GetInstance("Collection", ccsp);
+            //			X509CollectionStoreParameters ccsp = new X509CollectionStoreParameters(list);
             IX509Store x509CertStore = X509StoreFactory.Create(
                 "Certificate/Collection",
                 new X509CollectionStoreParameters(x509Certs));
@@ -166,12 +166,12 @@ namespace Org.BouncyCastle.Tests
             certchain.Add(finalCert);
             certchain.Add(interCert);
 
-//			CertPath cp = CertificateFactory.GetInstance("X.509").GenerateCertPath(certchain);
+            //			CertPath cp = CertificateFactory.GetInstance("X.509").GenerateCertPath(certchain);
             PkixCertPath cp = new PkixCertPath(certchain);
             ISet trust = new HashSet();
             trust.Add(new TrustAnchor(rootCert, null));
 
-//			CertPathValidator cpv = CertPathValidator.GetInstance("PKIX");
+            //			CertPathValidator cpv = CertPathValidator.GetInstance("PKIX");
             PkixCertPathValidator cpv = new PkixCertPathValidator();
             PkixParameters param = new PkixParameters(trust);
             param.AddStore(x509CertStore);
@@ -188,7 +188,7 @@ namespace Org.BouncyCastle.Tests
             {
                 Fail("checker not evaluated for each certificate");
             }
-            
+
             if (!subjectPublicKey.Equals(finalCert.GetPublicKey()))
             {
                 Fail("wrong public key returned");
@@ -231,9 +231,9 @@ namespace Org.BouncyCastle.Tests
                 x509Certs.Add(interCert);
                 x509Certs.Add(finalCert);
 
-//				ccsp = new CollectionCertStoreParameters(list);
-//				store = CertStore.GetInstance("Collection", ccsp);
-//				ccsp = new X509CollectionStoreParameters(list);
+                //				ccsp = new CollectionCertStoreParameters(list);
+                //				store = CertStore.GetInstance("Collection", ccsp);
+                //				ccsp = new X509CollectionStoreParameters(list);
                 x509CertStore = X509StoreFactory.Create(
                     "Certificate/Collection",
                     new X509CollectionStoreParameters(x509Certs));
@@ -247,19 +247,19 @@ namespace Org.BouncyCastle.Tests
                 certchain.Add(finalCert);
                 certchain.Add(interCert);
 
-//				cp = CertificateFactory.GetInstance("X.509").GenerateCertPath(certchain);
+                //				cp = CertificateFactory.GetInstance("X.509").GenerateCertPath(certchain);
                 cp = new PkixCertPath(certchain);
                 trust = new HashSet();
                 trust.Add(new TrustAnchor(rootCert, null));
 
-//				cpv = CertPathValidator.GetInstance("PKIX");
+                //				cpv = CertPathValidator.GetInstance("PKIX");
                 cpv = new PkixCertPathValidator();
                 param = new PkixParameters(trust);
                 param.AddStore(x509CertStore);
                 param.IsRevocationEnabled = false;
                 param.Date = new DateTimeObject(validDate);
 
-                result =(PkixCertPathValidatorResult) cpv.Validate(cp, param);
+                result = (PkixCertPathValidatorResult)cpv.Validate(cp, param);
                 policyTree = result.PolicyTree;
                 subjectPublicKey = result.SubjectPublicKey;
 
@@ -267,7 +267,7 @@ namespace Org.BouncyCastle.Tests
             }
             catch (Exception e)
             {
-                if (e is PkixCertPathValidatorException 
+                if (e is PkixCertPathValidatorException
                     && e.Message.StartsWith("Could not validate certificate signature."))
                 {
                     return;

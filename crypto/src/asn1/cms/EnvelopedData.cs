@@ -8,17 +8,17 @@ namespace Org.BouncyCastle.Asn1.Cms
     public class EnvelopedData
         : Asn1Encodable
     {
-        private DerInteger				version;
-        private OriginatorInfo			originatorInfo;
-        private Asn1Set					recipientInfos;
-        private EncryptedContentInfo	encryptedContentInfo;
-        private Asn1Set					unprotectedAttrs;
+        private DerInteger version;
+        private OriginatorInfo originatorInfo;
+        private Asn1Set recipientInfos;
+        private EncryptedContentInfo encryptedContentInfo;
+        private Asn1Set unprotectedAttrs;
 
         public EnvelopedData(
-            OriginatorInfo			originatorInfo,
-            Asn1Set					recipientInfos,
-            EncryptedContentInfo	encryptedContentInfo,
-            Asn1Set					unprotectedAttrs)
+            OriginatorInfo originatorInfo,
+            Asn1Set recipientInfos,
+            EncryptedContentInfo encryptedContentInfo,
+            Asn1Set unprotectedAttrs)
         {
             this.version = new DerInteger(CalculateVersion(originatorInfo, recipientInfos, unprotectedAttrs));
             this.originatorInfo = originatorInfo;
@@ -46,13 +46,13 @@ namespace Org.BouncyCastle.Asn1.Cms
         {
             int index = 0;
 
-            version = (DerInteger) seq[index++];
+            version = (DerInteger)seq[index++];
 
             object tmp = seq[index++];
 
             if (tmp is Asn1TaggedObject)
             {
-                originatorInfo = OriginatorInfo.GetInstance((Asn1TaggedObject) tmp, false);
+                originatorInfo = OriginatorInfo.GetInstance((Asn1TaggedObject)tmp, false);
                 tmp = seq[index++];
             }
 
@@ -61,7 +61,7 @@ namespace Org.BouncyCastle.Asn1.Cms
 
             if (seq.Count > index)
             {
-                unprotectedAttrs = Asn1Set.GetInstance((Asn1TaggedObject) seq[index], false);
+                unprotectedAttrs = Asn1Set.GetInstance((Asn1TaggedObject)seq[index], false);
             }
         }
 
@@ -75,8 +75,8 @@ namespace Org.BouncyCastle.Asn1.Cms
          *          tagged object cannot be converted.
          */
         public static EnvelopedData GetInstance(
-            Asn1TaggedObject	obj,
-            bool				explicitly)
+            Asn1TaggedObject obj,
+            bool explicitly)
         {
             return GetInstance(Asn1Sequence.GetInstance(obj, explicitly));
         }

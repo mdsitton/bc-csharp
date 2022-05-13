@@ -395,7 +395,7 @@ namespace Org.BouncyCastle.Pkix
             byte[] ip = Or(minMax[0], minMax[2]);
             byte[] subnetmask = Or(subnetmask1, subnetmask2);
 
-                //return new HashSet( ICollectionsingleton(IpWithSubnetMask(ip, subnetmask));
+            //return new HashSet( ICollectionsingleton(IpWithSubnetMask(ip, subnetmask));
             ISet hs = new HashSet();
             hs.Add(IpWithSubnetMask(ip, subnetmask));
 
@@ -440,7 +440,7 @@ namespace Org.BouncyCastle.Pkix
             byte[] subnetmask2 = new byte[ipLength];
             Array.Copy(ipWithSubmask2, 0, ip2, 0, ipLength);
             Array.Copy(ipWithSubmask2, ipLength, subnetmask2, 0, ipLength);
-            return new byte[][]{ ip1, subnetmask1, ip2, subnetmask2 };
+            return new byte[][] { ip1, subnetmask1, ip2, subnetmask2 };
         }
 
         /**
@@ -478,7 +478,7 @@ namespace Org.BouncyCastle.Pkix
                 max2[i] = (byte)(ip2[i] & subnetmask2[i] | ~subnetmask2[i]);
             }
 
-            return new byte[][]{ min1, max1, min2, max2 };
+            return new byte[][] { min1, max1, min2, max2 };
         }
 
         private bool IsOtherNameConstrained(OtherName constraint, OtherName otherName)
@@ -1433,24 +1433,24 @@ namespace Org.BouncyCastle.Pkix
         {
             switch (name.TagNo)
             {
-            case GeneralName.OtherName:
-                CheckPermittedOtherName(permittedSubtreesOtherName, OtherName.GetInstance(name.Name));
-                break;
-            case GeneralName.Rfc822Name:
-                CheckPermittedEmail(permittedSubtreesEmail, ExtractNameAsString(name));
-                break;
-            case GeneralName.DnsName:
-                CheckPermittedDns(permittedSubtreesDNS, ExtractNameAsString(name));
-                break;
-            case GeneralName.DirectoryName:
-                CheckPermittedDN(Asn1Sequence.GetInstance(name.Name.ToAsn1Object()));
-                break;
-            case GeneralName.UniformResourceIdentifier:
-                CheckPermittedUri(permittedSubtreesURI, ExtractNameAsString(name));
-                break;
-            case GeneralName.IPAddress:
-                CheckPermittedIP(permittedSubtreesIP, Asn1OctetString.GetInstance(name.Name).GetOctets());
-                break;
+                case GeneralName.OtherName:
+                    CheckPermittedOtherName(permittedSubtreesOtherName, OtherName.GetInstance(name.Name));
+                    break;
+                case GeneralName.Rfc822Name:
+                    CheckPermittedEmail(permittedSubtreesEmail, ExtractNameAsString(name));
+                    break;
+                case GeneralName.DnsName:
+                    CheckPermittedDns(permittedSubtreesDNS, ExtractNameAsString(name));
+                    break;
+                case GeneralName.DirectoryName:
+                    CheckPermittedDN(Asn1Sequence.GetInstance(name.Name.ToAsn1Object()));
+                    break;
+                case GeneralName.UniformResourceIdentifier:
+                    CheckPermittedUri(permittedSubtreesURI, ExtractNameAsString(name));
+                    break;
+                case GeneralName.IPAddress:
+                    CheckPermittedIP(permittedSubtreesIP, Asn1OctetString.GetInstance(name.Name).GetOctets());
+                    break;
             }
         }
 
@@ -1467,24 +1467,24 @@ namespace Org.BouncyCastle.Pkix
         {
             switch (name.TagNo)
             {
-            case GeneralName.OtherName:
-                CheckExcludedOtherName(excludedSubtreesOtherName, OtherName.GetInstance(name.Name));
-                break;
-            case GeneralName.Rfc822Name:
-                CheckExcludedEmail(excludedSubtreesEmail, ExtractNameAsString(name));
-                break;
-            case GeneralName.DnsName:
-                CheckExcludedDns(excludedSubtreesDNS, ExtractNameAsString(name));
-                break;
-            case GeneralName.DirectoryName:
-                CheckExcludedDN(Asn1Sequence.GetInstance(name.Name.ToAsn1Object()));
-                break;
-            case GeneralName.UniformResourceIdentifier:
-                CheckExcludedUri(excludedSubtreesURI, ExtractNameAsString(name));
-                break;
-            case GeneralName.IPAddress:
-                CheckExcludedIP(excludedSubtreesIP, Asn1OctetString.GetInstance(name.Name).GetOctets());
-                break;
+                case GeneralName.OtherName:
+                    CheckExcludedOtherName(excludedSubtreesOtherName, OtherName.GetInstance(name.Name));
+                    break;
+                case GeneralName.Rfc822Name:
+                    CheckExcludedEmail(excludedSubtreesEmail, ExtractNameAsString(name));
+                    break;
+                case GeneralName.DnsName:
+                    CheckExcludedDns(excludedSubtreesDNS, ExtractNameAsString(name));
+                    break;
+                case GeneralName.DirectoryName:
+                    CheckExcludedDN(Asn1Sequence.GetInstance(name.Name.ToAsn1Object()));
+                    break;
+                case GeneralName.UniformResourceIdentifier:
+                    CheckExcludedUri(excludedSubtreesURI, ExtractNameAsString(name));
+                    break;
+                case GeneralName.IPAddress:
+                    CheckExcludedIP(excludedSubtreesIP, Asn1OctetString.GetInstance(name.Name).GetOctets());
+                    break;
             }
         }
 
@@ -1518,30 +1518,30 @@ namespace Org.BouncyCastle.Pkix
                 // go through all subtree groups
                 switch ((int)entry.Key)
                 {
-                case GeneralName.OtherName:
-                    permittedSubtreesOtherName = IntersectOtherName(permittedSubtreesOtherName,
-                        (ISet)entry.Value);
-                    break;
-                case GeneralName.Rfc822Name:
-                    permittedSubtreesEmail = IntersectEmail(permittedSubtreesEmail,
-                        (ISet)entry.Value);
-                    break;
-                case GeneralName.DnsName:
-                    permittedSubtreesDNS = IntersectDns(permittedSubtreesDNS,
-                        (ISet)entry.Value);
-                    break;
-                case GeneralName.DirectoryName:
-                    permittedSubtreesDN = IntersectDN(permittedSubtreesDN,
-                        (ISet)entry.Value);
-                    break;
-                case GeneralName.UniformResourceIdentifier:
-                    permittedSubtreesURI = IntersectUri(permittedSubtreesURI,
-                        (ISet)entry.Value);
-                    break;
-                case GeneralName.IPAddress:
-                    permittedSubtreesIP = IntersectIP(permittedSubtreesIP,
-                        (ISet)entry.Value);
-                    break;
+                    case GeneralName.OtherName:
+                        permittedSubtreesOtherName = IntersectOtherName(permittedSubtreesOtherName,
+                            (ISet)entry.Value);
+                        break;
+                    case GeneralName.Rfc822Name:
+                        permittedSubtreesEmail = IntersectEmail(permittedSubtreesEmail,
+                            (ISet)entry.Value);
+                        break;
+                    case GeneralName.DnsName:
+                        permittedSubtreesDNS = IntersectDns(permittedSubtreesDNS,
+                            (ISet)entry.Value);
+                        break;
+                    case GeneralName.DirectoryName:
+                        permittedSubtreesDN = IntersectDN(permittedSubtreesDN,
+                            (ISet)entry.Value);
+                        break;
+                    case GeneralName.UniformResourceIdentifier:
+                        permittedSubtreesURI = IntersectUri(permittedSubtreesURI,
+                            (ISet)entry.Value);
+                        break;
+                    case GeneralName.IPAddress:
+                        permittedSubtreesIP = IntersectIP(permittedSubtreesIP,
+                            (ISet)entry.Value);
+                        break;
                 }
             }
         }
@@ -1555,24 +1555,24 @@ namespace Org.BouncyCastle.Pkix
         {
             switch (nameType)
             {
-            case GeneralName.OtherName:
-                permittedSubtreesOtherName = new HashSet();
-                break;
-            case GeneralName.Rfc822Name:
-                permittedSubtreesEmail = new HashSet();
-                break;
-            case GeneralName.DnsName:
-                permittedSubtreesDNS = new HashSet();
-                break;
-            case GeneralName.DirectoryName:
-                permittedSubtreesDN = new HashSet();
-                break;
-            case GeneralName.UniformResourceIdentifier:
-                permittedSubtreesURI = new HashSet();
-                break;
-            case GeneralName.IPAddress:
-                permittedSubtreesIP = new HashSet();
-                break;
+                case GeneralName.OtherName:
+                    permittedSubtreesOtherName = new HashSet();
+                    break;
+                case GeneralName.Rfc822Name:
+                    permittedSubtreesEmail = new HashSet();
+                    break;
+                case GeneralName.DnsName:
+                    permittedSubtreesDNS = new HashSet();
+                    break;
+                case GeneralName.DirectoryName:
+                    permittedSubtreesDN = new HashSet();
+                    break;
+                case GeneralName.UniformResourceIdentifier:
+                    permittedSubtreesURI = new HashSet();
+                    break;
+                case GeneralName.IPAddress:
+                    permittedSubtreesIP = new HashSet();
+                    break;
             }
         }
 
@@ -1587,30 +1587,30 @@ namespace Org.BouncyCastle.Pkix
 
             switch (subTreeBase.TagNo)
             {
-            case GeneralName.OtherName:
-                excludedSubtreesOtherName = UnionOtherName(excludedSubtreesOtherName,
-                    OtherName.GetInstance(subTreeBase.Name));
-                break;
-            case GeneralName.Rfc822Name:
-                excludedSubtreesEmail = UnionEmail(excludedSubtreesEmail,
-                    ExtractNameAsString(subTreeBase));
-                break;
-            case GeneralName.DnsName:
-                excludedSubtreesDNS = UnionDns(excludedSubtreesDNS,
-                    ExtractNameAsString(subTreeBase));
-                break;
-            case GeneralName.DirectoryName:
-                excludedSubtreesDN = UnionDN(excludedSubtreesDN,
-                    (Asn1Sequence)subTreeBase.Name.ToAsn1Object());
-                break;
-            case GeneralName.UniformResourceIdentifier:
-                excludedSubtreesURI = UnionUri(excludedSubtreesURI,
-                    ExtractNameAsString(subTreeBase));
-                break;
-            case GeneralName.IPAddress:
-                excludedSubtreesIP = UnionIP(excludedSubtreesIP,
-                    Asn1OctetString.GetInstance(subTreeBase.Name).GetOctets());
-                break;
+                case GeneralName.OtherName:
+                    excludedSubtreesOtherName = UnionOtherName(excludedSubtreesOtherName,
+                        OtherName.GetInstance(subTreeBase.Name));
+                    break;
+                case GeneralName.Rfc822Name:
+                    excludedSubtreesEmail = UnionEmail(excludedSubtreesEmail,
+                        ExtractNameAsString(subTreeBase));
+                    break;
+                case GeneralName.DnsName:
+                    excludedSubtreesDNS = UnionDns(excludedSubtreesDNS,
+                        ExtractNameAsString(subTreeBase));
+                    break;
+                case GeneralName.DirectoryName:
+                    excludedSubtreesDN = UnionDN(excludedSubtreesDN,
+                        (Asn1Sequence)subTreeBase.Name.ToAsn1Object());
+                    break;
+                case GeneralName.UniformResourceIdentifier:
+                    excludedSubtreesURI = UnionUri(excludedSubtreesURI,
+                        ExtractNameAsString(subTreeBase));
+                    break;
+                case GeneralName.IPAddress:
+                    excludedSubtreesIP = UnionIP(excludedSubtreesIP,
+                        Asn1OctetString.GetInstance(subTreeBase.Name).GetOctets());
+                    break;
             }
         }
 
@@ -1692,13 +1692,13 @@ namespace Org.BouncyCastle.Pkix
             return temp;
         }
 
-		[Obsolete("Use GetHashCode instead")]
-		public int HashCode()
-		{
-			return GetHashCode();
-		}
+        [Obsolete("Use GetHashCode instead")]
+        public int HashCode()
+        {
+            return GetHashCode();
+        }
 
-		public override int GetHashCode()
+        public override int GetHashCode()
         {
             return HashCollection(excludedSubtreesDN)
                 + HashCollection(excludedSubtreesDNS)
@@ -1734,12 +1734,12 @@ namespace Org.BouncyCastle.Pkix
             return hash;
         }
 
-		public override bool Equals(Object o)
-		{
-			if (!(o is PkixNameConstraintValidator))
-				return false;
+        public override bool Equals(Object o)
+        {
+            if (!(o is PkixNameConstraintValidator))
+                return false;
 
-			PkixNameConstraintValidator constraintValidator = (PkixNameConstraintValidator)o;
+            PkixNameConstraintValidator constraintValidator = (PkixNameConstraintValidator)o;
 
             return CollectionsAreEqual(constraintValidator.excludedSubtreesDN, excludedSubtreesDN)
                 && CollectionsAreEqual(constraintValidator.excludedSubtreesDNS, excludedSubtreesDNS)
@@ -1753,7 +1753,7 @@ namespace Org.BouncyCastle.Pkix
                 && CollectionsAreEqual(constraintValidator.permittedSubtreesIP, permittedSubtreesIP)
                 && CollectionsAreEqual(constraintValidator.permittedSubtreesURI, permittedSubtreesURI)
                 && CollectionsAreEqual(constraintValidator.permittedSubtreesOtherName, permittedSubtreesOtherName);
-		}
+        }
 
         private bool CollectionsAreEqual(ICollection coll1, ICollection coll2)
         {

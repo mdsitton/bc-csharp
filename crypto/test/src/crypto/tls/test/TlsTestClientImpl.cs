@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.IO;
 
@@ -9,7 +9,7 @@ using Org.BouncyCastle.Utilities;
 namespace Org.BouncyCastle.Crypto.Tls.Tests
 {
     internal class TlsTestClientImpl
-        :   DefaultTlsClient
+        : DefaultTlsClient
     {
         protected readonly TlsTestConfig mConfig;
 
@@ -33,8 +33,8 @@ namespace Org.BouncyCastle.Crypto.Tls.Tests
 
         public override ProtocolVersion ClientVersion
         {
-	        get 
-	        { 
+            get
+            {
                 if (mConfig.clientOfferVersion != null)
                 {
                     return mConfig.clientOfferVersion;
@@ -46,15 +46,15 @@ namespace Org.BouncyCastle.Crypto.Tls.Tests
 
         public override ProtocolVersion MinimumVersion
         {
-	        get 
-	        { 
+            get
+            {
                 if (mConfig.clientMinimumVersion != null)
                 {
                     return mConfig.clientMinimumVersion;
                 }
 
                 return base.MinimumVersion;
-	        }
+            }
         }
 
         public override IDictionary GetClientExtensions()
@@ -155,14 +155,14 @@ namespace Org.BouncyCastle.Crypto.Tls.Tests
             bs = Arrays.Clone(bs);
 
             // Flip a random bit
-            int bit = mContext.SecureRandom.Next(bs.Length << 3); 
+            int bit = mContext.SecureRandom.Next(bs.Length << 3);
             bs[bit >> 3] ^= (byte)(1 << (bit & 7));
 
             return bs;
         }
 
         internal class MyTlsAuthentication
-            :   TlsAuthentication
+            : TlsAuthentication
         {
             private readonly TlsTestClientImpl mOuter;
             private readonly TlsContext mContext;
@@ -224,7 +224,7 @@ namespace Org.BouncyCastle.Crypto.Tls.Tests
                 }
 
                 TlsSignerCredentials signerCredentials = TlsTestUtilities.LoadSignerCredentials(mContext,
-                    supportedSigAlgs, SignatureAlgorithm.rsa, new string[]{ "x509-client-rsa.pem", "x509-ca-rsa.pem" },
+                    supportedSigAlgs, SignatureAlgorithm.rsa, new string[] { "x509-client-rsa.pem", "x509-ca-rsa.pem" },
                     "x509-client-key-rsa.pem");
 
                 if (mOuter.mConfig.clientAuth == TlsTestConfig.CLIENT_AUTH_VALID)
@@ -237,7 +237,7 @@ namespace Org.BouncyCastle.Crypto.Tls.Tests
         };
 
         internal class MyTlsSignerCredentials
-            :   TlsSignerCredentials
+            : TlsSignerCredentials
         {
             private readonly TlsTestClientImpl mOuter;
             private readonly TlsSignerCredentials mInner;

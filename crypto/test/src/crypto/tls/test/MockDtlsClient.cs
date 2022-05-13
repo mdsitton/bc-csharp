@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.IO;
 
@@ -9,7 +9,7 @@ using Org.BouncyCastle.Utilities.Encoders;
 namespace Org.BouncyCastle.Crypto.Tls.Tests
 {
     public class MockDtlsClient
-        :   DefaultTlsClient
+        : DefaultTlsClient
     {
         protected TlsSession mSession;
 
@@ -115,7 +115,7 @@ namespace Org.BouncyCastle.Crypto.Tls.Tests
         }
 
         internal class MyTlsAuthentication
-            :   TlsAuthentication
+            : TlsAuthentication
         {
             private readonly TlsContext mContext;
 
@@ -145,7 +145,7 @@ namespace Org.BouncyCastle.Crypto.Tls.Tests
 
                 return TlsTestUtilities.LoadSignerCredentials(mContext,
                     certificateRequest.SupportedSignatureAlgorithms, SignatureAlgorithm.rsa,
-                    new string[]{ "x509-client-rsa.pem", "x509-ca-rsa.pem" }, "x509-client-key-rsa.pem");
+                    new string[] { "x509-client-rsa.pem", "x509-ca-rsa.pem" }, "x509-client-key-rsa.pem");
             }
         };
     }

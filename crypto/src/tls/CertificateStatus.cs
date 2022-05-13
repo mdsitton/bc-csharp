@@ -64,47 +64,47 @@ namespace Org.BouncyCastle.Tls
 
             switch (m_statusType)
             {
-            case CertificateStatusType.ocsp:
-            {
-                OcspResponse ocspResponse = (OcspResponse)m_response;
-                byte[] derEncoding = ocspResponse.GetEncoded(Asn1Encodable.Der);
-                TlsUtilities.WriteOpaque24(derEncoding, output);
-                break;
-            }
-            case CertificateStatusType.ocsp_multi:
-            {
-                IList ocspResponseList = (IList)m_response;
-                int count = ocspResponseList.Count;
-
-                IList derEncodings = Platform.CreateArrayList(count);
-                long totalLength = 0;
-                foreach (OcspResponse ocspResponse in ocspResponseList)
-                {
-                    if (ocspResponse == null)
+                case CertificateStatusType.ocsp:
                     {
-                        derEncodings.Add(TlsUtilities.EmptyBytes);
-                    }
-                    else
-                    {
+                        OcspResponse ocspResponse = (OcspResponse)m_response;
                         byte[] derEncoding = ocspResponse.GetEncoded(Asn1Encodable.Der);
-                        derEncodings.Add(derEncoding);
-                        totalLength += derEncoding.Length;
+                        TlsUtilities.WriteOpaque24(derEncoding, output);
+                        break;
                     }
-                    totalLength += 3;
-                }
+                case CertificateStatusType.ocsp_multi:
+                    {
+                        IList ocspResponseList = (IList)m_response;
+                        int count = ocspResponseList.Count;
 
-                TlsUtilities.CheckUint24(totalLength);
-                TlsUtilities.WriteUint24((int)totalLength, output);
+                        IList derEncodings = Platform.CreateArrayList(count);
+                        long totalLength = 0;
+                        foreach (OcspResponse ocspResponse in ocspResponseList)
+                        {
+                            if (ocspResponse == null)
+                            {
+                                derEncodings.Add(TlsUtilities.EmptyBytes);
+                            }
+                            else
+                            {
+                                byte[] derEncoding = ocspResponse.GetEncoded(Asn1Encodable.Der);
+                                derEncodings.Add(derEncoding);
+                                totalLength += derEncoding.Length;
+                            }
+                            totalLength += 3;
+                        }
 
-                foreach (byte[] derEncoding in derEncodings)
-                {
-                    TlsUtilities.WriteOpaque24(derEncoding, output);
-                }
+                        TlsUtilities.CheckUint24(totalLength);
+                        TlsUtilities.WriteUint24((int)totalLength, output);
 
-                break;
-            }
-            default:
-                throw new TlsFatalAlert(AlertDescription.internal_error);
+                        foreach (byte[] derEncoding in derEncodings)
+                        {
+                            TlsUtilities.WriteOpaque24(derEncoding, output);
+                        }
+
+                        break;
+                    }
+                default:
+                    throw new TlsFatalAlert(AlertDescription.internal_error);
             }
         }
 
@@ -132,45 +132,45 @@ namespace Org.BouncyCastle.Tls
 
             switch (status_type)
             {
-            case CertificateStatusType.ocsp:
-            {
-                RequireStatusRequestVersion(1, statusRequestVersion);
-
-                byte[] derEncoding = TlsUtilities.ReadOpaque24(input, 1);
-                response = ParseOcspResponse(derEncoding);
-                break;
-            }
-            case CertificateStatusType.ocsp_multi:
-            {
-                RequireStatusRequestVersion(2, statusRequestVersion);
-
-                byte[] ocsp_response_list = TlsUtilities.ReadOpaque24(input, 1);
-                MemoryStream buf = new MemoryStream(ocsp_response_list, false);
-
-                IList ocspResponseList = Platform.CreateArrayList();
-                while (buf.Position < buf.Length)
-                {
-                    if (ocspResponseList.Count >= certificateCount)
-                        throw new TlsFatalAlert(AlertDescription.illegal_parameter);
-
-                    int length = TlsUtilities.ReadUint24(buf);
-                    if (length < 1)
+                case CertificateStatusType.ocsp:
                     {
-                        ocspResponseList.Add(null);
-                    }
-                    else
-                    {
-                        byte[] derEncoding = TlsUtilities.ReadFully(length, buf);
-                        ocspResponseList.Add(ParseOcspResponse(derEncoding));
-                    }
-                }
+                        RequireStatusRequestVersion(1, statusRequestVersion);
 
-                // Match IList capacity to actual size
-                response = Platform.CreateArrayList(ocspResponseList);
-                break;
-            }
-            default:
-                throw new TlsFatalAlert(AlertDescription.decode_error);
+                        byte[] derEncoding = TlsUtilities.ReadOpaque24(input, 1);
+                        response = ParseOcspResponse(derEncoding);
+                        break;
+                    }
+                case CertificateStatusType.ocsp_multi:
+                    {
+                        RequireStatusRequestVersion(2, statusRequestVersion);
+
+                        byte[] ocsp_response_list = TlsUtilities.ReadOpaque24(input, 1);
+                        MemoryStream buf = new MemoryStream(ocsp_response_list, false);
+
+                        IList ocspResponseList = Platform.CreateArrayList();
+                        while (buf.Position < buf.Length)
+                        {
+                            if (ocspResponseList.Count >= certificateCount)
+                                throw new TlsFatalAlert(AlertDescription.illegal_parameter);
+
+                            int length = TlsUtilities.ReadUint24(buf);
+                            if (length < 1)
+                            {
+                                ocspResponseList.Add(null);
+                            }
+                            else
+                            {
+                                byte[] derEncoding = TlsUtilities.ReadFully(length, buf);
+                                ocspResponseList.Add(ParseOcspResponse(derEncoding));
+                            }
+                        }
+
+                        // Match IList capacity to actual size
+                        response = Platform.CreateArrayList(ocspResponseList);
+                        break;
+                    }
+                default:
+                    throw new TlsFatalAlert(AlertDescription.decode_error);
             }
 
             return new CertificateStatus(status_type, response);
@@ -180,12 +180,12 @@ namespace Org.BouncyCastle.Tls
         {
             switch (statusType)
             {
-            case CertificateStatusType.ocsp:
-                return response is OcspResponse;
-            case CertificateStatusType.ocsp_multi:
-                return IsOcspResponseList(response);
-            default:
-                throw new ArgumentException("unsupported CertificateStatusType", "statusType");
+                case CertificateStatusType.ocsp:
+                    return response is OcspResponse;
+                case CertificateStatusType.ocsp_multi:
+                    return IsOcspResponseList(response);
+                default:
+                    throw new ArgumentException("unsupported CertificateStatusType", "statusType");
             }
         }
 

@@ -40,7 +40,7 @@ namespace Org.BouncyCastle.Asn1.GM
         internal class SM2P256V1Holder
             : X9ECParametersHolder
         {
-            private SM2P256V1Holder() {}
+            private SM2P256V1Holder() { }
 
             internal static readonly X9ECParametersHolder Instance = new SM2P256V1Holder();
 
@@ -106,9 +106,9 @@ namespace Org.BouncyCastle.Asn1.GM
         private static readonly IDictionary names = Platform.CreateHashtable();
 
         private static void DefineCurve(
-            string					name,
-            DerObjectIdentifier		oid,
-            X9ECParametersHolder	holder)
+            string name,
+            DerObjectIdentifier oid,
+            X9ECParametersHolder holder)
         {
             objIds.Add(Platform.ToUpperInvariant(name), oid);
             names.Add(oid, name);

@@ -39,7 +39,7 @@ namespace Org.BouncyCastle.Asn1.X9
         internal class Prime192v1Holder
             : X9ECParametersHolder
         {
-            private Prime192v1Holder() {}
+            private Prime192v1Holder() { }
 
             internal static readonly X9ECParametersHolder Instance = new Prime192v1Holder();
 
@@ -70,7 +70,7 @@ namespace Org.BouncyCastle.Asn1.X9
         internal class Prime192v2Holder
             : X9ECParametersHolder
         {
-            private Prime192v2Holder() {}
+            private Prime192v2Holder() { }
 
             internal static readonly X9ECParametersHolder Instance = new Prime192v2Holder();
 
@@ -101,7 +101,7 @@ namespace Org.BouncyCastle.Asn1.X9
         internal class Prime192v3Holder
             : X9ECParametersHolder
         {
-            private Prime192v3Holder() {}
+            private Prime192v3Holder() { }
 
             internal static readonly X9ECParametersHolder Instance = new Prime192v3Holder();
 
@@ -132,7 +132,7 @@ namespace Org.BouncyCastle.Asn1.X9
         internal class Prime239v1Holder
             : X9ECParametersHolder
         {
-            private Prime239v1Holder() {}
+            private Prime239v1Holder() { }
 
             internal static readonly X9ECParametersHolder Instance = new Prime239v1Holder();
 
@@ -163,7 +163,7 @@ namespace Org.BouncyCastle.Asn1.X9
         internal class Prime239v2Holder
             : X9ECParametersHolder
         {
-            private Prime239v2Holder() {}
+            private Prime239v2Holder() { }
 
             internal static readonly X9ECParametersHolder Instance = new Prime239v2Holder();
 
@@ -194,7 +194,7 @@ namespace Org.BouncyCastle.Asn1.X9
         internal class Prime239v3Holder
             : X9ECParametersHolder
         {
-            private Prime239v3Holder() {}
+            private Prime239v3Holder() { }
 
             internal static readonly X9ECParametersHolder Instance = new Prime239v3Holder();
 
@@ -225,7 +225,7 @@ namespace Org.BouncyCastle.Asn1.X9
         internal class Prime256v1Holder
             : X9ECParametersHolder
         {
-            private Prime256v1Holder() {}
+            private Prime256v1Holder() { }
 
             internal static readonly X9ECParametersHolder Instance = new Prime256v1Holder();
 
@@ -259,7 +259,7 @@ namespace Org.BouncyCastle.Asn1.X9
         internal class C2pnb163v1Holder
             : X9ECParametersHolder
         {
-            private C2pnb163v1Holder() {}
+            private C2pnb163v1Holder() { }
 
             internal static readonly X9ECParametersHolder Instance = new C2pnb163v1Holder();
 
@@ -280,7 +280,7 @@ namespace Org.BouncyCastle.Asn1.X9
             {
                 byte[] S = Hex.DecodeStrict("D2C0FB15760860DEF1EEF4D696E6768756151754");
                 ECCurve curve = Curve;
-    
+
                 X9ECPoint G = ConfigureBasepoint(curve,
                     "0307AF69989546103D79329FCC3D74880F33BBE803CB");
 
@@ -291,7 +291,7 @@ namespace Org.BouncyCastle.Asn1.X9
         internal class C2pnb163v2Holder
             : X9ECParametersHolder
         {
-            private C2pnb163v2Holder() {}
+            private C2pnb163v2Holder() { }
 
             internal static readonly X9ECParametersHolder Instance = new C2pnb163v2Holder();
 
@@ -323,7 +323,7 @@ namespace Org.BouncyCastle.Asn1.X9
         internal class C2pnb163v3Holder
             : X9ECParametersHolder
         {
-            private C2pnb163v3Holder() {}
+            private C2pnb163v3Holder() { }
 
             internal static readonly X9ECParametersHolder Instance = new C2pnb163v3Holder();
 
@@ -355,7 +355,7 @@ namespace Org.BouncyCastle.Asn1.X9
         internal class C2pnb176w1Holder
             : X9ECParametersHolder
         {
-            private C2pnb176w1Holder() {}
+            private C2pnb176w1Holder() { }
 
             internal static readonly X9ECParametersHolder Instance = new C2pnb176w1Holder();
 
@@ -387,7 +387,7 @@ namespace Org.BouncyCastle.Asn1.X9
         internal class C2tnb191v1Holder
             : X9ECParametersHolder
         {
-            private C2tnb191v1Holder() {}
+            private C2tnb191v1Holder() { }
 
             internal static readonly X9ECParametersHolder Instance = new C2tnb191v1Holder();
 
@@ -419,7 +419,7 @@ namespace Org.BouncyCastle.Asn1.X9
         internal class C2tnb191v2Holder
             : X9ECParametersHolder
         {
-            private C2tnb191v2Holder() {}
+            private C2tnb191v2Holder() { }
 
             internal static readonly X9ECParametersHolder Instance = new C2tnb191v2Holder();
 
@@ -451,7 +451,7 @@ namespace Org.BouncyCastle.Asn1.X9
         internal class C2tnb191v3Holder
             : X9ECParametersHolder
         {
-            private C2tnb191v3Holder() {}
+            private C2tnb191v3Holder() { }
 
             internal static readonly X9ECParametersHolder Instance = new C2tnb191v3Holder();
 
@@ -483,7 +483,7 @@ namespace Org.BouncyCastle.Asn1.X9
         internal class C2pnb208w1Holder
             : X9ECParametersHolder
         {
-            private C2pnb208w1Holder() {}
+            private C2pnb208w1Holder() { }
 
             internal static readonly X9ECParametersHolder Instance = new C2pnb208w1Holder();
 
@@ -515,7 +515,7 @@ namespace Org.BouncyCastle.Asn1.X9
         internal class C2tnb239v1Holder
             : X9ECParametersHolder
         {
-            private C2tnb239v1Holder() {}
+            private C2tnb239v1Holder() { }
 
             internal static readonly X9ECParametersHolder Instance = new C2tnb239v1Holder();
 
@@ -547,7 +547,7 @@ namespace Org.BouncyCastle.Asn1.X9
         internal class C2tnb239v2Holder
             : X9ECParametersHolder
         {
-            private C2tnb239v2Holder() {}
+            private C2tnb239v2Holder() { }
 
             internal static readonly X9ECParametersHolder Instance = new C2tnb239v2Holder();
 
@@ -579,7 +579,7 @@ namespace Org.BouncyCastle.Asn1.X9
         internal class C2tnb239v3Holder
             : X9ECParametersHolder
         {
-            private C2tnb239v3Holder() {}
+            private C2tnb239v3Holder() { }
 
             internal static readonly X9ECParametersHolder Instance = new C2tnb239v3Holder();
 
@@ -611,7 +611,7 @@ namespace Org.BouncyCastle.Asn1.X9
         internal class C2pnb272w1Holder
             : X9ECParametersHolder
         {
-            private C2pnb272w1Holder() {}
+            private C2pnb272w1Holder() { }
 
             internal static readonly X9ECParametersHolder Instance = new C2pnb272w1Holder();
 
@@ -643,7 +643,7 @@ namespace Org.BouncyCastle.Asn1.X9
         internal class C2pnb304w1Holder
             : X9ECParametersHolder
         {
-            private C2pnb304w1Holder() {}
+            private C2pnb304w1Holder() { }
 
             internal static readonly X9ECParametersHolder Instance = new C2pnb304w1Holder();
 
@@ -675,7 +675,7 @@ namespace Org.BouncyCastle.Asn1.X9
         internal class C2tnb359v1Holder
             : X9ECParametersHolder
         {
-            private C2tnb359v1Holder() {}
+            private C2tnb359v1Holder() { }
 
             internal static readonly X9ECParametersHolder Instance = new C2tnb359v1Holder();
 
@@ -707,7 +707,7 @@ namespace Org.BouncyCastle.Asn1.X9
         internal class C2pnb368w1Holder
             : X9ECParametersHolder
         {
-            private C2pnb368w1Holder() {}
+            private C2pnb368w1Holder() { }
 
             internal static readonly X9ECParametersHolder Instance = new C2pnb368w1Holder();
 
@@ -739,7 +739,7 @@ namespace Org.BouncyCastle.Asn1.X9
         internal class C2tnb431r1Holder
             : X9ECParametersHolder
         {
-            private C2tnb431r1Holder() {}
+            private C2tnb431r1Holder() { }
 
             internal static readonly X9ECParametersHolder Instance = new C2tnb431r1Holder();
 
@@ -774,9 +774,9 @@ namespace Org.BouncyCastle.Asn1.X9
         private static readonly IDictionary names = Platform.CreateHashtable();
 
         private static void DefineCurve(
-            string					name,
-            DerObjectIdentifier		oid,
-            X9ECParametersHolder	holder)
+            string name,
+            DerObjectIdentifier oid,
+            X9ECParametersHolder holder)
         {
             objIds.Add(Platform.ToUpperInvariant(name), oid);
             names.Add(oid, name);

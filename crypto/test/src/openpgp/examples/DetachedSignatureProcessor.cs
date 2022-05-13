@@ -25,25 +25,25 @@ namespace Org.BouncyCastle.Bcpg.OpenPgp.Examples
         {
         }
 
-		private static void VerifySignature(
-			string	fileName,
-			string	inputFileName,
-			string	keyFileName)
-		{
-			using (Stream input = File.OpenRead(inputFileName),
-				keyIn = File.OpenRead(keyFileName))
-			{
-				VerifySignature(fileName, input, keyIn);
-			}
-		}
+        private static void VerifySignature(
+            string fileName,
+            string inputFileName,
+            string keyFileName)
+        {
+            using (Stream input = File.OpenRead(inputFileName),
+                keyIn = File.OpenRead(keyFileName))
+            {
+                VerifySignature(fileName, input, keyIn);
+            }
+        }
 
-		/**
+        /**
         * verify the signature in in against the file fileName.
         */
         private static void VerifySignature(
-            string	fileName,
-            Stream	inputStream,
-            Stream	keyIn)
+            string fileName,
+            Stream inputStream,
+            Stream keyIn)
         {
             inputStream = PgpUtilities.GetDecoderStream(inputStream);
 
@@ -63,21 +63,21 @@ namespace Org.BouncyCastle.Bcpg.OpenPgp.Examples
             }
 
             PgpPublicKeyRingBundle pgpPubRingCollection = new PgpPublicKeyRingBundle(
-				PgpUtilities.GetDecoderStream(keyIn));
+                PgpUtilities.GetDecoderStream(keyIn));
             Stream dIn = File.OpenRead(fileName);
             PgpSignature sig = p3[0];
             PgpPublicKey key = pgpPubRingCollection.GetPublicKey(sig.KeyId);
             sig.InitVerify(key);
 
-			int ch;
+            int ch;
             while ((ch = dIn.ReadByte()) >= 0)
             {
                 sig.Update((byte)ch);
             }
 
-			dIn.Close();
+            dIn.Close();
 
-			if (sig.Verify())
+            if (sig.Verify())
             {
                 Console.WriteLine("signature verified.");
             }
@@ -87,26 +87,26 @@ namespace Org.BouncyCastle.Bcpg.OpenPgp.Examples
             }
         }
 
-		private static void CreateSignature(
-			string	inputFileName,
-			string	keyFileName,
-			string	outputFileName,
-			char[]	pass,
-			bool	armor)
-		{
-			using (Stream keyIn = File.OpenRead(keyFileName),
-				output = File.OpenRead(outputFileName))
-			{
-				CreateSignature(inputFileName, keyIn, output, pass, armor);
-			}
-		}
+        private static void CreateSignature(
+            string inputFileName,
+            string keyFileName,
+            string outputFileName,
+            char[] pass,
+            bool armor)
+        {
+            using (Stream keyIn = File.OpenRead(keyFileName),
+                output = File.OpenRead(outputFileName))
+            {
+                CreateSignature(inputFileName, keyIn, output, pass, armor);
+            }
+        }
 
-		private static void CreateSignature(
-			string	fileName,
-			Stream	keyIn,
-			Stream	outputStream,
-			char[]	pass,
-			bool	armor)
+        private static void CreateSignature(
+            string fileName,
+            Stream keyIn,
+            Stream outputStream,
+            char[] pass,
+            bool armor)
         {
             if (armor)
             {
@@ -116,13 +116,13 @@ namespace Org.BouncyCastle.Bcpg.OpenPgp.Examples
             PgpSecretKey pgpSec = PgpExampleUtilities.ReadSecretKey(keyIn);
             PgpPrivateKey pgpPrivKey = pgpSec.ExtractPrivateKey(pass);
             PgpSignatureGenerator sGen = new PgpSignatureGenerator(
-				pgpSec.PublicKey.Algorithm, HashAlgorithmTag.Sha1);
+                pgpSec.PublicKey.Algorithm, HashAlgorithmTag.Sha1);
 
-			sGen.InitSign(PgpSignature.BinaryDocument, pgpPrivKey);
+            sGen.InitSign(PgpSignature.BinaryDocument, pgpPrivKey);
 
-			BcpgOutputStream bOut = new BcpgOutputStream(outputStream);
+            BcpgOutputStream bOut = new BcpgOutputStream(outputStream);
 
-			Stream fIn = File.OpenRead(fileName);
+            Stream fIn = File.OpenRead(fileName);
 
             int ch;
             while ((ch = fIn.ReadByte()) >= 0)
@@ -130,34 +130,34 @@ namespace Org.BouncyCastle.Bcpg.OpenPgp.Examples
                 sGen.Update((byte)ch);
             }
 
-			fIn.Close();
+            fIn.Close();
 
-			sGen.Generate().Encode(bOut);
+            sGen.Generate().Encode(bOut);
 
-			if (armor)
-			{
-				outputStream.Close();
-			}
+            if (armor)
+            {
+                outputStream.Close();
+            }
         }
 
-		public static void Main(
+        public static void Main(
             string[] args)
         {
             if (args[0].Equals("-s"))
             {
                 if (args[1].Equals("-a"))
                 {
-					CreateSignature(args[2], args[3], args[2] + ".asc", args[4].ToCharArray(), true);
+                    CreateSignature(args[2], args[3], args[2] + ".asc", args[4].ToCharArray(), true);
                 }
                 else
                 {
-					CreateSignature(args[1], args[2], args[1] + ".bpg", args[3].ToCharArray(), false);
+                    CreateSignature(args[1], args[2], args[1] + ".bpg", args[3].ToCharArray(), false);
                 }
             }
             else if (args[0].Equals("-v"))
             {
-				VerifySignature(args[1], args[2], args[3]);
-			}
+                VerifySignature(args[1], args[2], args[3]);
+            }
             else
             {
                 Console.Error.WriteLine("usage: DetachedSignatureProcessor [-s [-a] file keyfile passPhrase]|[-v file sigFile keyFile]");

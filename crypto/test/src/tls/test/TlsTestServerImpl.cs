@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.IO;
 
@@ -150,8 +150,8 @@ namespace Org.BouncyCastle.Tls.Tests
         public override ProtocolVersion GetServerVersion()
         {
             ProtocolVersion serverVersion = (null != m_config.serverNegotiateVersion)
-                ?   m_config.serverNegotiateVersion
-                :   base.GetServerVersion();
+                ? m_config.serverNegotiateVersion
+                : base.GetServerVersion();
 
             if (TlsTestConfig.Debug)
             {
@@ -214,8 +214,8 @@ namespace Org.BouncyCastle.Tls.Tests
             if (isEmpty && (m_config.serverCertReq == TlsTestConfig.SERVER_CERT_REQ_MANDATORY))
             {
                 short alertDescription = TlsUtilities.IsTlsV13(m_context)
-                    ?   AlertDescription.certificate_required
-                    :   AlertDescription.handshake_failure;
+                    ? AlertDescription.certificate_required
+                    : AlertDescription.handshake_failure;
 
                 throw new TlsFatalAlert(alertDescription);
             }
@@ -282,7 +282,7 @@ namespace Org.BouncyCastle.Tls.Tests
         protected override TlsCredentialedDecryptor GetRsaEncryptionCredentials()
         {
             return TlsTestUtilities.LoadEncryptionCredentials(m_context,
-                new string[]{ "x509-server-rsa-enc.pem", "x509-ca-rsa.pem" }, "x509-server-key-rsa-enc.pem");
+                new string[] { "x509-server-rsa-enc.pem", "x509-ca-rsa.pem" }, "x509-server-key-rsa-enc.pem");
         }
 
         protected override TlsCredentialedSigner GetRsaSignerCredentials()

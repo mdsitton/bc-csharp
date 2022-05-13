@@ -6,9 +6,9 @@ using Org.BouncyCastle.X509;
 
 namespace Org.BouncyCastle.Pkix
 {
-	public abstract class PkixAttrCertChecker
-	{
-		/**
+    public abstract class PkixAttrCertChecker
+    {
+        /**
 		 * Returns an immutable <code>Set</code> of X.509 attribute certificate
 		 * extensions that this <code>PkixAttrCertChecker</code> supports or
 		 * <code>null</code> if no extensions are supported.
@@ -27,9 +27,9 @@ namespace Org.BouncyCastle.Pkix
 		 *         <code>PkixAttrCertChecker</code>, or <code>null</code> if no
 		 *         extensions are supported
 		 */
-		public abstract ISet GetSupportedExtensions();
+        public abstract ISet GetSupportedExtensions();
 
-		/**
+        /**
 		* Performs checks on the specified attribute certificate. Every handled
 		* extension is rmeoved from the <code>unresolvedCritExts</code>
 		* collection.
@@ -44,14 +44,14 @@ namespace Org.BouncyCastle.Pkix
 		* @throws CertPathValidatorException if the specified attribute certificate
 		*             does not pass the check.
 		*/
-		public abstract void Check(IX509AttributeCertificate attrCert, PkixCertPath certPath,
-			PkixCertPath holderCertPath, ICollection unresolvedCritExts);
+        public abstract void Check(IX509AttributeCertificate attrCert, PkixCertPath certPath,
+            PkixCertPath holderCertPath, ICollection unresolvedCritExts);
 
-		/**
+        /**
 		* Returns a clone of this object.
 		* 
 		* @return a copy of this <code>PkixAttrCertChecker</code>
 		*/
-		public abstract PkixAttrCertChecker Clone();
-	}
+        public abstract PkixAttrCertChecker Clone();
+    }
 }

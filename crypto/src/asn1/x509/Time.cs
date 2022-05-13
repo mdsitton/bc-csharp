@@ -5,20 +5,18 @@ using Org.BouncyCastle.Utilities;
 
 namespace Org.BouncyCastle.Asn1.X509
 {
-    public class Time
-        : Asn1Encodable, IAsn1Choice
+    public class Time : Asn1Encodable, IAsn1Choice
     {
         private readonly Asn1Object time;
 
         public static Time GetInstance(
-            Asn1TaggedObject	obj,
-            bool				explicitly)
+            Asn1TaggedObject obj,
+            bool explicitly)
         {
             return GetInstance(obj.GetObject());
         }
 
-        public Time(
-            Asn1Object time)
+        public Time(Asn1Object time)
         {
             if (time == null)
                 throw new ArgumentNullException("time");
@@ -33,14 +31,10 @@ namespace Org.BouncyCastle.Asn1.X509
          * and 2049 a UTCTime object is Generated, otherwise a GeneralizedTime
          * is used.
          */
-        public Time(
-            DateTime date)
+        public Time(DateTime date)
         {
-#if PORTABLE
             string d = date.ToUniversalTime().ToString("yyyyMMddHHmmss", CultureInfo.InvariantCulture) + "Z";
-#else
-            string d = date.ToString("yyyyMMddHHmmss", CultureInfo.InvariantCulture) + "Z";
-#endif
+
 
             int year = int.Parse(d.Substring(0, 4));
 
@@ -54,8 +48,7 @@ namespace Org.BouncyCastle.Asn1.X509
             }
         }
 
-        public static Time GetInstance(
-            object obj)
+        public static Time GetInstance(object obj)
         {
             if (obj == null || obj is Time)
                 return (Time)obj;
@@ -71,10 +64,10 @@ namespace Org.BouncyCastle.Asn1.X509
         {
             if (time is DerUtcTime)
             {
-                return ((DerUtcTime) time).AdjustedTimeString;
+                return ((DerUtcTime)time).AdjustedTimeString;
             }
 
-            return ((DerGeneralizedTime) time).GetTime();
+            return ((DerGeneralizedTime)time).GetTime();
         }
 
         /// <summary>

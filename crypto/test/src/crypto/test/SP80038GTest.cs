@@ -15,8 +15,8 @@ using Org.BouncyCastle.Utilities.Test;
 namespace Org.BouncyCastle.Crypto.Tests
 {
     [TestFixture]
-	public class SP80038GTest
-	    : SimpleTest
+    public class SP80038GTest
+        : SimpleTest
     {
         private class FFSample
         {
@@ -274,9 +274,6 @@ namespace Org.BouncyCastle.Crypto.Tests
 
         private void testDisable()
         {
-#if NETCF_1_0 || NETCF_2_0 || SILVERLIGHT || (PORTABLE && !DOTNET) || NET_1_1
-            // Can't SetEnvironmentVariable !
-#else
             Environment.SetEnvironmentVariable("org.bouncycastle.fpe.disable", "true");
             try
             {
@@ -312,7 +309,6 @@ namespace Org.BouncyCastle.Crypto.Tests
 
             testFF3_1();
             Environment.SetEnvironmentVariable("org.bouncycastle.fpe.disable_ff1", "false");
-#endif
         }
 
         private void testFF3_1_255()
@@ -402,7 +398,7 @@ namespace Org.BouncyCastle.Crypto.Tests
             }
             catch (ArgumentException e)
             {
-               IsEquals("input too short", e.Message);
+                IsEquals("input too short", e.Message);
             }
 
             try
@@ -437,7 +433,7 @@ namespace Org.BouncyCastle.Crypto.Tests
             }
             catch (ArgumentException e)
             {
-               IsEquals("maximum input length is 32", e.Message);
+                IsEquals("maximum input length is 32", e.Message);
             }
 
             try
@@ -447,7 +443,7 @@ namespace Org.BouncyCastle.Crypto.Tests
             }
             catch (ArgumentException e)
             {
-               IsEquals("input too short", e.Message);
+                IsEquals("input too short", e.Message);
             }
 
             try
@@ -459,7 +455,7 @@ namespace Org.BouncyCastle.Crypto.Tests
             }
             catch (ArgumentException e)
             {
-               IsEquals("input too short", e.Message);
+                IsEquals("input too short", e.Message);
             }
         }
 
@@ -544,7 +540,7 @@ namespace Org.BouncyCastle.Crypto.Tests
             private readonly FpeEngine fpeEngine;
             private IAlphabetMapper alphabetMapper;
 
-            public FpeCharEncryptor(FpeEngine fpeEngine, byte[] key, char[] alphabet): this(fpeEngine, key, new byte[0], alphabet)
+            public FpeCharEncryptor(FpeEngine fpeEngine, byte[] key, char[] alphabet) : this(fpeEngine, key, new byte[0], alphabet)
             {
 
             }
@@ -573,7 +569,7 @@ namespace Org.BouncyCastle.Crypto.Tests
             private readonly FpeEngine fpeEngine;
             private IAlphabetMapper alphabetMapper;
 
-            public FpeCharDecryptor(FpeEngine fpeEngine, byte[] key, char[] alphabet): this(fpeEngine, key, new byte[0], alphabet)
+            public FpeCharDecryptor(FpeEngine fpeEngine, byte[] key, char[] alphabet) : this(fpeEngine, key, new byte[0], alphabet)
             {
             }
 

@@ -25,16 +25,16 @@ namespace Org.BouncyCastle.Cms
     {
         public const string ZLib = "1.2.840.113549.1.9.16.3.8";
 
-		public CmsCompressedDataGenerator()
+        public CmsCompressedDataGenerator()
         {
         }
 
-		/**
+        /**
         * Generate an object that contains an CMS Compressed Data
         */
         public CmsCompressedData Generate(
-            CmsProcessable	content,
-            string			compressionOid)
+            CmsProcessable content,
+            string compressionOid)
         {
             AlgorithmIdentifier comAlgId;
             Asn1OctetString comOcts;
@@ -44,12 +44,12 @@ namespace Org.BouncyCastle.Cms
                 MemoryStream bOut = new MemoryStream();
                 ZOutputStream zOut = new ZOutputStream(bOut, JZlib.Z_DEFAULT_COMPRESSION);
 
-				content.Write(zOut);
+                content.Write(zOut);
 
                 Platform.Dispose(zOut);
 
                 comAlgId = new AlgorithmIdentifier(new DerObjectIdentifier(compressionOid));
-				comOcts = new BerOctetString(bOut.ToArray());
+                comOcts = new BerOctetString(bOut.ToArray());
             }
             catch (IOException e)
             {
@@ -61,7 +61,7 @@ namespace Org.BouncyCastle.Cms
                 CmsObjectIdentifiers.CompressedData,
                 new CompressedData(comAlgId, comContent));
 
-			return new CmsCompressedData(contentInfo);
+            return new CmsCompressedData(contentInfo);
         }
     }
 }

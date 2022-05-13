@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.IO;
 
@@ -17,7 +17,7 @@ namespace Org.BouncyCastle.Tls.Tests
         {
         }
 
-        //public override IList GetEarlyKeyShareGroups()
+        //public override List<int> GetEarlyKeyShareGroups()
         //{
         //    return TlsUtilities.VectorOfOne(NamedGroup.secp256r1);
         //    //return null;
@@ -28,9 +28,9 @@ namespace Org.BouncyCastle.Tls.Tests
         //    return new short[] { PskKeyExchangeMode.psk_dhe_ke, PskKeyExchangeMode.psk_ke };
         //}
 
-        protected override IList GetProtocolNames()
+        protected override List<ProtocolName> GetProtocolNames()
         {
-            IList protocolNames = new ArrayList();
+            List<ProtocolName> protocolNames = new List<ProtocolName>();
             protocolNames.Add(ProtocolName.Http_1_1);
             protocolNames.Add(ProtocolName.Http_2_Tls);
             return protocolNames;

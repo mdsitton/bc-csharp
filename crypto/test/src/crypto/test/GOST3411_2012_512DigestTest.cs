@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 
 using NUnit.Framework;
@@ -49,7 +49,7 @@ namespace Org.BouncyCastle.Crypto.Tests
 
         static GOST3411_2012_512DigestTest()
         {
-            messages = new string[]{ new string(M1), new string(M2) };
+            messages = new string[] { new string(M1), new string(M2) };
         }
 
         private static readonly String[] digests = {
@@ -57,26 +57,26 @@ namespace Org.BouncyCastle.Crypto.Tests
             "1e88e62226bfca6f9994f1f2d51569e0daf8475a3b0fe61a5300eee46d961376035fe83549ada2b8620fcd7c496ce5b33f0cb9dddc2b6460143b03dabac9fb28",
         };
 
-		public override void PerformTest()
-		{
-			base.PerformTest();
+        public override void PerformTest()
+        {
+            base.PerformTest();
 
-			HMac gMac = new HMac(new Gost3411_2012_512Digest());
+            HMac gMac = new HMac(new Gost3411_2012_512Digest());
 
-			gMac.Init(new KeyParameter(Hex.Decode("000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f")));
+            gMac.Init(new KeyParameter(Hex.Decode("000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f")));
 
-			byte[] data = Hex.Decode("0126bdb87800af214341456563780100");
+            byte[] data = Hex.Decode("0126bdb87800af214341456563780100");
 
             gMac.BlockUpdate(data, 0, data.Length);
-			byte[] mac = new byte[gMac.GetMacSize()];
+            byte[] mac = new byte[gMac.GetMacSize()];
 
-			gMac.DoFinal(mac, 0);
+            gMac.DoFinal(mac, 0);
 
-			if (!Arrays.AreEqual(Hex.Decode("a59bab22ecae19c65fbde6e5f4e9f5d8549d31f037f9df9b905500e171923a773d5f1530f2ed7e964cb2eedc29e9ad2f3afe93b2814f79f5000ffc0366c251e6"), mac))
-			{
-				Fail("mac calculation failed.");
-			}
-		}
+            if (!Arrays.AreEqual(Hex.Decode("a59bab22ecae19c65fbde6e5f4e9f5d8549d31f037f9df9b905500e171923a773d5f1530f2ed7e964cb2eedc29e9ad2f3afe93b2814f79f5000ffc0366c251e6"), mac))
+            {
+                Fail("mac calculation failed.");
+            }
+        }
 
         public GOST3411_2012_512DigestTest()
             : base(new Gost3411_2012_512Digest(), messages, digests)

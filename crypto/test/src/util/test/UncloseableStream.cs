@@ -10,30 +10,25 @@ namespace Org.BouncyCastle.Utilities.Test
     /// closed in some particular context - typically when wrapped by another <c>Stream</c> that
     /// should not be forwarding its <c>Stream.Close()</c> calls. Not needed in production code.
     /// </summary>
-	public class UncloseableStream
-		: FilterStream
-	{
-		public UncloseableStream(
-			Stream s)
-			: base(s)
-		{
-		}
+	public class UncloseableStream : FilterStream
+    {
+        public UncloseableStream(Stream s) : base(s)
+        {
+        }
 
-#if PORTABLE
         protected override void Dispose(bool disposing)
         {
             if (disposing)
             {
-			    throw new Exception("UncloseableStream was disposed");
+                throw new Exception("UncloseableStream was disposed");
             }
 
             base.Dispose(disposing);
         }
-#else
+
         public override void Close()
-		{
-			throw new Exception("Close() called on UncloseableStream");
-		}
-#endif
+        {
+            throw new Exception("Close() called on UncloseableStream");
+        }
     }
 }

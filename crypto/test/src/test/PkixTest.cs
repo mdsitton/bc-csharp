@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Collections;
 using System.Text;
@@ -11,9 +11,9 @@ using Org.BouncyCastle.Utilities.Test;
 
 namespace Org.BouncyCastle.Tests
 {
-	[TestFixture]
+    [TestFixture]
     public class PkixTest
-		: SimpleTest
+        : SimpleTest
     {
         /*
          * The following certs and crls are described in:
@@ -132,7 +132,7 @@ namespace Org.BouncyCastle.Tests
             + "56300906072a8648ce380403033000302d02143697cbe3b42ce1bb61a9d3cc24"
             + "cc22929ff4f587021500abc979afd2161ca9e368a91410b4a02eff225a73");
 
-		/**
+        /**
 		* C.3  End Entity Certificate Using RSA
 		* 
 		* This section contains an annotated hex dump of a 654 byte version 3
@@ -226,23 +226,23 @@ namespace Org.BouncyCastle.Tests
             }
         }
 
-		public override String Name
-		{
-			get { return "PkixTest"; }
+        public override String Name
+        {
+            get { return "PkixTest"; }
         }
 
-		public static void Main(
-			string[] args)
-		{
-			RunTest(new PkixTest());
-		}
+        public static void Main(
+            string[] args)
+        {
+            RunTest(new PkixTest());
+        }
 
-		[Test]
-		public void TestFunction()
-		{
-			string resultText = Perform().ToString();
+        [Test]
+        public void TestFunction()
+        {
+            string resultText = Perform().ToString();
 
-			Assert.AreEqual(Name + ": Okay", resultText);
-		}
-	}
+            Assert.AreEqual(Name + ": Okay", resultText);
+        }
+    }
 }

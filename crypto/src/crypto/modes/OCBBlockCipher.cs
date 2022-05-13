@@ -101,7 +101,7 @@ namespace Org.BouncyCastle.Crypto.Modes
             byte[] N;
             if (parameters is AeadParameters)
             {
-                AeadParameters aeadParameters = (AeadParameters) parameters;
+                AeadParameters aeadParameters = (AeadParameters)parameters;
 
                 N = aeadParameters.GetNonce();
                 initialAssociatedText = aeadParameters.GetAssociatedText();
@@ -115,12 +115,12 @@ namespace Org.BouncyCastle.Crypto.Modes
             }
             else if (parameters is ParametersWithIV)
             {
-                ParametersWithIV parametersWithIV = (ParametersWithIV) parameters;
+                ParametersWithIV parametersWithIV = (ParametersWithIV)parameters;
 
                 N = parametersWithIV.GetIV();
                 initialAssociatedText = null;
                 macSize = 16;
-                keyParameter = (KeyParameter) parametersWithIV.Parameters;
+                keyParameter = (KeyParameter)parametersWithIV.Parameters;
             }
             else
             {
@@ -181,7 +181,7 @@ namespace Org.BouncyCastle.Crypto.Modes
                 {
                     uint b1 = Stretch[bytes];
                     uint b2 = Stretch[++bytes];
-                    this.OffsetMAIN_0[i] = (byte) ((b1 << bits) | (b2 >> (8 - bits)));
+                    this.OffsetMAIN_0[i] = (byte)((b1 << bits) | (b2 >> (8 - bits)));
                 }
             }
 
@@ -321,7 +321,8 @@ namespace Org.BouncyCastle.Crypto.Modes
              * For decryption, get the tag from the end of the message
              */
             byte[] tag = null;
-            if (!forEncryption) {
+            if (!forEncryption)
+            {
                 if (mainBlockPos < macSize)
                     throw new InvalidCipherTextException("data too short");
 
@@ -420,7 +421,7 @@ namespace Org.BouncyCastle.Crypto.Modes
         {
             while (n >= L.Count)
             {
-                L.Add(OCB_double((byte[]) L[L.Count - 1]));
+                L.Add(OCB_double((byte[])L[L.Count - 1]));
             }
             return (byte[])L[n];
         }
@@ -517,7 +518,7 @@ namespace Org.BouncyCastle.Crypto.Modes
 
         protected static void OCB_extend(byte[] block, int pos)
         {
-            block[pos] = (byte) 0x80;
+            block[pos] = (byte)0x80;
             while (++pos < 16)
             {
                 block[pos] = 0;
@@ -548,7 +549,7 @@ namespace Org.BouncyCastle.Crypto.Modes
             while (--i >= 0)
             {
                 uint b = block[i];
-                output[i] = (byte) ((b << 1) | bit);
+                output[i] = (byte)((b << 1) | bit);
                 bit = (b >> 7) & 1;
             }
             return (int)bit;

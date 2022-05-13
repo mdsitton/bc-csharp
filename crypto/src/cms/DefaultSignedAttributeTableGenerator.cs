@@ -7,59 +7,39 @@ using Org.BouncyCastle.Utilities;
 
 namespace Org.BouncyCastle.Cms
 {
-	/**
+    /**
 	 * Default signed attributes generator.
 	 */
-	public class DefaultSignedAttributeTableGenerator
-		: CmsAttributeTableGenerator
-	{
-		private readonly IDictionary table;
+    public class DefaultSignedAttributeTableGenerator : CmsAttributeTableGenerator
+    {
+        private readonly IDictionary table;
 
-		/**
+        /**
 		 * Initialise to use all defaults
 		 */
-		public DefaultSignedAttributeTableGenerator()
-		{
-			table = Platform.CreateHashtable();
-		}
+        public DefaultSignedAttributeTableGenerator()
+        {
+            table = Platform.CreateHashtable();
+        }
 
-		/**
+        /**
 		 * Initialise with some extra attributes or overrides.
 		 *
 		 * @param attributeTable initial attribute table to use.
 		 */
-		public DefaultSignedAttributeTableGenerator(
-			AttributeTable attributeTable)
-		{
-			if (attributeTable != null)
-			{
-				table = attributeTable.ToDictionary();
-			}
-			else
-			{
-				table = Platform.CreateHashtable();
-			}
-		}
+        public DefaultSignedAttributeTableGenerator(
+            AttributeTable attributeTable)
+        {
+            if (attributeTable != null)
+            {
+                table = attributeTable.ToDictionary();
+            }
+            else
+            {
+                table = Platform.CreateHashtable();
+            }
+        }
 
-#if SILVERLIGHT || PORTABLE
-		/**
-		 * Create a standard attribute table from the passed in parameters - this will
-		 * normally include contentType, signingTime, and messageDigest. If the constructor
-		 * using an AttributeTable was used, entries in it for contentType, signingTime, and
-		 * messageDigest will override the generated ones.
-		 *
-		 * @param parameters source parameters for table generation.
-		 *
-		 * @return a filled in Hashtable of attributes.
-		 */
-		protected virtual IDictionary createStandardAttributeTable(
-			IDictionary parameters)
-		{
-            IDictionary std = Platform.CreateHashtable(table);
-            DoCreateStandardAttributeTable(parameters, std);
-            return std;
-		}
-#else
         /**
 		 * Create a standard attribute table from the passed in parameters - this will
 		 * normally include contentType, signingTime, and messageDigest. If the constructor
@@ -70,14 +50,12 @@ namespace Org.BouncyCastle.Cms
 		 *
 		 * @return a filled in Hashtable of attributes.
 		 */
-		protected virtual Hashtable createStandardAttributeTable(
-			IDictionary parameters)
-		{
-            Hashtable std = new Hashtable(table);
+        protected virtual IDictionary createStandardAttributeTable(IDictionary parameters)
+        {
+            IDictionary std = Platform.CreateHashtable(table);
             DoCreateStandardAttributeTable(parameters, std);
-			return std;
-		}
-#endif
+            return std;
+        }
 
         private void DoCreateStandardAttributeTable(IDictionary parameters, IDictionary std)
         {
@@ -114,11 +92,10 @@ namespace Org.BouncyCastle.Cms
 		 * @param parameters source parameters
 		 * @return the populated attribute table
 		 */
-		public virtual AttributeTable GetAttributes(
-			IDictionary parameters)
-		{
+        public virtual AttributeTable GetAttributes(IDictionary parameters)
+        {
             IDictionary table = createStandardAttributeTable(parameters);
-			return new AttributeTable(table);
-		}
-	}
+            return new AttributeTable(table);
+        }
+    }
 }

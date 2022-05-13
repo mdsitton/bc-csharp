@@ -19,14 +19,8 @@ namespace Org.BouncyCastle.Crypto.Prng
     {
         private class SeedGenerator
         {
-#if NETCF_1_0
-			// No volatile keyword, but all fields implicitly volatile anyway
-			private int		counter = 0;
-			private bool	stop = false;
-#else
             private volatile int counter = 0;
             private volatile bool stop = false;
-#endif
 
             private void Run(object ignored)
             {
@@ -36,24 +30,9 @@ namespace Org.BouncyCastle.Crypto.Prng
                 }
             }
 
-            public byte[] GenerateSeed(
-                int numBytes,
-                bool fast)
+            public byte[] GenerateSeed(int numBytes, bool fast)
             {
-#if SILVERLIGHT || PORTABLE
                 return DoGenerateSeed(numBytes, fast);
-#else
-                ThreadPriority originalPriority = Thread.CurrentThread.Priority;
-                try
-                {
-                    Thread.CurrentThread.Priority = ThreadPriority.Normal;
-                    return DoGenerateSeed(numBytes, fast);
-                }
-                finally
-                {
-                    Thread.CurrentThread.Priority = originalPriority;
-                }
-#endif
             }
 
             private byte[] DoGenerateSeed(
@@ -73,11 +52,7 @@ namespace Org.BouncyCastle.Crypto.Prng
                 ThreadPool.QueueUserWorkItem(new WaitCallback(Run));
 #endif
 
-#if PORTABLE
-                AutoResetEvent autoResetEvent = new AutoResetEvent(false);
-#endif
-
-                try
+                using (AutoResetEvent autoResetEvent = new AutoResetEvent(false))
                 {
                     for (int i = 0; i < end; i++)
                     {
@@ -85,11 +60,7 @@ namespace Org.BouncyCastle.Crypto.Prng
                         {
                             try
                             {
-#if PORTABLE
                                 autoResetEvent.WaitOne(1);
-#else
-                                Thread.Sleep(1);
-#endif
                             }
                             catch (Exception)
                             {
@@ -110,12 +81,6 @@ namespace Org.BouncyCastle.Crypto.Prng
                         }
                     }
                 }
-                finally
-                {
-#if PORTABLE
-                    autoResetEvent.Dispose();
-#endif
-                }
 
                 this.stop = true;
 
@@ -134,9 +99,7 @@ namespace Org.BouncyCastle.Crypto.Prng
          * @param numBytes the number of bytes to generate
          * @param fast true if fast mode should be used
          */
-        public byte[] GenerateSeed(
-            int numBytes,
-            bool fast)
+        public byte[] GenerateSeed(int numBytes, bool fast)
         {
             return new SeedGenerator().GenerateSeed(numBytes, fast);
         }

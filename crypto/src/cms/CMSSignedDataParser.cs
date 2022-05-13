@@ -17,7 +17,7 @@ using Org.BouncyCastle.X509.Store;
 
 namespace Org.BouncyCastle.Cms
 {
-	/**
+    /**
 	* Parsing class for an CMS Signed Data object from an input stream.
 	* <p>
 	* Note: that because we are in a streaming mode only one signer can be tried and it is important
@@ -55,186 +55,186 @@ namespace Org.BouncyCastle.Cms
 	*  </pre>
 	*  where bufSize is a suitably large buffer size.
 	*/
-	public class CmsSignedDataParser
-		: CmsContentInfoParser
-	{
-		private static readonly CmsSignedHelper Helper = CmsSignedHelper.Instance;
+    public class CmsSignedDataParser
+        : CmsContentInfoParser
+    {
+        private static readonly CmsSignedHelper Helper = CmsSignedHelper.Instance;
 
-		private SignedDataParser        _signedData;
-		private DerObjectIdentifier		_signedContentType;
-		private CmsTypedStream          _signedContent;
-		private IDictionary				_digests;
-		private ISet					_digestOids;
+        private SignedDataParser _signedData;
+        private DerObjectIdentifier _signedContentType;
+        private CmsTypedStream _signedContent;
+        private IDictionary _digests;
+        private ISet _digestOids;
 
-		private SignerInformationStore  _signerInfoStore;
-		private Asn1Set                 _certSet, _crlSet;
-		private bool					_isCertCrlParsed;
-		private IX509Store				_attributeStore;
-		private IX509Store				_certificateStore;
-		private IX509Store				_crlStore;
+        private SignerInformationStore _signerInfoStore;
+        private Asn1Set _certSet, _crlSet;
+        private bool _isCertCrlParsed;
+        private IX509Store _attributeStore;
+        private IX509Store _certificateStore;
+        private IX509Store _crlStore;
 
-		public CmsSignedDataParser(
-			byte[] sigBlock)
-			: this(new MemoryStream(sigBlock, false))
-		{
-		}
+        public CmsSignedDataParser(
+            byte[] sigBlock)
+            : this(new MemoryStream(sigBlock, false))
+        {
+        }
 
-		public CmsSignedDataParser(
-			CmsTypedStream	signedContent,
-			byte[]			sigBlock)
-			: this(signedContent, new MemoryStream(sigBlock, false))
-		{
-		}
+        public CmsSignedDataParser(
+            CmsTypedStream signedContent,
+            byte[] sigBlock)
+            : this(signedContent, new MemoryStream(sigBlock, false))
+        {
+        }
 
-		/**
+        /**
 		* base constructor - with encapsulated content
 		*/
-		public CmsSignedDataParser(
-			Stream sigData)
-			: this(null, sigData)
-		{
-		}
+        public CmsSignedDataParser(
+            Stream sigData)
+            : this(null, sigData)
+        {
+        }
 
-		/**
+        /**
 		* base constructor
 		*
 		* @param signedContent the content that was signed.
 		* @param sigData the signature object.
 		*/
-		public CmsSignedDataParser(
-			CmsTypedStream	signedContent,
-			Stream			sigData)
-			: base(sigData)
-		{
-			try
-			{
-				this._signedContent = signedContent;
-				this._signedData = SignedDataParser.GetInstance(this.contentInfo.GetContent(Asn1Tags.Sequence));
-				this._digests = Platform.CreateHashtable();
-				this._digestOids = new HashSet();
+        public CmsSignedDataParser(
+            CmsTypedStream signedContent,
+            Stream sigData)
+            : base(sigData)
+        {
+            try
+            {
+                this._signedContent = signedContent;
+                this._signedData = SignedDataParser.GetInstance(this.contentInfo.GetContent(Asn1Tags.Sequence));
+                this._digests = Platform.CreateHashtable();
+                this._digestOids = new HashSet();
 
-				Asn1SetParser digAlgs = _signedData.GetDigestAlgorithms();
-				IAsn1Convertible o;
+                Asn1SetParser digAlgs = _signedData.GetDigestAlgorithms();
+                IAsn1Convertible o;
 
-				while ((o = digAlgs.ReadObject()) != null)
-				{
-					AlgorithmIdentifier id = AlgorithmIdentifier.GetInstance(o.ToAsn1Object());
+                while ((o = digAlgs.ReadObject()) != null)
+                {
+                    AlgorithmIdentifier id = AlgorithmIdentifier.GetInstance(o.ToAsn1Object());
 
-					try
-					{
+                    try
+                    {
                         string digestOid = id.Algorithm.Id;
-						string digestName = Helper.GetDigestAlgName(digestOid);
+                        string digestName = Helper.GetDigestAlgName(digestOid);
 
-						if (!this._digests.Contains(digestName))
-						{
-							this._digests[digestName] = Helper.GetDigestInstance(digestName);
-							this._digestOids.Add(digestOid);
-						}
-					}
-					catch (SecurityUtilityException)
-					{
-						// TODO Should do something other than ignore it
-					}
-				}
+                        if (!this._digests.Contains(digestName))
+                        {
+                            this._digests[digestName] = Helper.GetDigestInstance(digestName);
+                            this._digestOids.Add(digestOid);
+                        }
+                    }
+                    catch (SecurityUtilityException)
+                    {
+                        // TODO Should do something other than ignore it
+                    }
+                }
 
-				//
-				// If the message is simply a certificate chain message GetContent() may return null.
-				//
-				ContentInfoParser cont = _signedData.GetEncapContentInfo();
-				Asn1OctetStringParser octs = (Asn1OctetStringParser)
-					cont.GetContent(Asn1Tags.OctetString);
+                //
+                // If the message is simply a certificate chain message GetContent() may return null.
+                //
+                ContentInfoParser cont = _signedData.GetEncapContentInfo();
+                Asn1OctetStringParser octs = (Asn1OctetStringParser)
+                    cont.GetContent(Asn1Tags.OctetString);
 
-				if (octs != null)
-				{
-					CmsTypedStream ctStr = new CmsTypedStream(
-						cont.ContentType.Id, octs.GetOctetStream());
+                if (octs != null)
+                {
+                    CmsTypedStream ctStr = new CmsTypedStream(
+                        cont.ContentType.Id, octs.GetOctetStream());
 
-					if (_signedContent == null)
-					{
-						this._signedContent = ctStr;
-					}
-					else
-					{
-						//
-						// content passed in, need to read past empty encapsulated content info object if present
-						//
-						ctStr.Drain();
-					}
-				}
+                    if (_signedContent == null)
+                    {
+                        this._signedContent = ctStr;
+                    }
+                    else
+                    {
+                        //
+                        // content passed in, need to read past empty encapsulated content info object if present
+                        //
+                        ctStr.Drain();
+                    }
+                }
 
-				_signedContentType = _signedContent == null
-					?	cont.ContentType
-					:	new DerObjectIdentifier(_signedContent.ContentType);
-			}
-			catch (IOException e)
-			{
-				throw new CmsException("io exception: " + e.Message, e);
-			}
-		}
+                _signedContentType = _signedContent == null
+                    ? cont.ContentType
+                    : new DerObjectIdentifier(_signedContent.ContentType);
+            }
+            catch (IOException e)
+            {
+                throw new CmsException("io exception: " + e.Message, e);
+            }
+        }
 
-		/**
+        /**
 		 * Return the version number for the SignedData object
 		 *
 		 * @return the version number
 		 */
-		public int Version
-		{
-			get { return _signedData.Version.IntValueExact; }
-		}
+        public int Version
+        {
+            get { return _signedData.Version.IntValueExact; }
+        }
 
-		public ISet DigestOids
-		{
-			get { return new HashSet(_digestOids); }
-		}
+        public ISet DigestOids
+        {
+            get { return new HashSet(_digestOids); }
+        }
 
-		/**
+        /**
 		* return the collection of signers that are associated with the
 		* signatures for the message.
 		* @throws CmsException
 		*/
-		public SignerInformationStore GetSignerInfos()
-		{
-			if (_signerInfoStore == null)
-			{
-				PopulateCertCrlSets();
+        public SignerInformationStore GetSignerInfos()
+        {
+            if (_signerInfoStore == null)
+            {
+                PopulateCertCrlSets();
 
                 IList signerInfos = Platform.CreateArrayList();
                 IDictionary hashes = Platform.CreateHashtable();
 
-				foreach (object digestKey in _digests.Keys)
-				{
-					hashes[digestKey] = DigestUtilities.DoFinal(
-						(IDigest)_digests[digestKey]);
-				}
+                foreach (object digestKey in _digests.Keys)
+                {
+                    hashes[digestKey] = DigestUtilities.DoFinal(
+                        (IDigest)_digests[digestKey]);
+                }
 
-				try
-				{
-					Asn1SetParser s = _signedData.GetSignerInfos();
-					IAsn1Convertible o;
+                try
+                {
+                    Asn1SetParser s = _signedData.GetSignerInfos();
+                    IAsn1Convertible o;
 
-					while ((o = s.ReadObject()) != null)
-					{
-						SignerInfo info = SignerInfo.GetInstance(o.ToAsn1Object());
-						string digestName = Helper.GetDigestAlgName(
+                    while ((o = s.ReadObject()) != null)
+                    {
+                        SignerInfo info = SignerInfo.GetInstance(o.ToAsn1Object());
+                        string digestName = Helper.GetDigestAlgName(
                             info.DigestAlgorithm.Algorithm.Id);
 
-						byte[] hash = (byte[]) hashes[digestName];
+                        byte[] hash = (byte[])hashes[digestName];
 
-						signerInfos.Add(new SignerInformation(info, _signedContentType, null, new BaseDigestCalculator(hash)));
-					}
-				}
-				catch (IOException e)
-				{
-					throw new CmsException("io exception: " + e.Message, e);
-				}
+                        signerInfos.Add(new SignerInformation(info, _signedContentType, null, new BaseDigestCalculator(hash)));
+                    }
+                }
+                catch (IOException e)
+                {
+                    throw new CmsException("io exception: " + e.Message, e);
+                }
 
-				_signerInfoStore = new SignerInformationStore(signerInfos);
-			}
+                _signerInfoStore = new SignerInformationStore(signerInfos);
+            }
 
-			return _signerInfoStore;
-		}
+            return _signerInfoStore;
+        }
 
-		/**
+        /**
 		 * return a X509Store containing the attribute certificates, if any, contained
 		 * in this message.
 		 *
@@ -243,20 +243,20 @@ namespace Org.BouncyCastle.Cms
 		 * @exception org.bouncycastle.x509.NoSuchStoreException if the store type isn't available.
 		 * @exception CmsException if a general exception prevents creation of the X509Store
 		 */
-		public IX509Store GetAttributeCertificates(
-			string type)
-		{
-			if (_attributeStore == null)
-			{
-				PopulateCertCrlSets();
+        public IX509Store GetAttributeCertificates(
+            string type)
+        {
+            if (_attributeStore == null)
+            {
+                PopulateCertCrlSets();
 
-				_attributeStore = Helper.CreateAttributeStore(type, _certSet);
-			}
+                _attributeStore = Helper.CreateAttributeStore(type, _certSet);
+            }
 
-			return _attributeStore;
-		}
+            return _attributeStore;
+        }
 
-		/**
+        /**
 		* return a X509Store containing the public key certificates, if any, contained
 		* in this message.
 		*
@@ -265,20 +265,20 @@ namespace Org.BouncyCastle.Cms
 		* @exception NoSuchStoreException if the store type isn't available.
 		* @exception CmsException if a general exception prevents creation of the X509Store
 		*/
-		public IX509Store GetCertificates(
-			string type)
-		{
-			if (_certificateStore == null)
-			{
-				PopulateCertCrlSets();
+        public IX509Store GetCertificates(
+            string type)
+        {
+            if (_certificateStore == null)
+            {
+                PopulateCertCrlSets();
 
-				_certificateStore = Helper.CreateCertificateStore(type, _certSet);
-			}
+                _certificateStore = Helper.CreateCertificateStore(type, _certSet);
+            }
 
-			return _certificateStore;
-		}
+            return _certificateStore;
+        }
 
-		/**
+        /**
 		* return a X509Store containing CRLs, if any, contained
 		* in this message.
 		*
@@ -287,65 +287,65 @@ namespace Org.BouncyCastle.Cms
 		* @exception NoSuchStoreException if the store type isn't available.
 		* @exception CmsException if a general exception prevents creation of the X509Store
 		*/
-		public IX509Store GetCrls(
-			string type)
-		{
-			if (_crlStore == null)
-			{
-				PopulateCertCrlSets();
+        public IX509Store GetCrls(
+            string type)
+        {
+            if (_crlStore == null)
+            {
+                PopulateCertCrlSets();
 
-				_crlStore = Helper.CreateCrlStore(type, _crlSet);
-			}
+                _crlStore = Helper.CreateCrlStore(type, _crlSet);
+            }
 
-			return _crlStore;
-		}
+            return _crlStore;
+        }
 
-		private void PopulateCertCrlSets()
-		{
-			if (_isCertCrlParsed)
-				return;
+        private void PopulateCertCrlSets()
+        {
+            if (_isCertCrlParsed)
+                return;
 
-			_isCertCrlParsed = true;
+            _isCertCrlParsed = true;
 
-			try
-			{
-				// care! Streaming - Must process the GetCertificates() result before calling GetCrls()
-				_certSet = GetAsn1Set(_signedData.GetCertificates());
-				_crlSet = GetAsn1Set(_signedData.GetCrls());
-			}
-			catch (IOException e)
-			{
-				throw new CmsException("problem parsing cert/crl sets", e);
-			}
-		}
+            try
+            {
+                // care! Streaming - Must process the GetCertificates() result before calling GetCrls()
+                _certSet = GetAsn1Set(_signedData.GetCertificates());
+                _crlSet = GetAsn1Set(_signedData.GetCrls());
+            }
+            catch (IOException e)
+            {
+                throw new CmsException("problem parsing cert/crl sets", e);
+            }
+        }
 
-		/// <summary>
-		/// Return the <c>DerObjectIdentifier</c> associated with the encapsulated
-		/// content info structure carried in the signed data.
-		/// </summary>
-		public DerObjectIdentifier SignedContentType
-		{
-			get { return _signedContentType; }
-		}
+        /// <summary>
+        /// Return the <c>DerObjectIdentifier</c> associated with the encapsulated
+        /// content info structure carried in the signed data.
+        /// </summary>
+        public DerObjectIdentifier SignedContentType
+        {
+            get { return _signedContentType; }
+        }
 
-		public CmsTypedStream GetSignedContent()
-		{
-			if (_signedContent == null)
-			{
-				return null;
-			}
+        public CmsTypedStream GetSignedContent()
+        {
+            if (_signedContent == null)
+            {
+                return null;
+            }
 
-			Stream digStream = _signedContent.ContentStream;
+            Stream digStream = _signedContent.ContentStream;
 
-			foreach (IDigest digest in _digests.Values)
-			{
-				digStream = new DigestStream(digStream, digest, null);
-			}
+            foreach (IDigest digest in _digests.Values)
+            {
+                digStream = new DigestStream(digStream, digest, null);
+            }
 
-			return new CmsTypedStream(_signedContent.ContentType, digStream);
-		}
+            return new CmsTypedStream(_signedContent.ContentType, digStream);
+        }
 
-		/**
+        /**
 		 * Replace the signerinformation store associated with the passed
 		 * in message contained in the stream original with the new one passed in.
 		 * You would probably only want to do this if you wanted to change the unsigned
@@ -358,38 +358,38 @@ namespace Org.BouncyCastle.Cms
 		 * @param out the stream to Write the new signed data object to.
 		 * @return out.
 		 */
-		public static Stream ReplaceSigners(
-			Stream					original,
-			SignerInformationStore	signerInformationStore,
-			Stream					outStr)
-		{
-			// NB: SecureRandom would be ignored since using existing signatures only
-			CmsSignedDataStreamGenerator gen = new CmsSignedDataStreamGenerator();
-			CmsSignedDataParser parser = new CmsSignedDataParser(original);
+        public static Stream ReplaceSigners(
+            Stream original,
+            SignerInformationStore signerInformationStore,
+            Stream outStr)
+        {
+            // NB: SecureRandom would be ignored since using existing signatures only
+            CmsSignedDataStreamGenerator gen = new CmsSignedDataStreamGenerator();
+            CmsSignedDataParser parser = new CmsSignedDataParser(original);
 
-//			gen.AddDigests(parser.DigestOids);
-			gen.AddSigners(signerInformationStore);
+            //			gen.AddDigests(parser.DigestOids);
+            gen.AddSigners(signerInformationStore);
 
-			CmsTypedStream signedContent = parser.GetSignedContent();
-			bool encapsulate = (signedContent != null);
-			Stream contentOut = gen.Open(outStr, parser.SignedContentType.Id, encapsulate);
-			if (encapsulate)
-			{
-				Streams.PipeAll(signedContent.ContentStream, contentOut);
-			}
+            CmsTypedStream signedContent = parser.GetSignedContent();
+            bool encapsulate = (signedContent != null);
+            Stream contentOut = gen.Open(outStr, parser.SignedContentType.Id, encapsulate);
+            if (encapsulate)
+            {
+                Streams.PipeAll(signedContent.ContentStream, contentOut);
+            }
 
-			gen.AddAttributeCertificates(parser.GetAttributeCertificates("Collection"));
-			gen.AddCertificates(parser.GetCertificates("Collection"));
-			gen.AddCrls(parser.GetCrls("Collection"));
+            gen.AddAttributeCertificates(parser.GetAttributeCertificates("Collection"));
+            gen.AddCertificates(parser.GetCertificates("Collection"));
+            gen.AddCrls(parser.GetCrls("Collection"));
 
-//			gen.AddSigners(parser.GetSignerInfos());
+            //			gen.AddSigners(parser.GetSignerInfos());
 
             Platform.Dispose(contentOut);
 
-			return outStr;
-		}
+            return outStr;
+        }
 
-		/**
+        /**
 		 * Replace the certificate and CRL information associated with this
 		 * CMSSignedData object with the new one passed in.
 		 * <p>
@@ -401,50 +401,50 @@ namespace Org.BouncyCastle.Cms
 		 * @return out.
 		 * @exception CmsException if there is an error processing the CertStore
 		 */
-		public static Stream ReplaceCertificatesAndCrls(
-			Stream			original,
-			IX509Store		x509Certs,
-			IX509Store		x509Crls,
-			IX509Store		x509AttrCerts,
-			Stream			outStr)
-		{
-			// NB: SecureRandom would be ignored since using existing signatures only
-			CmsSignedDataStreamGenerator gen = new CmsSignedDataStreamGenerator();
-			CmsSignedDataParser parser = new CmsSignedDataParser(original);
+        public static Stream ReplaceCertificatesAndCrls(
+            Stream original,
+            IX509Store x509Certs,
+            IX509Store x509Crls,
+            IX509Store x509AttrCerts,
+            Stream outStr)
+        {
+            // NB: SecureRandom would be ignored since using existing signatures only
+            CmsSignedDataStreamGenerator gen = new CmsSignedDataStreamGenerator();
+            CmsSignedDataParser parser = new CmsSignedDataParser(original);
 
-			gen.AddDigests(parser.DigestOids);
+            gen.AddDigests(parser.DigestOids);
 
-			CmsTypedStream signedContent = parser.GetSignedContent();
-			bool encapsulate = (signedContent != null);
-			Stream contentOut = gen.Open(outStr, parser.SignedContentType.Id, encapsulate);
-			if (encapsulate)
-			{
-				Streams.PipeAll(signedContent.ContentStream, contentOut);
-			}
+            CmsTypedStream signedContent = parser.GetSignedContent();
+            bool encapsulate = (signedContent != null);
+            Stream contentOut = gen.Open(outStr, parser.SignedContentType.Id, encapsulate);
+            if (encapsulate)
+            {
+                Streams.PipeAll(signedContent.ContentStream, contentOut);
+            }
 
-//			gen.AddAttributeCertificates(parser.GetAttributeCertificates("Collection"));
-//			gen.AddCertificates(parser.GetCertificates("Collection"));
-//			gen.AddCrls(parser.GetCrls("Collection"));
-			if (x509AttrCerts != null)
-				gen.AddAttributeCertificates(x509AttrCerts);
-			if (x509Certs != null)
-				gen.AddCertificates(x509Certs);
-			if (x509Crls != null)
-				gen.AddCrls(x509Crls);
+            //			gen.AddAttributeCertificates(parser.GetAttributeCertificates("Collection"));
+            //			gen.AddCertificates(parser.GetCertificates("Collection"));
+            //			gen.AddCrls(parser.GetCrls("Collection"));
+            if (x509AttrCerts != null)
+                gen.AddAttributeCertificates(x509AttrCerts);
+            if (x509Certs != null)
+                gen.AddCertificates(x509Certs);
+            if (x509Crls != null)
+                gen.AddCrls(x509Crls);
 
-			gen.AddSigners(parser.GetSignerInfos());
+            gen.AddSigners(parser.GetSignerInfos());
 
             Platform.Dispose(contentOut);
 
             return outStr;
-		}
+        }
 
         private static Asn1Set GetAsn1Set(
-			Asn1SetParser asn1SetParser)
-		{
-			return asn1SetParser == null
-				?	null
-				:	Asn1Set.GetInstance(asn1SetParser.ToAsn1Object());
-		}
-	}
+            Asn1SetParser asn1SetParser)
+        {
+            return asn1SetParser == null
+                ? null
+                : Asn1Set.GetInstance(asn1SetParser.ToAsn1Object());
+        }
+    }
 }

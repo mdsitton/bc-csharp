@@ -123,208 +123,208 @@ namespace Org.BouncyCastle.Tls
 
             switch (type)
             {
-            case HandshakeType.certificate:
-            {
-                switch (m_connectionState)
-                {
-                case CS_SERVER_ENCRYPTED_EXTENSIONS:
-                case CS_SERVER_CERTIFICATE_REQUEST:
-                {
-                    if (m_connectionState != CS_SERVER_CERTIFICATE_REQUEST)
+                case HandshakeType.certificate:
                     {
-                        Skip13CertificateRequest();
-                    }
-
-                    Receive13ServerCertificate(buf);
-                    this.m_connectionState = CS_SERVER_CERTIFICATE;
-                    break;
-                }
-                default:
-                    throw new TlsFatalAlert(AlertDescription.unexpected_message);
-                }
-                break;
-            }
-            case HandshakeType.certificate_request:
-            {
-                switch (m_connectionState)
-                {
-                case CS_END:
-                {
-                    // TODO[tls13] Permit post-handshake authentication if we sent post_handshake_auth extension
-                    throw new TlsFatalAlert(AlertDescription.unexpected_message);
-                }
-                case CS_SERVER_ENCRYPTED_EXTENSIONS:
-                {
-                    Receive13CertificateRequest(buf, false);
-                    this.m_connectionState = CS_SERVER_CERTIFICATE_REQUEST;
-                    break;
-                }
-                default:
-                    throw new TlsFatalAlert(AlertDescription.unexpected_message);
-                }
-                break;
-            }
-            case HandshakeType.certificate_verify:
-            {
-                switch (m_connectionState)
-                {
-                case CS_SERVER_CERTIFICATE:
-                {
-                    Receive13ServerCertificateVerify(buf);
-                    buf.UpdateHash(m_handshakeHash);
-                    this.m_connectionState = CS_SERVER_CERTIFICATE_VERIFY;
-                    break;
-                }
-                default:
-                    throw new TlsFatalAlert(AlertDescription.unexpected_message);
-                }
-                break;
-            }
-            case HandshakeType.encrypted_extensions:
-            {
-                switch (m_connectionState)
-                {
-                case CS_SERVER_HELLO:
-                {
-                    Receive13EncryptedExtensions(buf);
-                    this.m_connectionState = CS_SERVER_ENCRYPTED_EXTENSIONS;
-                    break;
-                }
-                default:
-                    throw new TlsFatalAlert(AlertDescription.unexpected_message);
-                }
-                break;
-            }
-            case HandshakeType.finished:
-            {
-                switch (m_connectionState)
-                {
-                case CS_SERVER_ENCRYPTED_EXTENSIONS:
-                case CS_SERVER_CERTIFICATE_REQUEST:
-                case CS_SERVER_CERTIFICATE_VERIFY:
-                {
-                    if (m_connectionState == CS_SERVER_ENCRYPTED_EXTENSIONS)
-                    {
-                        Skip13CertificateRequest();
-                    }
-                    if (m_connectionState != CS_SERVER_CERTIFICATE_VERIFY)
-                    {
-                        Skip13ServerCertificate();
-                    }
-
-                    Receive13ServerFinished(buf);
-                    buf.UpdateHash(m_handshakeHash);
-                    this.m_connectionState = CS_SERVER_FINISHED;
-
-                    byte[] serverFinishedTranscriptHash = TlsUtilities.GetCurrentPrfHash(m_handshakeHash);
-
-                    // See RFC 8446 D.4.
-                    m_recordStream.SetIgnoreChangeCipherSpec(false);
-
-                    /*
-                     * TODO[tls13] After receiving the server's Finished message, if the server has accepted early
-                     * data, an EndOfEarlyData message will be sent to indicate the key change. This message will
-                     * be encrypted with the 0-RTT traffic keys.
-                     */
-
-                    if (null != m_certificateRequest)
-                    {
-                        TlsCredentialedSigner clientCredentials = TlsUtilities.Establish13ClientCredentials(
-                            m_authentication, m_certificateRequest);
-
-                        Certificate clientCertificate = null;
-                        if (null != clientCredentials)
+                        switch (m_connectionState)
                         {
-                            clientCertificate = clientCredentials.Certificate;
-                        }
+                            case CS_SERVER_ENCRYPTED_EXTENSIONS:
+                            case CS_SERVER_CERTIFICATE_REQUEST:
+                                {
+                                    if (m_connectionState != CS_SERVER_CERTIFICATE_REQUEST)
+                                    {
+                                        Skip13CertificateRequest();
+                                    }
 
-                        if (null == clientCertificate)
+                                    Receive13ServerCertificate(buf);
+                                    this.m_connectionState = CS_SERVER_CERTIFICATE;
+                                    break;
+                                }
+                            default:
+                                throw new TlsFatalAlert(AlertDescription.unexpected_message);
+                        }
+                        break;
+                    }
+                case HandshakeType.certificate_request:
+                    {
+                        switch (m_connectionState)
                         {
-                            // In this calling context, certificate_request_context is length 0
-                            clientCertificate = Certificate.EmptyChainTls13;
+                            case CS_END:
+                                {
+                                    // TODO[tls13] Permit post-handshake authentication if we sent post_handshake_auth extension
+                                    throw new TlsFatalAlert(AlertDescription.unexpected_message);
+                                }
+                            case CS_SERVER_ENCRYPTED_EXTENSIONS:
+                                {
+                                    Receive13CertificateRequest(buf, false);
+                                    this.m_connectionState = CS_SERVER_CERTIFICATE_REQUEST;
+                                    break;
+                                }
+                            default:
+                                throw new TlsFatalAlert(AlertDescription.unexpected_message);
                         }
-
-                        Send13CertificateMessage(clientCertificate);
-                        this.m_connectionState = CS_CLIENT_CERTIFICATE;
-
-                        if (null != clientCredentials)
+                        break;
+                    }
+                case HandshakeType.certificate_verify:
+                    {
+                        switch (m_connectionState)
                         {
-                            DigitallySigned certificateVerify = TlsUtilities.Generate13CertificateVerify(
-                                m_tlsClientContext, clientCredentials, m_handshakeHash);
-                            Send13CertificateVerifyMessage(certificateVerify);
-                            this.m_connectionState = CS_CLIENT_CERTIFICATE_VERIFY;
+                            case CS_SERVER_CERTIFICATE:
+                                {
+                                    Receive13ServerCertificateVerify(buf);
+                                    buf.UpdateHash(m_handshakeHash);
+                                    this.m_connectionState = CS_SERVER_CERTIFICATE_VERIFY;
+                                    break;
+                                }
+                            default:
+                                throw new TlsFatalAlert(AlertDescription.unexpected_message);
                         }
+                        break;
+                    }
+                case HandshakeType.encrypted_extensions:
+                    {
+                        switch (m_connectionState)
+                        {
+                            case CS_SERVER_HELLO:
+                                {
+                                    Receive13EncryptedExtensions(buf);
+                                    this.m_connectionState = CS_SERVER_ENCRYPTED_EXTENSIONS;
+                                    break;
+                                }
+                            default:
+                                throw new TlsFatalAlert(AlertDescription.unexpected_message);
+                        }
+                        break;
+                    }
+                case HandshakeType.finished:
+                    {
+                        switch (m_connectionState)
+                        {
+                            case CS_SERVER_ENCRYPTED_EXTENSIONS:
+                            case CS_SERVER_CERTIFICATE_REQUEST:
+                            case CS_SERVER_CERTIFICATE_VERIFY:
+                                {
+                                    if (m_connectionState == CS_SERVER_ENCRYPTED_EXTENSIONS)
+                                    {
+                                        Skip13CertificateRequest();
+                                    }
+                                    if (m_connectionState != CS_SERVER_CERTIFICATE_VERIFY)
+                                    {
+                                        Skip13ServerCertificate();
+                                    }
+
+                                    Receive13ServerFinished(buf);
+                                    buf.UpdateHash(m_handshakeHash);
+                                    this.m_connectionState = CS_SERVER_FINISHED;
+
+                                    byte[] serverFinishedTranscriptHash = TlsUtilities.GetCurrentPrfHash(m_handshakeHash);
+
+                                    // See RFC 8446 D.4.
+                                    m_recordStream.SetIgnoreChangeCipherSpec(false);
+
+                                    /*
+                                     * TODO[tls13] After receiving the server's Finished message, if the server has accepted early
+                                     * data, an EndOfEarlyData message will be sent to indicate the key change. This message will
+                                     * be encrypted with the 0-RTT traffic keys.
+                                     */
+
+                                    if (null != m_certificateRequest)
+                                    {
+                                        TlsCredentialedSigner clientCredentials = TlsUtilities.Establish13ClientCredentials(
+                                            m_authentication, m_certificateRequest);
+
+                                        Certificate clientCertificate = null;
+                                        if (null != clientCredentials)
+                                        {
+                                            clientCertificate = clientCredentials.Certificate;
+                                        }
+
+                                        if (null == clientCertificate)
+                                        {
+                                            // In this calling context, certificate_request_context is length 0
+                                            clientCertificate = Certificate.EmptyChainTls13;
+                                        }
+
+                                        Send13CertificateMessage(clientCertificate);
+                                        this.m_connectionState = CS_CLIENT_CERTIFICATE;
+
+                                        if (null != clientCredentials)
+                                        {
+                                            DigitallySigned certificateVerify = TlsUtilities.Generate13CertificateVerify(
+                                                m_tlsClientContext, clientCredentials, m_handshakeHash);
+                                            Send13CertificateVerifyMessage(certificateVerify);
+                                            this.m_connectionState = CS_CLIENT_CERTIFICATE_VERIFY;
+                                        }
+                                    }
+
+                                    Send13FinishedMessage();
+                                    this.m_connectionState = CS_CLIENT_FINISHED;
+
+                                    TlsUtilities.Establish13PhaseApplication(m_tlsClientContext, serverFinishedTranscriptHash,
+                                        m_recordStream);
+
+                                    m_recordStream.EnablePendingCipherWrite();
+                                    m_recordStream.EnablePendingCipherRead(false);
+
+                                    CompleteHandshake();
+                                    break;
+                                }
+                            default:
+                                throw new TlsFatalAlert(AlertDescription.unexpected_message);
+                        }
+                        break;
+                    }
+                case HandshakeType.key_update:
+                    {
+                        Receive13KeyUpdate(buf);
+                        break;
+                    }
+                case HandshakeType.new_session_ticket:
+                    {
+                        Receive13NewSessionTicket(buf);
+                        break;
+                    }
+                case HandshakeType.server_hello:
+                    {
+                        switch (m_connectionState)
+                        {
+                            case CS_CLIENT_HELLO:
+                                {
+                                    // NOTE: Legacy handler should be dispatching initial ServerHello/HelloRetryRequest.
+                                    throw new TlsFatalAlert(AlertDescription.internal_error);
+                                }
+                            case CS_CLIENT_HELLO_RETRY:
+                                {
+                                    ServerHello serverHello = ReceiveServerHelloMessage(buf);
+                                    if (serverHello.IsHelloRetryRequest())
+                                        throw new TlsFatalAlert(AlertDescription.unexpected_message);
+
+                                    Process13ServerHello(serverHello, true);
+                                    buf.UpdateHash(m_handshakeHash);
+                                    this.m_connectionState = CS_SERVER_HELLO;
+
+                                    Process13ServerHelloCoda(serverHello, true);
+                                    break;
+                                }
+                            default:
+                                throw new TlsFatalAlert(AlertDescription.unexpected_message);
+                        }
+                        break;
                     }
 
-                    Send13FinishedMessage();
-                    this.m_connectionState = CS_CLIENT_FINISHED;
-
-                    TlsUtilities.Establish13PhaseApplication(m_tlsClientContext, serverFinishedTranscriptHash,
-                        m_recordStream);
-
-                    m_recordStream.EnablePendingCipherWrite();
-                    m_recordStream.EnablePendingCipherRead(false);
-
-                    CompleteHandshake();
-                    break;
-                }
+                case HandshakeType.certificate_status:
+                case HandshakeType.certificate_url:
+                case HandshakeType.client_hello:
+                case HandshakeType.client_key_exchange:
+                case HandshakeType.compressed_certificate:
+                case HandshakeType.end_of_early_data:
+                case HandshakeType.hello_request:
+                case HandshakeType.hello_verify_request:
+                case HandshakeType.message_hash:
+                case HandshakeType.server_hello_done:
+                case HandshakeType.server_key_exchange:
+                case HandshakeType.supplemental_data:
                 default:
                     throw new TlsFatalAlert(AlertDescription.unexpected_message);
-                }
-                break;
-            }
-            case HandshakeType.key_update:
-            {
-                Receive13KeyUpdate(buf);
-                break;
-            }
-            case HandshakeType.new_session_ticket:
-            {
-                Receive13NewSessionTicket(buf);
-                break;
-            }
-            case HandshakeType.server_hello:
-            {
-                switch (m_connectionState)
-                {
-                case CS_CLIENT_HELLO:
-                {
-                    // NOTE: Legacy handler should be dispatching initial ServerHello/HelloRetryRequest.
-                    throw new TlsFatalAlert(AlertDescription.internal_error);
-                }
-                case CS_CLIENT_HELLO_RETRY:
-                {
-                    ServerHello serverHello = ReceiveServerHelloMessage(buf);
-                    if (serverHello.IsHelloRetryRequest())
-                        throw new TlsFatalAlert(AlertDescription.unexpected_message);
-
-                    Process13ServerHello(serverHello, true);
-                    buf.UpdateHash(m_handshakeHash);
-                    this.m_connectionState = CS_SERVER_HELLO;
-
-                    Process13ServerHelloCoda(serverHello, true);
-                    break;
-                }
-                default:
-                    throw new TlsFatalAlert(AlertDescription.unexpected_message);
-                }
-                break;
-            }
-
-            case HandshakeType.certificate_status:
-            case HandshakeType.certificate_url:
-            case HandshakeType.client_hello:
-            case HandshakeType.client_key_exchange:
-            case HandshakeType.compressed_certificate:
-            case HandshakeType.end_of_early_data:
-            case HandshakeType.hello_request:
-            case HandshakeType.hello_verify_request:
-            case HandshakeType.message_hash:
-            case HandshakeType.server_hello_done:
-            case HandshakeType.server_key_exchange:
-            case HandshakeType.supplemental_data:
-            default:
-                throw new TlsFatalAlert(AlertDescription.unexpected_message);
             }
         }
 
@@ -361,397 +361,397 @@ namespace Org.BouncyCastle.Tls
 
             switch (type)
             {
-            case HandshakeType.certificate:
-            {
-                switch (m_connectionState)
-                {
-                case CS_SERVER_HELLO:
-                case CS_SERVER_SUPPLEMENTAL_DATA:
-                {
-                    if (m_connectionState != CS_SERVER_SUPPLEMENTAL_DATA)
+                case HandshakeType.certificate:
                     {
-                        HandleSupplementalData(null);
+                        switch (m_connectionState)
+                        {
+                            case CS_SERVER_HELLO:
+                            case CS_SERVER_SUPPLEMENTAL_DATA:
+                                {
+                                    if (m_connectionState != CS_SERVER_SUPPLEMENTAL_DATA)
+                                    {
+                                        HandleSupplementalData(null);
+                                    }
+
+                                    /*
+                                     * NOTE: Certificate processing (including authentication) is delayed to allow for a
+                                     * possible CertificateStatus message.
+                                     */
+                                    this.m_authentication = TlsUtilities.ReceiveServerCertificate(m_tlsClientContext, m_tlsClient,
+                                        buf);
+                                    break;
+                                }
+                            default:
+                                throw new TlsFatalAlert(AlertDescription.unexpected_message);
+                        }
+
+                        this.m_connectionState = CS_SERVER_CERTIFICATE;
+                        break;
                     }
-
-                    /*
-                     * NOTE: Certificate processing (including authentication) is delayed to allow for a
-                     * possible CertificateStatus message.
-                     */
-                    this.m_authentication = TlsUtilities.ReceiveServerCertificate(m_tlsClientContext, m_tlsClient,
-                        buf);
-                    break;
-                }
-                default:
-                    throw new TlsFatalAlert(AlertDescription.unexpected_message);
-                }
-
-                this.m_connectionState = CS_SERVER_CERTIFICATE;
-                break;
-            }
-            case HandshakeType.certificate_status:
-            {
-                switch (m_connectionState)
-                {
-                case CS_SERVER_CERTIFICATE:
-                {
-                    if (securityParameters.StatusRequestVersion < 1)
-                        throw new TlsFatalAlert(AlertDescription.unexpected_message);
-
-                    this.m_certificateStatus = CertificateStatus.Parse(m_tlsClientContext, buf);
-
-                    AssertEmpty(buf);
-
-                    this.m_connectionState = CS_SERVER_CERTIFICATE_STATUS;
-                    break;
-                }
-                default:
-                    throw new TlsFatalAlert(AlertDescription.unexpected_message);
-                }
-                break;
-            }
-            case HandshakeType.finished:
-            {
-                switch (m_connectionState)
-                {
-                case CS_CLIENT_FINISHED:
-                case CS_SERVER_SESSION_TICKET:
-                {
-                    if (m_connectionState != CS_SERVER_SESSION_TICKET)
+                case HandshakeType.certificate_status:
                     {
+                        switch (m_connectionState)
+                        {
+                            case CS_SERVER_CERTIFICATE:
+                                {
+                                    if (securityParameters.StatusRequestVersion < 1)
+                                        throw new TlsFatalAlert(AlertDescription.unexpected_message);
+
+                                    this.m_certificateStatus = CertificateStatus.Parse(m_tlsClientContext, buf);
+
+                                    AssertEmpty(buf);
+
+                                    this.m_connectionState = CS_SERVER_CERTIFICATE_STATUS;
+                                    break;
+                                }
+                            default:
+                                throw new TlsFatalAlert(AlertDescription.unexpected_message);
+                        }
+                        break;
+                    }
+                case HandshakeType.finished:
+                    {
+                        switch (m_connectionState)
+                        {
+                            case CS_CLIENT_FINISHED:
+                            case CS_SERVER_SESSION_TICKET:
+                                {
+                                    if (m_connectionState != CS_SERVER_SESSION_TICKET)
+                                    {
+                                        /*
+                                         * RFC 5077 3.3. This message MUST be sent if the server included a
+                                         * SessionTicket extension in the ServerHello.
+                                         */
+                                        if (m_expectSessionTicket)
+                                            throw new TlsFatalAlert(AlertDescription.unexpected_message);
+                                    }
+
+                                    ProcessFinishedMessage(buf);
+                                    this.m_connectionState = CS_SERVER_FINISHED;
+
+                                    CompleteHandshake();
+                                    break;
+                                }
+                            default:
+                                throw new TlsFatalAlert(AlertDescription.unexpected_message);
+                        }
+                        break;
+                    }
+                case HandshakeType.server_hello:
+                    {
+                        switch (m_connectionState)
+                        {
+                            case CS_CLIENT_HELLO:
+                                {
+                                    ServerHello serverHello = ReceiveServerHelloMessage(buf);
+
+                                    // TODO[tls13] Only treat as HRR if it's TLS 1.3??
+                                    if (serverHello.IsHelloRetryRequest())
+                                    {
+                                        Process13HelloRetryRequest(serverHello);
+                                        m_handshakeHash.NotifyPrfDetermined();
+                                        TlsUtilities.AdjustTranscriptForRetry(m_handshakeHash);
+                                        buf.UpdateHash(m_handshakeHash);
+                                        this.m_connectionState = CS_SERVER_HELLO_RETRY_REQUEST;
+
+                                        Send13ClientHelloRetry();
+                                        m_handshakeHash.SealHashAlgorithms();
+                                        this.m_connectionState = CS_CLIENT_HELLO_RETRY;
+                                    }
+                                    else
+                                    {
+                                        ProcessServerHello(serverHello);
+                                        m_handshakeHash.NotifyPrfDetermined();
+                                        buf.UpdateHash(m_handshakeHash);
+                                        this.m_connectionState = CS_SERVER_HELLO;
+
+                                        if (TlsUtilities.IsTlsV13(securityParameters.NegotiatedVersion))
+                                        {
+                                            m_handshakeHash.SealHashAlgorithms();
+                                            Process13ServerHelloCoda(serverHello, false);
+                                        }
+                                    }
+
+                                    break;
+                                }
+                            default:
+                                throw new TlsFatalAlert(AlertDescription.unexpected_message);
+                        }
+                        break;
+                    }
+                case HandshakeType.supplemental_data:
+                    {
+                        switch (m_connectionState)
+                        {
+                            case CS_SERVER_HELLO:
+                                {
+                                    HandleSupplementalData(ReadSupplementalDataMessage(buf));
+                                    break;
+                                }
+                            default:
+                                throw new TlsFatalAlert(AlertDescription.unexpected_message);
+                        }
+                        break;
+                    }
+                case HandshakeType.server_hello_done:
+                    {
+                        switch (m_connectionState)
+                        {
+                            case CS_SERVER_HELLO:
+                            case CS_SERVER_SUPPLEMENTAL_DATA:
+                            case CS_SERVER_CERTIFICATE:
+                            case CS_SERVER_CERTIFICATE_STATUS:
+                            case CS_SERVER_KEY_EXCHANGE:
+                            case CS_SERVER_CERTIFICATE_REQUEST:
+                                {
+                                    if (m_connectionState == CS_SERVER_HELLO)
+                                    {
+                                        HandleSupplementalData(null);
+                                    }
+                                    if (m_connectionState == CS_SERVER_HELLO ||
+                                        m_connectionState == CS_SERVER_SUPPLEMENTAL_DATA)
+                                    {
+                                        this.m_authentication = null;
+                                    }
+                                    if (m_connectionState != CS_SERVER_KEY_EXCHANGE &&
+                                        m_connectionState != CS_SERVER_CERTIFICATE_REQUEST)
+                                    {
+                                        HandleServerCertificate();
+
+                                        // There was no server key exchange message; check it's OK
+                                        m_keyExchange.SkipServerKeyExchange();
+                                    }
+
+                                    AssertEmpty(buf);
+
+                                    this.m_connectionState = CS_SERVER_HELLO_DONE;
+
+                                    IList clientSupplementalData = m_tlsClient.GetClientSupplementalData();
+                                    if (clientSupplementalData != null)
+                                    {
+                                        SendSupplementalDataMessage(clientSupplementalData);
+                                        this.m_connectionState = CS_CLIENT_SUPPLEMENTAL_DATA;
+                                    }
+
+                                    TlsCredentialedSigner credentialedSigner = null;
+                                    TlsStreamSigner streamSigner = null;
+
+                                    if (m_certificateRequest == null)
+                                    {
+                                        m_keyExchange.SkipClientCredentials();
+                                    }
+                                    else
+                                    {
+                                        Certificate clientCertificate = null;
+
+                                        TlsCredentials clientCredentials = TlsUtilities.EstablishClientCredentials(m_authentication,
+                                            m_certificateRequest);
+                                        if (null == clientCredentials)
+                                        {
+                                            m_keyExchange.SkipClientCredentials();
+
+                                            /*
+                                             * RFC 5246 If no suitable certificate is available, the client MUST send a
+                                             * certificate message containing no certificates.
+                                             * 
+                                             * NOTE: In previous RFCs, this was SHOULD instead of MUST.
+                                             */
+                                        }
+                                        else
+                                        {
+                                            m_keyExchange.ProcessClientCredentials(clientCredentials);
+
+                                            clientCertificate = clientCredentials.Certificate;
+
+                                            if (clientCredentials is TlsCredentialedSigner)
+                                            {
+                                                credentialedSigner = (TlsCredentialedSigner)clientCredentials;
+                                                streamSigner = credentialedSigner.GetStreamSigner();
+                                            }
+                                        }
+
+                                        SendCertificateMessage(clientCertificate, null);
+                                        this.m_connectionState = CS_CLIENT_CERTIFICATE;
+                                    }
+
+                                    bool forceBuffering = streamSigner != null;
+                                    TlsUtilities.SealHandshakeHash(m_tlsClientContext, m_handshakeHash, forceBuffering);
+
+                                    /*
+                                     * Send the client key exchange message, depending on the key exchange we are using
+                                     * in our CipherSuite.
+                                     */
+                                    SendClientKeyExchange();
+                                    this.m_connectionState = CS_CLIENT_KEY_EXCHANGE;
+
+                                    bool isSsl = TlsUtilities.IsSsl(m_tlsClientContext);
+                                    if (isSsl)
+                                    {
+                                        // NOTE: For SSLv3 (only), master_secret needed to calculate session hash
+                                        EstablishMasterSecret(m_tlsClientContext, m_keyExchange);
+                                    }
+
+                                    securityParameters.m_sessionHash = TlsUtilities.GetCurrentPrfHash(m_handshakeHash);
+
+                                    if (!isSsl)
+                                    {
+                                        // NOTE: For (D)TLS, session hash potentially needed for extended_master_secret
+                                        EstablishMasterSecret(m_tlsClientContext, m_keyExchange);
+                                    }
+
+                                    m_recordStream.SetPendingCipher(TlsUtilities.InitCipher(m_tlsClientContext));
+
+                                    if (credentialedSigner != null)
+                                    {
+                                        DigitallySigned certificateVerify = TlsUtilities.GenerateCertificateVerifyClient(
+                                            m_tlsClientContext, credentialedSigner, streamSigner, m_handshakeHash);
+                                        SendCertificateVerifyMessage(certificateVerify);
+                                        this.m_connectionState = CS_CLIENT_CERTIFICATE_VERIFY;
+                                    }
+
+                                    m_handshakeHash.StopTracking();
+
+                                    SendChangeCipherSpec();
+                                    SendFinishedMessage();
+                                    break;
+                                }
+                            default:
+                                throw new TlsFatalAlert(AlertDescription.unexpected_message);
+                        }
+
+                        this.m_connectionState = CS_CLIENT_FINISHED;
+                        break;
+                    }
+                case HandshakeType.server_key_exchange:
+                    {
+                        switch (m_connectionState)
+                        {
+                            case CS_SERVER_HELLO:
+                            case CS_SERVER_SUPPLEMENTAL_DATA:
+                            case CS_SERVER_CERTIFICATE:
+                            case CS_SERVER_CERTIFICATE_STATUS:
+                                {
+                                    if (m_connectionState == CS_SERVER_HELLO)
+                                    {
+                                        HandleSupplementalData(null);
+                                    }
+                                    if (m_connectionState != CS_SERVER_CERTIFICATE &&
+                                        m_connectionState != CS_SERVER_CERTIFICATE_STATUS)
+                                    {
+                                        this.m_authentication = null;
+                                    }
+
+                                    HandleServerCertificate();
+
+                                    m_keyExchange.ProcessServerKeyExchange(buf);
+
+                                    AssertEmpty(buf);
+                                    break;
+                                }
+                            default:
+                                throw new TlsFatalAlert(AlertDescription.unexpected_message);
+                        }
+
+                        this.m_connectionState = CS_SERVER_KEY_EXCHANGE;
+                        break;
+                    }
+                case HandshakeType.certificate_request:
+                    {
+                        switch (m_connectionState)
+                        {
+                            case CS_SERVER_CERTIFICATE:
+                            case CS_SERVER_CERTIFICATE_STATUS:
+                            case CS_SERVER_KEY_EXCHANGE:
+                                {
+                                    if (m_connectionState != CS_SERVER_KEY_EXCHANGE)
+                                    {
+                                        HandleServerCertificate();
+
+                                        // There was no server key exchange message; check it's OK
+                                        m_keyExchange.SkipServerKeyExchange();
+                                    }
+
+                                    ReceiveCertificateRequest(buf);
+
+                                    TlsUtilities.EstablishServerSigAlgs(securityParameters, m_certificateRequest);
+
+                                    /*
+                                     * TODO Give the client a chance to immediately select the CertificateVerify hash
+                                     * algorithm here to avoid tracking the other hash algorithms unnecessarily?
+                                     */
+                                    TlsUtilities.TrackHashAlgorithms(m_handshakeHash, securityParameters.ServerSigAlgs);
+
+                                    break;
+                                }
+                            default:
+                                throw new TlsFatalAlert(AlertDescription.unexpected_message);
+                        }
+
+                        this.m_connectionState = CS_SERVER_CERTIFICATE_REQUEST;
+                        break;
+                    }
+                case HandshakeType.new_session_ticket:
+                    {
+                        switch (m_connectionState)
+                        {
+                            case CS_CLIENT_FINISHED:
+                                {
+                                    if (!m_expectSessionTicket)
+                                    {
+                                        /*
+                                         * RFC 5077 3.3. This message MUST NOT be sent if the server did not include a
+                                         * SessionTicket extension in the ServerHello.
+                                         */
+                                        throw new TlsFatalAlert(AlertDescription.unexpected_message);
+                                    }
+
+                                    /*
+                                     * RFC 5077 3.4. If the client receives a session ticket from the server, then it
+                                     * discards any Session ID that was sent in the ServerHello.
+                                     */
+                                    securityParameters.m_sessionID = TlsUtilities.EmptyBytes;
+                                    InvalidateSession();
+                                    this.m_tlsSession = TlsUtilities.ImportSession(securityParameters.SessionID, null);
+
+                                    ReceiveNewSessionTicket(buf);
+                                    break;
+                                }
+                            default:
+                                throw new TlsFatalAlert(AlertDescription.unexpected_message);
+                        }
+
+                        this.m_connectionState = CS_SERVER_SESSION_TICKET;
+                        break;
+                    }
+                case HandshakeType.hello_request:
+                    {
+                        AssertEmpty(buf);
+
                         /*
-                         * RFC 5077 3.3. This message MUST be sent if the server included a
-                         * SessionTicket extension in the ServerHello.
+                         * RFC 2246 7.4.1.1 Hello request This message will be ignored by the client if the
+                         * client is currently negotiating a session. This message may be ignored by the client
+                         * if it does not wish to renegotiate a session, or the client may, if it wishes,
+                         * respond with a no_renegotiation alert.
                          */
-                        if (m_expectSessionTicket)
-                            throw new TlsFatalAlert(AlertDescription.unexpected_message);
-                    }
-
-                    ProcessFinishedMessage(buf);
-                    this.m_connectionState = CS_SERVER_FINISHED;
-
-                    CompleteHandshake();
-                    break;
-                }
-                default:
-                    throw new TlsFatalAlert(AlertDescription.unexpected_message);
-                }
-                break;
-            }
-            case HandshakeType.server_hello:
-            {
-                switch (m_connectionState)
-                {
-                case CS_CLIENT_HELLO:
-                {
-                    ServerHello serverHello = ReceiveServerHelloMessage(buf);
-
-                    // TODO[tls13] Only treat as HRR if it's TLS 1.3??
-                    if (serverHello.IsHelloRetryRequest())
-                    {
-                        Process13HelloRetryRequest(serverHello);
-                        m_handshakeHash.NotifyPrfDetermined();
-                        TlsUtilities.AdjustTranscriptForRetry(m_handshakeHash);
-                        buf.UpdateHash(m_handshakeHash);
-                        this.m_connectionState = CS_SERVER_HELLO_RETRY_REQUEST;
-
-                        Send13ClientHelloRetry();
-                        m_handshakeHash.SealHashAlgorithms();
-                        this.m_connectionState = CS_CLIENT_HELLO_RETRY;
-                    }
-                    else
-                    {
-                        ProcessServerHello(serverHello);
-                        m_handshakeHash.NotifyPrfDetermined();
-                        buf.UpdateHash(m_handshakeHash);
-                        this.m_connectionState = CS_SERVER_HELLO;
-
-                        if (TlsUtilities.IsTlsV13(securityParameters.NegotiatedVersion))
+                        if (IsApplicationDataReady)
                         {
-                            m_handshakeHash.SealHashAlgorithms();
-                            Process13ServerHelloCoda(serverHello, false);
+                            RefuseRenegotiation();
                         }
+                        break;
                     }
 
-                    break;
-                }
+                case HandshakeType.certificate_url:
+                case HandshakeType.certificate_verify:
+                case HandshakeType.client_hello:
+                case HandshakeType.client_key_exchange:
+                case HandshakeType.compressed_certificate:
+                case HandshakeType.encrypted_extensions:
+                case HandshakeType.end_of_early_data:
+                case HandshakeType.hello_verify_request:
+                case HandshakeType.key_update:
+                case HandshakeType.message_hash:
                 default:
                     throw new TlsFatalAlert(AlertDescription.unexpected_message);
-                }
-                break;
-            }
-            case HandshakeType.supplemental_data:
-            {
-                switch (m_connectionState)
-                {
-                case CS_SERVER_HELLO:
-                {
-                    HandleSupplementalData(ReadSupplementalDataMessage(buf));
-                    break;
-                }
-                default:
-                    throw new TlsFatalAlert(AlertDescription.unexpected_message);
-                }
-                break;
-            }
-            case HandshakeType.server_hello_done:
-            {
-                switch (m_connectionState)
-                {
-                case CS_SERVER_HELLO:
-                case CS_SERVER_SUPPLEMENTAL_DATA:
-                case CS_SERVER_CERTIFICATE:
-                case CS_SERVER_CERTIFICATE_STATUS:
-                case CS_SERVER_KEY_EXCHANGE:
-                case CS_SERVER_CERTIFICATE_REQUEST:
-                {
-                    if (m_connectionState == CS_SERVER_HELLO)
-                    {
-                        HandleSupplementalData(null);
-                    }
-                    if (m_connectionState == CS_SERVER_HELLO ||
-                        m_connectionState == CS_SERVER_SUPPLEMENTAL_DATA)
-                    {
-                        this.m_authentication = null;
-                    }
-                    if (m_connectionState != CS_SERVER_KEY_EXCHANGE &&
-                        m_connectionState != CS_SERVER_CERTIFICATE_REQUEST)
-                    {
-                        HandleServerCertificate();
-
-                        // There was no server key exchange message; check it's OK
-                        m_keyExchange.SkipServerKeyExchange();
-                    }
-
-                    AssertEmpty(buf);
-
-                    this.m_connectionState = CS_SERVER_HELLO_DONE;
-
-                    IList clientSupplementalData = m_tlsClient.GetClientSupplementalData();
-                    if (clientSupplementalData != null)
-                    {
-                        SendSupplementalDataMessage(clientSupplementalData);
-                        this.m_connectionState = CS_CLIENT_SUPPLEMENTAL_DATA;
-                    }
-
-                    TlsCredentialedSigner credentialedSigner = null;
-                    TlsStreamSigner streamSigner = null;
-
-                    if (m_certificateRequest == null)
-                    {
-                        m_keyExchange.SkipClientCredentials();
-                    }
-                    else
-                    {
-                        Certificate clientCertificate = null;
-
-                        TlsCredentials clientCredentials = TlsUtilities.EstablishClientCredentials(m_authentication,
-                            m_certificateRequest);
-                        if (null == clientCredentials)
-                        {
-                            m_keyExchange.SkipClientCredentials();
-
-                            /*
-                             * RFC 5246 If no suitable certificate is available, the client MUST send a
-                             * certificate message containing no certificates.
-                             * 
-                             * NOTE: In previous RFCs, this was SHOULD instead of MUST.
-                             */
-                        }
-                        else
-                        {
-                            m_keyExchange.ProcessClientCredentials(clientCredentials);
-
-                            clientCertificate = clientCredentials.Certificate;
-
-                            if (clientCredentials is TlsCredentialedSigner)
-                            {
-                                credentialedSigner = (TlsCredentialedSigner)clientCredentials;
-                                streamSigner = credentialedSigner.GetStreamSigner();
-                            }
-                        }
-
-                        SendCertificateMessage(clientCertificate, null);
-                        this.m_connectionState = CS_CLIENT_CERTIFICATE;
-                    }
-
-                    bool forceBuffering = streamSigner != null;
-                    TlsUtilities.SealHandshakeHash(m_tlsClientContext, m_handshakeHash, forceBuffering);
-
-                    /*
-                     * Send the client key exchange message, depending on the key exchange we are using
-                     * in our CipherSuite.
-                     */
-                    SendClientKeyExchange();
-                    this.m_connectionState = CS_CLIENT_KEY_EXCHANGE;
-
-                    bool isSsl = TlsUtilities.IsSsl(m_tlsClientContext);
-                    if (isSsl)
-                    {
-                        // NOTE: For SSLv3 (only), master_secret needed to calculate session hash
-                        EstablishMasterSecret(m_tlsClientContext, m_keyExchange);
-                    }
-
-                    securityParameters.m_sessionHash = TlsUtilities.GetCurrentPrfHash(m_handshakeHash);
-
-                    if (!isSsl)
-                    {
-                        // NOTE: For (D)TLS, session hash potentially needed for extended_master_secret
-                        EstablishMasterSecret(m_tlsClientContext, m_keyExchange);
-                    }
-
-                    m_recordStream.SetPendingCipher(TlsUtilities.InitCipher(m_tlsClientContext));
-
-                    if (credentialedSigner != null)
-                    {
-                        DigitallySigned certificateVerify = TlsUtilities.GenerateCertificateVerifyClient(
-                            m_tlsClientContext, credentialedSigner, streamSigner, m_handshakeHash);
-                        SendCertificateVerifyMessage(certificateVerify);
-                        this.m_connectionState = CS_CLIENT_CERTIFICATE_VERIFY;
-                    }
-
-                    m_handshakeHash.StopTracking();
-
-                    SendChangeCipherSpec();
-                    SendFinishedMessage();
-                    break;
-                }
-                default:
-                    throw new TlsFatalAlert(AlertDescription.unexpected_message);
-                }
-
-                this.m_connectionState = CS_CLIENT_FINISHED;
-                break;
-            }
-            case HandshakeType.server_key_exchange:
-            {
-                switch (m_connectionState)
-                {
-                case CS_SERVER_HELLO:
-                case CS_SERVER_SUPPLEMENTAL_DATA:
-                case CS_SERVER_CERTIFICATE:
-                case CS_SERVER_CERTIFICATE_STATUS:
-                {
-                    if (m_connectionState == CS_SERVER_HELLO)
-                    {
-                        HandleSupplementalData(null);
-                    }
-                    if (m_connectionState != CS_SERVER_CERTIFICATE &&
-                        m_connectionState != CS_SERVER_CERTIFICATE_STATUS)
-                    {
-                        this.m_authentication = null;
-                    }
-
-                    HandleServerCertificate();
-
-                    m_keyExchange.ProcessServerKeyExchange(buf);
-
-                    AssertEmpty(buf);
-                    break;
-                }
-                default:
-                    throw new TlsFatalAlert(AlertDescription.unexpected_message);
-                }
-
-                this.m_connectionState = CS_SERVER_KEY_EXCHANGE;
-                break;
-            }
-            case HandshakeType.certificate_request:
-            {
-                switch (m_connectionState)
-                {
-                case CS_SERVER_CERTIFICATE:
-                case CS_SERVER_CERTIFICATE_STATUS:
-                case CS_SERVER_KEY_EXCHANGE:
-                {
-                    if (m_connectionState != CS_SERVER_KEY_EXCHANGE)
-                    {
-                        HandleServerCertificate();
-
-                        // There was no server key exchange message; check it's OK
-                        m_keyExchange.SkipServerKeyExchange();
-                    }
-
-                    ReceiveCertificateRequest(buf);
-
-                    TlsUtilities.EstablishServerSigAlgs(securityParameters, m_certificateRequest);
-
-                    /*
-                     * TODO Give the client a chance to immediately select the CertificateVerify hash
-                     * algorithm here to avoid tracking the other hash algorithms unnecessarily?
-                     */
-                    TlsUtilities.TrackHashAlgorithms(m_handshakeHash, securityParameters.ServerSigAlgs);
-
-                    break;
-                }
-                default:
-                    throw new TlsFatalAlert(AlertDescription.unexpected_message);
-                }
-
-                this.m_connectionState = CS_SERVER_CERTIFICATE_REQUEST;
-                break;
-            }
-            case HandshakeType.new_session_ticket:
-            {
-                switch (m_connectionState)
-                {
-                case CS_CLIENT_FINISHED:
-                {
-                    if (!m_expectSessionTicket)
-                    {
-                        /*
-                         * RFC 5077 3.3. This message MUST NOT be sent if the server did not include a
-                         * SessionTicket extension in the ServerHello.
-                         */
-                        throw new TlsFatalAlert(AlertDescription.unexpected_message);
-                    }
-
-                    /*
-                     * RFC 5077 3.4. If the client receives a session ticket from the server, then it
-                     * discards any Session ID that was sent in the ServerHello.
-                     */
-                    securityParameters.m_sessionID = TlsUtilities.EmptyBytes;
-                    InvalidateSession();
-                    this.m_tlsSession = TlsUtilities.ImportSession(securityParameters.SessionID, null);
-
-                    ReceiveNewSessionTicket(buf);
-                    break;
-                }
-                default:
-                    throw new TlsFatalAlert(AlertDescription.unexpected_message);
-                }
-
-                this.m_connectionState = CS_SERVER_SESSION_TICKET;
-                break;
-            }
-            case HandshakeType.hello_request:
-            {
-                AssertEmpty(buf);
-
-                /*
-                 * RFC 2246 7.4.1.1 Hello request This message will be ignored by the client if the
-                 * client is currently negotiating a session. This message may be ignored by the client
-                 * if it does not wish to renegotiate a session, or the client may, if it wishes,
-                 * respond with a no_renegotiation alert.
-                 */
-                if (IsApplicationDataReady)
-                {
-                    RefuseRenegotiation();
-                }
-                break;
-            }
-
-            case HandshakeType.certificate_url:
-            case HandshakeType.certificate_verify:
-            case HandshakeType.client_hello:
-            case HandshakeType.client_key_exchange:
-            case HandshakeType.compressed_certificate:
-            case HandshakeType.encrypted_extensions:
-            case HandshakeType.end_of_early_data:
-            case HandshakeType.hello_verify_request:
-            case HandshakeType.key_update:
-            case HandshakeType.message_hash:
-            default:
-                throw new TlsFatalAlert(AlertDescription.unexpected_message);
             }
         }
 
@@ -1164,7 +1164,7 @@ namespace Org.BouncyCastle.Tls
                         // TODO[compat-gnutls] GnuTLS test server sends server extensions e.g. ec_point_formats
                         // TODO[compat-openssl] OpenSSL test server sends server extensions e.g. ec_point_formats
                         // TODO[compat-polarssl] PolarSSL test server sends server extensions e.g. ec_point_formats
-    //                    throw new TlsFatalAlert(AlertDescription.illegal_parameter);
+                        //                    throw new TlsFatalAlert(AlertDescription.illegal_parameter);
                     }
                 }
             }
@@ -1432,13 +1432,13 @@ namespace Org.BouncyCastle.Tls
 
             // TODO[tls13] Do something more than just ignore them
 
-    //        struct {
-    //            uint32 ticket_lifetime;
-    //            uint32 ticket_age_add;
-    //            opaque ticket_nonce<0..255>;
-    //            opaque ticket<1..2^16-1>;
-    //            Extension extensions<0..2^16-2>;
-    //        } NewSessionTicket;
+            //        struct {
+            //            uint32 ticket_lifetime;
+            //            uint32 ticket_age_add;
+            //            opaque ticket_nonce<0..255>;
+            //            opaque ticket<1..2^16-1>;
+            //            Extension extensions<0..2^16-2>;
+            //        } NewSessionTicket;
 
             TlsUtilities.ReadUint32(buf);
             TlsUtilities.ReadUint32(buf);

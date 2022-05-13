@@ -21,16 +21,16 @@ namespace Org.BouncyCastle.Pkcs
     {
         public const string IgnoreUselessPasswordProperty = "Org.BouncyCastle.Pkcs12.IgnoreUselessPassword";
 
-        private readonly IgnoresCaseHashtable   keys = new IgnoresCaseHashtable();
-        private readonly IDictionary            localIds = Platform.CreateHashtable();
-        private readonly IgnoresCaseHashtable   certs = new IgnoresCaseHashtable();
-        private readonly IDictionary            chainCerts = Platform.CreateHashtable();
-        private readonly IDictionary            keyCerts = Platform.CreateHashtable();
-        private readonly DerObjectIdentifier    keyAlgorithm;
-        private readonly DerObjectIdentifier    keyPrfAlgorithm;
-        private readonly DerObjectIdentifier    certAlgorithm;
-        private readonly DerObjectIdentifier    certPrfAlgorithm;
-        private readonly bool                   useDerEncoding;
+        private readonly IgnoresCaseHashtable keys = new IgnoresCaseHashtable();
+        private readonly IDictionary localIds = Platform.CreateHashtable();
+        private readonly IgnoresCaseHashtable certs = new IgnoresCaseHashtable();
+        private readonly IDictionary chainCerts = Platform.CreateHashtable();
+        private readonly IDictionary keyCerts = Platform.CreateHashtable();
+        private readonly DerObjectIdentifier keyAlgorithm;
+        private readonly DerObjectIdentifier keyPrfAlgorithm;
+        private readonly DerObjectIdentifier certAlgorithm;
+        private readonly DerObjectIdentifier certPrfAlgorithm;
+        private readonly bool useDerEncoding;
 
         private AsymmetricKeyEntry unmarkedKeyEntry = null;
 
@@ -88,7 +88,7 @@ namespace Org.BouncyCastle.Pkcs
         internal Pkcs12Store(
             DerObjectIdentifier keyAlgorithm,
             DerObjectIdentifier certAlgorithm,
-            bool                useDerEncoding)
+            bool useDerEncoding)
         {
             this.keyAlgorithm = keyAlgorithm;
             this.keyPrfAlgorithm = null;
@@ -120,10 +120,10 @@ namespace Org.BouncyCastle.Pkcs
         }
 
         // TODO Consider making obsolete
-//      [Obsolete("Use 'Pkcs12StoreBuilder' and 'Load' method instead")]
+        //      [Obsolete("Use 'Pkcs12StoreBuilder' and 'Load' method instead")]
         public Pkcs12Store(
-            Stream  input,
-            char[]  password)
+            Stream input,
+            char[] password)
             : this()
         {
             Load(input, password);
@@ -212,8 +212,8 @@ namespace Org.BouncyCastle.Pkcs
         }
 
         public void Load(
-            Stream  input,
-            char[]  password)
+            Stream input,
+            char[] password)
         {
             if (input == null)
                 throw new ArgumentNullException("input");
@@ -498,7 +498,7 @@ namespace Org.BouncyCastle.Pkcs
             if (alias == null)
                 throw new ArgumentNullException("alias");
 
-            X509CertificateEntry c = (X509CertificateEntry) certs[alias];
+            X509CertificateEntry c = (X509CertificateEntry)certs[alias];
 
             //
             // look up the key table - and try the local key id
@@ -527,19 +527,19 @@ namespace Org.BouncyCastle.Pkcs
 
             foreach (DictionaryEntry entry in certs)
             {
-                X509CertificateEntry entryValue = (X509CertificateEntry) entry.Value;
+                X509CertificateEntry entryValue = (X509CertificateEntry)entry.Value;
                 if (entryValue.Certificate.Equals(cert))
                 {
-                    return (string) entry.Key;
+                    return (string)entry.Key;
                 }
             }
 
             foreach (DictionaryEntry entry in keyCerts)
             {
-                X509CertificateEntry entryValue = (X509CertificateEntry) entry.Value;
+                X509CertificateEntry entryValue = (X509CertificateEntry)entry.Value;
                 if (entryValue.Certificate.Equals(cert))
                 {
-                    return (string) entry.Key;
+                    return (string)entry.Key;
                 }
             }
 
@@ -592,7 +592,7 @@ namespace Org.BouncyCastle.Pkcs
                         {
                             foreach (CertId certId in chainCerts.Keys)
                             {
-                                X509CertificateEntry x509CertEntry = (X509CertificateEntry) chainCerts[certId];
+                                X509CertificateEntry x509CertEntry = (X509CertificateEntry)chainCerts[certId];
 
                                 X509Certificate crt = x509CertEntry.Certificate;
 
@@ -638,8 +638,8 @@ namespace Org.BouncyCastle.Pkcs
         }
 
         public void SetCertificateEntry(
-            string                  alias,
-            X509CertificateEntry    certEntry)
+            string alias,
+            X509CertificateEntry certEntry)
         {
             if (alias == null)
                 throw new ArgumentNullException("alias");
@@ -653,9 +653,9 @@ namespace Org.BouncyCastle.Pkcs
         }
 
         public void SetKeyEntry(
-            string                  alias,
-            AsymmetricKeyEntry      keyEntry,
-            X509CertificateEntry[]  chain)
+            string alias,
+            AsymmetricKeyEntry keyEntry,
+            X509CertificateEntry[] chain)
         {
             if (alias == null)
                 throw new ArgumentNullException("alias");
@@ -720,8 +720,8 @@ namespace Org.BouncyCastle.Pkcs
         }
 
         public bool IsEntryOfType(
-            string  alias,
-            Type    entryType)
+            string alias,
+            Type entryType)
         {
             if (entryType == typeof(X509CertificateEntry))
                 return IsCertificateEntry(alias);
@@ -745,9 +745,9 @@ namespace Org.BouncyCastle.Pkcs
         }
 
         public void Save(
-            Stream          stream,
-            char[]          password,
-            SecureRandom    random)
+            Stream stream,
+            char[] password,
+            SecureRandom random)
         {
             if (stream == null)
                 throw new ArgumentNullException("stream");
@@ -845,9 +845,9 @@ namespace Org.BouncyCastle.Pkcs
             random.NextBytes(cSalt);
 
             Asn1EncodableVector certBags = new Asn1EncodableVector();
-            Pkcs12PbeParams     cParams = new Pkcs12PbeParams(cSalt, MinIterations);
+            Pkcs12PbeParams cParams = new Pkcs12PbeParams(cSalt, MinIterations);
             AlgorithmIdentifier cAlgId = new AlgorithmIdentifier(certAlgorithm, cParams.ToAsn1Object());
-            ISet                doneCerts = new HashSet();
+            ISet doneCerts = new HashSet();
 
             foreach (string name in keys.Keys)
             {
@@ -999,7 +999,7 @@ namespace Org.BouncyCastle.Pkcs
                 certsInfo = new ContentInfo(PkcsObjectIdentifiers.EncryptedData, cInfo.ToAsn1Object());
             }
 
-            ContentInfo[] info = new ContentInfo[]{ keysInfo, certsInfo };
+            ContentInfo[] info = new ContentInfo[] { keysInfo, certsInfo };
 
             byte[] data = new AuthenticatedSafe(info).GetEncoded(
                 useDerEncoding ? Asn1Encodable.Der : Asn1Encodable.Ber);
@@ -1035,28 +1035,28 @@ namespace Org.BouncyCastle.Pkcs
 
         internal static byte[] CalculatePbeMac(
             DerObjectIdentifier oid,
-            byte[]              salt,
-            int                 itCount,
-            char[]              password,
-            bool                wrongPkcs12Zero,
-            byte[]              data)
+            byte[] salt,
+            int itCount,
+            char[] password,
+            bool wrongPkcs12Zero,
+            byte[] data)
         {
             Asn1Encodable asn1Params = PbeUtilities.GenerateAlgorithmParameters(
                 oid, salt, itCount);
             ICipherParameters cipherParams = PbeUtilities.GenerateCipherParameters(
                 oid, password, wrongPkcs12Zero, asn1Params);
 
-            IMac mac = (IMac) PbeUtilities.CreateEngine(oid);
+            IMac mac = (IMac)PbeUtilities.CreateEngine(oid);
             mac.Init(cipherParams);
             return MacUtilities.DoFinal(mac, data);
         }
 
         private static byte[] CryptPbeData(
-            bool                forEncryption,
+            bool forEncryption,
             AlgorithmIdentifier algId,
-            char[]              password,
-            bool                wrongPkcs12Zero,
-            byte[]              data)
+            char[] password,
+            bool wrongPkcs12Zero,
+            byte[] data)
         {
             IBufferedCipher cipher = PbeUtilities.CreateEngine(algId) as IBufferedCipher;
 

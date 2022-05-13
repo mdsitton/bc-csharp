@@ -9,59 +9,59 @@ namespace Org.BouncyCastle.Asn1.X9
     public class OtherInfo
         : Asn1Encodable
     {
-        private KeySpecificInfo	keyInfo;
-        private Asn1OctetString	partyAInfo;
-        private Asn1OctetString	suppPubInfo;
+        private KeySpecificInfo keyInfo;
+        private Asn1OctetString partyAInfo;
+        private Asn1OctetString suppPubInfo;
 
-		public OtherInfo(
-            KeySpecificInfo	keyInfo,
-            Asn1OctetString	partyAInfo,
-            Asn1OctetString	suppPubInfo)
+        public OtherInfo(
+            KeySpecificInfo keyInfo,
+            Asn1OctetString partyAInfo,
+            Asn1OctetString suppPubInfo)
         {
             this.keyInfo = keyInfo;
             this.partyAInfo = partyAInfo;
             this.suppPubInfo = suppPubInfo;
         }
 
-		public OtherInfo(
+        public OtherInfo(
             Asn1Sequence seq)
         {
             IEnumerator e = seq.GetEnumerator();
 
-			e.MoveNext();
-            keyInfo = new KeySpecificInfo((Asn1Sequence) e.Current);
+            e.MoveNext();
+            keyInfo = new KeySpecificInfo((Asn1Sequence)e.Current);
 
-			while (e.MoveNext())
+            while (e.MoveNext())
             {
-                DerTaggedObject o = (DerTaggedObject) e.Current;
+                DerTaggedObject o = (DerTaggedObject)e.Current;
 
-				if (o.TagNo == 0)
+                if (o.TagNo == 0)
                 {
-                    partyAInfo = (Asn1OctetString) o.GetObject();
+                    partyAInfo = (Asn1OctetString)o.GetObject();
                 }
-                else if ((int) o.TagNo == 2)
+                else if ((int)o.TagNo == 2)
                 {
-                    suppPubInfo = (Asn1OctetString) o.GetObject();
+                    suppPubInfo = (Asn1OctetString)o.GetObject();
                 }
             }
         }
 
-		public KeySpecificInfo KeyInfo
+        public KeySpecificInfo KeyInfo
         {
-			get { return keyInfo; }
+            get { return keyInfo; }
         }
 
-		public Asn1OctetString PartyAInfo
+        public Asn1OctetString PartyAInfo
         {
-			get { return partyAInfo; }
+            get { return partyAInfo; }
         }
 
-		public Asn1OctetString SuppPubInfo
+        public Asn1OctetString SuppPubInfo
         {
             get { return suppPubInfo; }
         }
 
-		/**
+        /**
          * Produce an object suitable for an Asn1OutputStream.
          * <pre>
          *  OtherInfo ::= Sequence {

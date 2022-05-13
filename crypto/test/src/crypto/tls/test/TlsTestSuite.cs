@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 
 using NUnit.Framework;
@@ -8,7 +8,7 @@ namespace Org.BouncyCastle.Crypto.Tls.Tests
     public class TlsTestSuite
     {
         // Make the access to constants less verbose 
-        internal class C : TlsTestConfig {}
+        internal class C : TlsTestConfig { }
 
         public TlsTestSuite()
         {

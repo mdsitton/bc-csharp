@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.IO;
 
@@ -75,7 +75,7 @@ namespace Org.BouncyCastle.Tls.Crypto.Tests
             SignatureAndHashAlgorithm signatureAndHashAlgorithm)
         {
             return TlsTestUtilities.LoadSignerCredentials(cryptoParams, m_crypto,
-                new string[]{ "x509-server-" + resource + ".pem" }, "x509-server-key-" + resource + ".pem",
+                new string[] { "x509-server-" + resource + ".pem" }, "x509-server-key-" + resource + ".pem",
                 signatureAndHashAlgorithm);
         }
 
@@ -84,14 +84,14 @@ namespace Org.BouncyCastle.Tls.Crypto.Tests
         {
             switch (signatureAlgorithm)
             {
-            case SignatureAlgorithm.dsa:
-                return LoadCredentialedSigner(cryptoParams, "dsa", null);
-            case SignatureAlgorithm.ecdsa:
-                return LoadCredentialedSigner(cryptoParams, "ecdsa", null);
-            case SignatureAlgorithm.rsa:
-                return LoadCredentialedSigner(cryptoParams, "rsa-sign", null);
-            default:
-                return null;
+                case SignatureAlgorithm.dsa:
+                    return LoadCredentialedSigner(cryptoParams, "dsa", null);
+                case SignatureAlgorithm.ecdsa:
+                    return LoadCredentialedSigner(cryptoParams, "ecdsa", null);
+                case SignatureAlgorithm.rsa:
+                    return LoadCredentialedSigner(cryptoParams, "rsa-sign", null);
+                default:
+                    return null;
             }
         }
 
@@ -100,32 +100,32 @@ namespace Org.BouncyCastle.Tls.Crypto.Tests
         {
             switch (signatureAndHashAlgorithm.Signature)
             {
-            case SignatureAlgorithm.dsa:
-                return LoadCredentialedSigner(cryptoParams, "dsa", signatureAndHashAlgorithm);
-            case SignatureAlgorithm.ecdsa:
-                return LoadCredentialedSigner(cryptoParams, "ecdsa", signatureAndHashAlgorithm);
-            case SignatureAlgorithm.ed25519:
-                return LoadCredentialedSigner(cryptoParams, "ed25519", signatureAndHashAlgorithm);
-            case SignatureAlgorithm.ed448:
-                return LoadCredentialedSigner(cryptoParams, "ed448", signatureAndHashAlgorithm);
-            case SignatureAlgorithm.rsa_pss_pss_sha256:
-                return LoadCredentialedSigner(cryptoParams, "rsa_pss_256", signatureAndHashAlgorithm);
-            case SignatureAlgorithm.rsa_pss_pss_sha384:
-                return LoadCredentialedSigner(cryptoParams, "rsa_pss_384", signatureAndHashAlgorithm);
-            case SignatureAlgorithm.rsa_pss_pss_sha512:
-                return LoadCredentialedSigner(cryptoParams, "rsa_pss_512", signatureAndHashAlgorithm);
-            case SignatureAlgorithm.rsa:
-            case SignatureAlgorithm.rsa_pss_rsae_sha256:
-            case SignatureAlgorithm.rsa_pss_rsae_sha384:
-            case SignatureAlgorithm.rsa_pss_rsae_sha512:
-                return LoadCredentialedSigner(cryptoParams, "rsa-sign", signatureAndHashAlgorithm);
+                case SignatureAlgorithm.dsa:
+                    return LoadCredentialedSigner(cryptoParams, "dsa", signatureAndHashAlgorithm);
+                case SignatureAlgorithm.ecdsa:
+                    return LoadCredentialedSigner(cryptoParams, "ecdsa", signatureAndHashAlgorithm);
+                case SignatureAlgorithm.ed25519:
+                    return LoadCredentialedSigner(cryptoParams, "ed25519", signatureAndHashAlgorithm);
+                case SignatureAlgorithm.ed448:
+                    return LoadCredentialedSigner(cryptoParams, "ed448", signatureAndHashAlgorithm);
+                case SignatureAlgorithm.rsa_pss_pss_sha256:
+                    return LoadCredentialedSigner(cryptoParams, "rsa_pss_256", signatureAndHashAlgorithm);
+                case SignatureAlgorithm.rsa_pss_pss_sha384:
+                    return LoadCredentialedSigner(cryptoParams, "rsa_pss_384", signatureAndHashAlgorithm);
+                case SignatureAlgorithm.rsa_pss_pss_sha512:
+                    return LoadCredentialedSigner(cryptoParams, "rsa_pss_512", signatureAndHashAlgorithm);
+                case SignatureAlgorithm.rsa:
+                case SignatureAlgorithm.rsa_pss_rsae_sha256:
+                case SignatureAlgorithm.rsa_pss_rsae_sha384:
+                case SignatureAlgorithm.rsa_pss_rsae_sha512:
+                    return LoadCredentialedSigner(cryptoParams, "rsa-sign", signatureAndHashAlgorithm);
 
-            // TODO[draft-smyshlyaev-tls12-gost-suites-10] Add test resources for these
-            case SignatureAlgorithm.gostr34102012_256:
-            case SignatureAlgorithm.gostr34102012_512:
+                // TODO[draft-smyshlyaev-tls12-gost-suites-10] Add test resources for these
+                case SignatureAlgorithm.gostr34102012_256:
+                case SignatureAlgorithm.gostr34102012_512:
 
-            default:
-                return null;
+                default:
+                    return null;
             }
         }
 
@@ -136,33 +136,33 @@ namespace Org.BouncyCastle.Tls.Crypto.Tests
 
             switch (signatureScheme)
             {
-            case SignatureScheme.ecdsa_secp256r1_sha256:
-                return LoadCredentialedSigner(cryptoParams, "ecdsa", signatureAndHashAlgorithm);
-            case SignatureScheme.ed25519:
-                return LoadCredentialedSigner(cryptoParams, "ed25519", signatureAndHashAlgorithm);
-            case SignatureScheme.ed448:
-                return LoadCredentialedSigner(cryptoParams, "ed448", signatureAndHashAlgorithm);
-            case SignatureScheme.rsa_pss_pss_sha256:
-                return LoadCredentialedSigner(cryptoParams, "rsa_pss_256", signatureAndHashAlgorithm);
-            case SignatureScheme.rsa_pss_pss_sha384:
-                return LoadCredentialedSigner(cryptoParams, "rsa_pss_384", signatureAndHashAlgorithm);
-            case SignatureScheme.rsa_pss_pss_sha512:
-                return LoadCredentialedSigner(cryptoParams, "rsa_pss_512", signatureAndHashAlgorithm);
-            case SignatureScheme.rsa_pss_rsae_sha256:
-            case SignatureScheme.rsa_pss_rsae_sha384:
-            case SignatureScheme.rsa_pss_rsae_sha512:
-                return LoadCredentialedSigner(cryptoParams, "rsa-sign", signatureAndHashAlgorithm);
+                case SignatureScheme.ecdsa_secp256r1_sha256:
+                    return LoadCredentialedSigner(cryptoParams, "ecdsa", signatureAndHashAlgorithm);
+                case SignatureScheme.ed25519:
+                    return LoadCredentialedSigner(cryptoParams, "ed25519", signatureAndHashAlgorithm);
+                case SignatureScheme.ed448:
+                    return LoadCredentialedSigner(cryptoParams, "ed448", signatureAndHashAlgorithm);
+                case SignatureScheme.rsa_pss_pss_sha256:
+                    return LoadCredentialedSigner(cryptoParams, "rsa_pss_256", signatureAndHashAlgorithm);
+                case SignatureScheme.rsa_pss_pss_sha384:
+                    return LoadCredentialedSigner(cryptoParams, "rsa_pss_384", signatureAndHashAlgorithm);
+                case SignatureScheme.rsa_pss_pss_sha512:
+                    return LoadCredentialedSigner(cryptoParams, "rsa_pss_512", signatureAndHashAlgorithm);
+                case SignatureScheme.rsa_pss_rsae_sha256:
+                case SignatureScheme.rsa_pss_rsae_sha384:
+                case SignatureScheme.rsa_pss_rsae_sha512:
+                    return LoadCredentialedSigner(cryptoParams, "rsa-sign", signatureAndHashAlgorithm);
 
-            // TODO[tls] Add test resources for these
-            case SignatureScheme.ecdsa_brainpoolP256r1tls13_sha256:
-            case SignatureScheme.ecdsa_brainpoolP384r1tls13_sha384:
-            case SignatureScheme.ecdsa_brainpoolP512r1tls13_sha512:
-            case SignatureScheme.ecdsa_secp384r1_sha384:
-            case SignatureScheme.ecdsa_secp521r1_sha512:
-            case SignatureScheme.sm2sig_sm3:
+                // TODO[tls] Add test resources for these
+                case SignatureScheme.ecdsa_brainpoolP256r1tls13_sha256:
+                case SignatureScheme.ecdsa_brainpoolP384r1tls13_sha384:
+                case SignatureScheme.ecdsa_brainpoolP512r1tls13_sha512:
+                case SignatureScheme.ecdsa_secp384r1_sha384:
+                case SignatureScheme.ecdsa_secp521r1_sha512:
+                case SignatureScheme.sm2sig_sm3:
 
-            default:
-                return null;
+                default:
+                    return null;
             }
         }
 

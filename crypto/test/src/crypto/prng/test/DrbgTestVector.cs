@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 
 using Org.BouncyCastle.Utilities.Encoders;
@@ -87,7 +87,7 @@ namespace Org.BouncyCastle.Crypto.Prng.Test
 
         public byte[] GetPersonalizationString()
         {
-             return _personalisation == null ? null : Hex.Decode(_personalisation);
+            return _personalisation == null ? null : Hex.Decode(_personalisation);
         }
 
         public int SecurityStrength

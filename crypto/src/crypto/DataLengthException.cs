@@ -8,12 +8,9 @@ namespace Org.BouncyCastle.Crypto
      * insufficient input. In general this exception will Get thrown rather
      * than an ArrayOutOfBounds exception.
      */
-#if !(NETCF_1_0 || NETCF_2_0 || SILVERLIGHT || PORTABLE)
     [Serializable]
-#endif
-    public class DataLengthException
-		: CryptoException
-	{
+    public class DataLengthException : CryptoException
+    {
         /**
         * base constructor.
 		*/
@@ -21,22 +18,17 @@ namespace Org.BouncyCastle.Crypto
         {
         }
 
-		/**
+        /**
          * create a DataLengthException with the given message.
          *
          * @param message the message to be carried with the exception.
          */
-        public DataLengthException(
-            string message)
-			: base(message)
-        {
-		}
-
-		public DataLengthException(
-            string		message,
-            Exception	exception)
-			: base(message, exception)
+        public DataLengthException(string message) : base(message)
         {
         }
-	}
+
+        public DataLengthException(string message, Exception exception) : base(message, exception)
+        {
+        }
+    }
 }

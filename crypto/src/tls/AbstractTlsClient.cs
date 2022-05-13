@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.IO;
 
@@ -29,26 +29,26 @@ namespace Org.BouncyCastle.Tls
         {
             switch (extensionType)
             {
-            case ExtensionType.supported_groups:
-                /*
-                 * Exception added based on field reports that some servers do send this, although the
-                 * Supported Elliptic Curves Extension is clearly intended to be client-only. If
-                 * present, we still require that it is a valid EllipticCurveList.
-                 */
-                TlsExtensionsUtilities.ReadSupportedGroupsExtension(extensionData);
-                return true;
+                case ExtensionType.supported_groups:
+                    /*
+                     * Exception added based on field reports that some servers do send this, although the
+                     * Supported Elliptic Curves Extension is clearly intended to be client-only. If
+                     * present, we still require that it is a valid EllipticCurveList.
+                     */
+                    TlsExtensionsUtilities.ReadSupportedGroupsExtension(extensionData);
+                    return true;
 
-            case ExtensionType.ec_point_formats:
-                /*
-                 * Exception added based on field reports that some servers send this even when they
-                 * didn't negotiate an ECC cipher suite. If present, we still require that it is a valid
-                 * ECPointFormatList.
-                 */
-                TlsExtensionsUtilities.ReadSupportedPointFormatsExtension(extensionData);
-                return true;
+                case ExtensionType.ec_point_formats:
+                    /*
+                     * Exception added based on field reports that some servers send this even when they
+                     * didn't negotiate an ECC cipher suite. If present, we still require that it is a valid
+                     * ECPointFormatList.
+                     */
+                    TlsExtensionsUtilities.ReadSupportedPointFormatsExtension(extensionData);
+                    return true;
 
-            default:
-                return false;
+                default:
+                    return false;
             }
         }
 
@@ -138,20 +138,20 @@ namespace Org.BouncyCastle.Tls
             if (namedGroupRoles.Contains(NamedGroupRole.ecdh))
             {
                 TlsUtilities.AddIfSupported(supportedGroups, crypto,
-                    new int[]{ NamedGroup.x25519, NamedGroup.x448 });
+                    new int[] { NamedGroup.x25519, NamedGroup.x448 });
             }
 
             if (namedGroupRoles.Contains(NamedGroupRole.ecdh) ||
                 namedGroupRoles.Contains(NamedGroupRole.ecdsa))
             {
                 TlsUtilities.AddIfSupported(supportedGroups, crypto,
-                    new int[]{ NamedGroup.secp256r1, NamedGroup.secp384r1 });
+                    new int[] { NamedGroup.secp256r1, NamedGroup.secp384r1 });
             }
 
             if (namedGroupRoles.Contains(NamedGroupRole.dh))
             {
                 TlsUtilities.AddIfSupported(supportedGroups, crypto,
-                    new int[]{ NamedGroup.ffdhe2048, NamedGroup.ffdhe3072, NamedGroup.ffdhe4096 });
+                    new int[] { NamedGroup.ffdhe2048, NamedGroup.ffdhe3072, NamedGroup.ffdhe4096 });
             }
 
             return supportedGroups;
@@ -328,7 +328,7 @@ namespace Org.BouncyCastle.Tls
                     namedGroupRoles.Contains(NamedGroupRole.ecdsa))
                 {
                     TlsExtensionsUtilities.AddSupportedPointFormatsExtension(clientExtensions,
-                        new short[]{ ECPointFormat.uncompressed });
+                        new short[] { ECPointFormat.uncompressed });
                 }
             }
 

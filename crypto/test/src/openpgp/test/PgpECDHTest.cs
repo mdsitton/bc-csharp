@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.IO;
 using System.Text;
@@ -115,23 +115,23 @@ namespace Org.BouncyCastle.Bcpg.OpenPgp.Tests
 
             PgpSecretKey secretKey = secretKeyRing.GetSecretKey(); // secretKeyRing.GetSecretKey(encP.KeyId);
 
-    //        PgpPrivateKey pgpPrivKey = secretKey.extractPrivateKey(new JcePBESecretKeyEncryptorBuilder());
+            //        PgpPrivateKey pgpPrivKey = secretKey.extractPrivateKey(new JcePBESecretKeyEncryptorBuilder());
 
-    //        clear = encP.getDataStream(pgpPrivKey, "BC");
-    //
-    //        bOut.reset();
-    //
-    //        while ((ch = clear.read()) >= 0)
-    //        {
-    //            bOut.write(ch);
-    //        }
-    //
-    //        out = bOut.toByteArray();
-    //
-    //        if (!AreEqual(out, text))
-    //        {
-    //            fail("wrong plain text in Generated packet");
-    //        }
+            //        clear = encP.getDataStream(pgpPrivKey, "BC");
+            //
+            //        bOut.reset();
+            //
+            //        while ((ch = clear.read()) >= 0)
+            //        {
+            //            bOut.write(ch);
+            //        }
+            //
+            //        out = bOut.toByteArray();
+            //
+            //        if (!AreEqual(out, text))
+            //        {
+            //            fail("wrong plain text in Generated packet");
+            //        }
         }
 
         private void EncryptDecryptTest()

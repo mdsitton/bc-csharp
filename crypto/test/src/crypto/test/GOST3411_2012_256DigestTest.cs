@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 
 using NUnit.Framework;
@@ -67,7 +67,7 @@ namespace Org.BouncyCastle.Crypto.Tests
 
         public override void PerformTest()
         {
-			base.PerformTest();
+            base.PerformTest();
 
             HMac gMac = new HMac(new Gost3411_2012_256Digest());
 
@@ -78,24 +78,24 @@ namespace Org.BouncyCastle.Crypto.Tests
             gMac.BlockUpdate(data, 0, data.Length);
             byte[] mac = new byte[gMac.GetMacSize()];
 
-			gMac.DoFinal(mac, 0);
+            gMac.DoFinal(mac, 0);
 
-			if (!Arrays.AreEqual(Hex.Decode("a1aa5f7de402d7b3d323f2991c8d4534013137010a83754fd0af6d7cd4922ed9"), mac))
-			{
-				Fail("mac calculation failed.");
-			}
+            if (!Arrays.AreEqual(Hex.Decode("a1aa5f7de402d7b3d323f2991c8d4534013137010a83754fd0af6d7cd4922ed9"), mac))
+            {
+                Fail("mac calculation failed.");
+            }
         }
 
         protected override IDigest CloneDigest(IDigest digest)
         {
-			return new Gost3411_2012_256Digest((Gost3411_2012_256Digest)digest);
+            return new Gost3411_2012_256Digest((Gost3411_2012_256Digest)digest);
         }
 
         [Test]
         public void GOST3422_2012_256_TestFunction()
         {
             string resultText = Perform().ToString();
-  
+
             Assert.AreEqual(Name + ": Okay", resultText);
         }
     }

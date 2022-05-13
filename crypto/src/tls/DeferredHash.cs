@@ -55,18 +55,18 @@ namespace Org.BouncyCastle.Tls
 
             switch (securityParameters.PrfAlgorithm)
             {
-            case PrfAlgorithm.ssl_prf_legacy:
-            case PrfAlgorithm.tls_prf_legacy:
-            {
-                CheckTrackingHash(CryptoHashAlgorithm.md5);
-                CheckTrackingHash(CryptoHashAlgorithm.sha1);
-                break;
-            }
-            default:
-            {
-                CheckTrackingHash(securityParameters.PrfCryptoHashAlgorithm);
-                break;
-            }
+                case PrfAlgorithm.ssl_prf_legacy:
+                case PrfAlgorithm.tls_prf_legacy:
+                    {
+                        CheckTrackingHash(CryptoHashAlgorithm.md5);
+                        CheckTrackingHash(CryptoHashAlgorithm.sha1);
+                        break;
+                    }
+                default:
+                    {
+                        CheckTrackingHash(securityParameters.PrfCryptoHashAlgorithm);
+                        break;
+                    }
             }
         }
 
@@ -94,18 +94,18 @@ namespace Org.BouncyCastle.Tls
             IDictionary newHashes = Platform.CreateHashtable();
             switch (securityParameters.PrfAlgorithm)
             {
-            case PrfAlgorithm.ssl_prf_legacy:
-            case PrfAlgorithm.tls_prf_legacy:
-            {
-                CloneHash(newHashes, CryptoHashAlgorithm.md5);
-                CloneHash(newHashes, CryptoHashAlgorithm.sha1);
-                break;
-            }
-            default:
-            {
-                CloneHash(newHashes, securityParameters.PrfCryptoHashAlgorithm);
-                break;
-            }
+                case PrfAlgorithm.ssl_prf_legacy:
+                case PrfAlgorithm.tls_prf_legacy:
+                    {
+                        CloneHash(newHashes, CryptoHashAlgorithm.md5);
+                        CloneHash(newHashes, CryptoHashAlgorithm.sha1);
+                        break;
+                    }
+                default:
+                    {
+                        CloneHash(newHashes, securityParameters.PrfCryptoHashAlgorithm);
+                        break;
+                    }
             }
 
             this.m_buf = null;
@@ -123,19 +123,19 @@ namespace Org.BouncyCastle.Tls
             TlsHash prfHash;
             switch (securityParameters.PrfAlgorithm)
             {
-            case PrfAlgorithm.ssl_prf_legacy:
-            case PrfAlgorithm.tls_prf_legacy:
-            {
-                TlsHash md5Hash = CloneHash(CryptoHashAlgorithm.md5);
-                TlsHash sha1Hash = CloneHash(CryptoHashAlgorithm.sha1);
-                prfHash = new CombinedHash(m_context, md5Hash, sha1Hash);
-                break;
-            }
-            default:
-            {
-                prfHash = CloneHash(securityParameters.PrfCryptoHashAlgorithm);
-                break;
-            }
+                case PrfAlgorithm.ssl_prf_legacy:
+                case PrfAlgorithm.tls_prf_legacy:
+                    {
+                        TlsHash md5Hash = CloneHash(CryptoHashAlgorithm.md5);
+                        TlsHash sha1Hash = CloneHash(CryptoHashAlgorithm.sha1);
+                        prfHash = new CombinedHash(m_context, md5Hash, sha1Hash);
+                        break;
+                    }
+                default:
+                    {
+                        prfHash = CloneHash(securityParameters.PrfCryptoHashAlgorithm);
+                        break;
+                    }
             }
 
             if (m_buf != null)

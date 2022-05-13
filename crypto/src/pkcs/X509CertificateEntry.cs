@@ -6,55 +6,38 @@ using Org.BouncyCastle.X509;
 
 namespace Org.BouncyCastle.Pkcs
 {
-    public class X509CertificateEntry
-        : Pkcs12Entry
+    public class X509CertificateEntry : Pkcs12Entry
     {
         private readonly X509Certificate cert;
 
-		public X509CertificateEntry(
-            X509Certificate cert)
-			: base(Platform.CreateHashtable())
+        public X509CertificateEntry(X509Certificate cert) : base(Platform.CreateHashtable())
         {
             this.cert = cert;
         }
 
-#if !(SILVERLIGHT || PORTABLE)
-        [Obsolete]
-        public X509CertificateEntry(
-            X509Certificate	cert,
-            Hashtable		attributes)
-			: base(attributes)
-        {
-            this.cert = cert;
-        }
-#endif
-
-        public X509CertificateEntry(
-            X509Certificate cert,
-            IDictionary     attributes)
-			: base(attributes)
+        public X509CertificateEntry(X509Certificate cert, IDictionary attributes) : base(attributes)
         {
             this.cert = cert;
         }
 
-		public X509Certificate Certificate
+        public X509Certificate Certificate
         {
-			get { return this.cert; }
+            get { return this.cert; }
         }
 
-		public override bool Equals(object obj)
-		{
-			X509CertificateEntry other = obj as X509CertificateEntry;
+        public override bool Equals(object obj)
+        {
+            X509CertificateEntry other = obj as X509CertificateEntry;
 
-			if (other == null)
-				return false;
+            if (other == null)
+                return false;
 
-			return cert.Equals(other.cert);
-		}
+            return cert.Equals(other.cert);
+        }
 
-		public override int GetHashCode()
-		{
-			return ~cert.GetHashCode();
-		}
-	}
+        public override int GetHashCode()
+        {
+            return ~cert.GetHashCode();
+        }
+    }
 }

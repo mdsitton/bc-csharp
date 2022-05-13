@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.IO;
 
@@ -10,7 +10,7 @@ using Org.BouncyCastle.Utilities;
 namespace Org.BouncyCastle.Crypto.Tls.Tests
 {
     internal class MockSrpTlsServer
-        :   SrpTlsServer
+        : SrpTlsServer
     {
         internal static readonly Srp6GroupParameters TEST_GROUP = Srp6StandardGroups.rfc5054_1024;
         internal static readonly byte[] TEST_IDENTITY = Strings.ToUtf8ByteArray("client");
@@ -19,7 +19,7 @@ namespace Org.BouncyCastle.Crypto.Tls.Tests
         internal static readonly byte[] TEST_SEED_KEY = Strings.ToUtf8ByteArray("seed_key");
 
         internal MockSrpTlsServer()
-            :   base(new MyIdentityManager())
+            : base(new MyIdentityManager())
         {
         }
 
@@ -91,7 +91,7 @@ namespace Org.BouncyCastle.Crypto.Tls.Tests
         }
 
         internal class MyIdentityManager
-            :   TlsSrpIdentityManager
+            : TlsSrpIdentityManager
         {
             protected SimulatedTlsSrpIdentityManager unknownIdentityManager = SimulatedTlsSrpIdentityManager.GetRfc5054Default(
                 TEST_GROUP, TEST_SEED_KEY);

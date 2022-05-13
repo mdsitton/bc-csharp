@@ -26,7 +26,7 @@ namespace Org.BouncyCastle.Cms
         : RecipientInformation
     {
         private KeyAgreeRecipientInfo info;
-        private Asn1OctetString       encryptedKey;
+        private Asn1OctetString encryptedKey;
 
         internal static void ReadRecipientInfo(IList infos, KeyAgreeRecipientInfo info,
             CmsSecureReadable secureReadable)
@@ -67,10 +67,10 @@ namespace Org.BouncyCastle.Cms
         }
 
         internal KeyAgreeRecipientInformation(
-            KeyAgreeRecipientInfo	info,
-            RecipientID				rid,
-            Asn1OctetString			encryptedKey,
-            CmsSecureReadable		secureReadable)
+            KeyAgreeRecipientInfo info,
+            RecipientID rid,
+            Asn1OctetString encryptedKey,
+            CmsSecureReadable secureReadable)
             : base(info.KeyEncryptionAlgorithm, secureReadable)
         {
             this.info = info;
@@ -79,17 +79,17 @@ namespace Org.BouncyCastle.Cms
         }
 
         private AsymmetricKeyParameter GetSenderPublicKey(
-            AsymmetricKeyParameter		receiverPrivateKey,
-            OriginatorIdentifierOrKey	originator)
+            AsymmetricKeyParameter receiverPrivateKey,
+            OriginatorIdentifierOrKey originator)
         {
             OriginatorPublicKey opk = originator.OriginatorPublicKey;
             if (opk != null)
             {
                 return GetPublicKeyFromOriginatorPublicKey(receiverPrivateKey, opk);
             }
-            
+
             OriginatorID origID = new OriginatorID();
-            
+
             Asn1.Cms.IssuerAndSerialNumber iAndSN = originator.IssuerAndSerialNumber;
             if (iAndSN != null)
             {
@@ -107,8 +107,8 @@ namespace Org.BouncyCastle.Cms
         }
 
         private AsymmetricKeyParameter GetPublicKeyFromOriginatorPublicKey(
-            AsymmetricKeyParameter	receiverPrivateKey,
-            OriginatorPublicKey		originatorPublicKey)
+            AsymmetricKeyParameter receiverPrivateKey,
+            OriginatorPublicKey originatorPublicKey)
         {
             PrivateKeyInfo privInfo = PrivateKeyInfoFactory.CreatePrivateKeyInfo(receiverPrivateKey);
             SubjectPublicKeyInfo pubInfo = new SubjectPublicKeyInfo(
@@ -126,9 +126,9 @@ namespace Org.BouncyCastle.Cms
         }
 
         private KeyParameter CalculateAgreedWrapKey(
-            string					wrapAlg,
-            AsymmetricKeyParameter	senderPublicKey,
-            AsymmetricKeyParameter	receiverPrivateKey)
+            string wrapAlg,
+            AsymmetricKeyParameter senderPublicKey,
+            AsymmetricKeyParameter receiverPrivateKey)
         {
             DerObjectIdentifier agreeAlgID = keyEncAlg.Algorithm;
 
@@ -163,8 +163,8 @@ namespace Org.BouncyCastle.Cms
         }
 
         private KeyParameter UnwrapSessionKey(
-            string			wrapAlg,
-            KeyParameter	agreedKey)
+            string wrapAlg,
+            KeyParameter agreedKey)
         {
             byte[] encKeyOctets = encryptedKey.GetOctets();
 
@@ -213,7 +213,7 @@ namespace Org.BouncyCastle.Cms
             if (!(key is AsymmetricKeyParameter))
                 throw new ArgumentException("KeyAgreement requires asymmetric key", "key");
 
-            AsymmetricKeyParameter receiverPrivateKey = (AsymmetricKeyParameter) key;
+            AsymmetricKeyParameter receiverPrivateKey = (AsymmetricKeyParameter)key;
 
             if (!receiverPrivateKey.IsPrivate)
                 throw new ArgumentException("Expected private key", "key");

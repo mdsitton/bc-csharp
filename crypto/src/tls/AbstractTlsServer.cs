@@ -146,11 +146,11 @@ namespace Org.BouncyCastle.Tls
         protected virtual int SelectDHDefault(int minimumFiniteFieldBits)
         {
             return minimumFiniteFieldBits <= 2048 ? NamedGroup.ffdhe2048
-                :  minimumFiniteFieldBits <= 3072 ? NamedGroup.ffdhe3072
-                :  minimumFiniteFieldBits <= 4096 ? NamedGroup.ffdhe4096
-                :  minimumFiniteFieldBits <= 6144 ? NamedGroup.ffdhe6144
-                :  minimumFiniteFieldBits <= 8192 ? NamedGroup.ffdhe8192
-                :  -1;
+                : minimumFiniteFieldBits <= 3072 ? NamedGroup.ffdhe3072
+                : minimumFiniteFieldBits <= 4096 ? NamedGroup.ffdhe4096
+                : minimumFiniteFieldBits <= 6144 ? NamedGroup.ffdhe6144
+                : minimumFiniteFieldBits <= 8192 ? NamedGroup.ffdhe8192
+                : -1;
         }
 
         protected virtual int SelectECDH(int minimumCurveBits)
@@ -173,9 +173,9 @@ namespace Org.BouncyCastle.Tls
         protected virtual int SelectECDHDefault(int minimumCurveBits)
         {
             return minimumCurveBits <= 256 ? NamedGroup.secp256r1
-                :  minimumCurveBits <= 384 ? NamedGroup.secp384r1
-                :  minimumCurveBits <= 521 ? NamedGroup.secp521r1
-                :  -1;
+                : minimumCurveBits <= 384 ? NamedGroup.secp384r1
+                : minimumCurveBits <= 521 ? NamedGroup.secp521r1
+                : -1;
         }
 
         protected virtual ProtocolName SelectProtocolName()
@@ -456,7 +456,7 @@ namespace Org.BouncyCastle.Tls
                      * with others) to its ServerHello message, enumerating the point formats it can parse.
                      */
                     TlsExtensionsUtilities.AddSupportedPointFormatsExtension(m_serverExtensions,
-                        new short[]{ ECPointFormat.uncompressed });
+                        new short[] { ECPointFormat.uncompressed });
                 }
 
                 // TODO[tls13] See RFC 8446 4.4.2.1

@@ -268,7 +268,7 @@ namespace Org.BouncyCastle.Security
         }
 
         private static void AddKgAlgorithm(
-            string			canonicalName,
+            string canonicalName,
             params object[] aliases)
         {
             kgAlgorithms[Platform.ToUpperInvariant(canonicalName)] = canonicalName;
@@ -280,7 +280,7 @@ namespace Org.BouncyCastle.Security
         }
 
         private static void AddKpgAlgorithm(
-            string			canonicalName,
+            string canonicalName,
             params object[] aliases)
         {
             kpgAlgorithms[Platform.ToUpperInvariant(canonicalName)] = canonicalName;
@@ -292,8 +292,8 @@ namespace Org.BouncyCastle.Security
         }
 
         private static void AddHMacKeyGenerator(
-            string			algorithm,
-            params object[]	aliases)
+            string algorithm,
+            params object[] aliases)
         {
             string mainName = "HMAC" + algorithm;
 
@@ -311,7 +311,7 @@ namespace Org.BouncyCastle.Security
         internal static string GetCanonicalKeyGeneratorAlgorithm(
             string algorithm)
         {
-            return (string) kgAlgorithms[Platform.ToUpperInvariant(algorithm)];
+            return (string)kgAlgorithms[Platform.ToUpperInvariant(algorithm)];
         }
 
         // TODO Consider making this public

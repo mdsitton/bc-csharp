@@ -37,7 +37,7 @@ namespace Org.BouncyCastle.Crypto.Operators
         }
 
         public Asn1KeyWrapper(DerObjectIdentifier algorithm, Asn1Encodable parameters, X509Certificate cert)
-            :this(algorithm, parameters, cert.GetPublicKey())
+            : this(algorithm, parameters, cert.GetPublicKey())
         {
         }
 
@@ -158,7 +158,7 @@ namespace Org.BouncyCastle.Crypto.Operators
         private static readonly IDictionary providerMap = Platform.CreateHashtable();
 
         static KeyWrapperUtil()
-            
+
         {
             providerMap.Add("RSA/ECB/PKCS1PADDING", new RsaOaepWrapperProvider(OiwObjectIdentifiers.IdSha1));
             providerMap.Add("RSA/NONE/PKCS1PADDING", new RsaOaepWrapperProvider(OiwObjectIdentifiers.IdSha1));

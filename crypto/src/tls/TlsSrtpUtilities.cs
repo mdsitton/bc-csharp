@@ -6,7 +6,7 @@ namespace Org.BouncyCastle.Tls
 {
     /// <summary>RFC 5764 DTLS Extension to Establish Keys for SRTP.</summary>
     public abstract class TlsSrtpUtilities
-{
+    {
         /// <exception cref="IOException"/>
         public static void AddUseSrtpExtension(IDictionary extensions, UseSrtpData useSrtpData)
         {

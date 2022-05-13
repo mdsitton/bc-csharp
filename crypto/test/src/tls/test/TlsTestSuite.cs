@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 
 using NUnit.Framework;
@@ -24,7 +24,7 @@ namespace Org.BouncyCastle.Tls.Tests
         }
 
         // Make the access to constants less verbose 
-        internal abstract class C : TlsTestConfig {}
+        internal abstract class C : TlsTestConfig { }
 
         public TlsTestSuite()
         {
@@ -86,8 +86,8 @@ namespace Org.BouncyCastle.Tls.Tests
             bool isTlsV12Exactly = isTlsV12 && !isTlsV13;
 
             short certReqDeclinedAlert = TlsUtilities.IsTlsV13(version)
-                ?   AlertDescription.certificate_required
-                :   AlertDescription.handshake_failure;
+                ? AlertDescription.certificate_required
+                : AlertDescription.handshake_failure;
 
             {
                 TlsTestConfig c = CreateTlsTestConfig(version, clientCrypto, serverCrypto);
@@ -291,9 +291,9 @@ namespace Org.BouncyCastle.Tls.Tests
         {
             switch (crypto)
             {
-            case TlsTestConfig.CRYPTO_BC:
-            default:
-                return "BC";
+                case TlsTestConfig.CRYPTO_BC:
+                default:
+                    return "BC";
             }
         }
     }

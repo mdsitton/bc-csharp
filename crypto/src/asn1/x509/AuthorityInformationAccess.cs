@@ -64,7 +64,7 @@ namespace Org.BouncyCastle.Asn1.X509
         public AuthorityInformationAccess(
             AccessDescription description)
         {
-            this.descriptions = new AccessDescription[]{ description };
+            this.descriptions = new AccessDescription[] { description };
         }
 
         public AuthorityInformationAccess(

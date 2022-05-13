@@ -8,17 +8,17 @@ namespace Org.BouncyCastle.Asn1.Cms
     public class ContentInfo
         : Asn1Encodable
     {
-        private readonly DerObjectIdentifier	contentType;
-        private readonly Asn1Encodable			content;
+        private readonly DerObjectIdentifier contentType;
+        private readonly Asn1Encodable content;
 
         public static ContentInfo GetInstance(
             object obj)
         {
             if (obj == null || obj is ContentInfo)
-                return (ContentInfo) obj;
+                return (ContentInfo)obj;
 
             if (obj is Asn1Sequence)
-                return new ContentInfo((Asn1Sequence) obj);
+                return new ContentInfo((Asn1Sequence)obj);
 
             throw new ArgumentException("unknown object in factory: " + Platform.GetTypeName(obj));
         }
@@ -34,11 +34,11 @@ namespace Org.BouncyCastle.Asn1.Cms
             if (seq.Count < 1 || seq.Count > 2)
                 throw new ArgumentException("Bad sequence size: " + seq.Count, "seq");
 
-            contentType = (DerObjectIdentifier) seq[0];
+            contentType = (DerObjectIdentifier)seq[0];
 
             if (seq.Count > 1)
             {
-                Asn1TaggedObject tagged = (Asn1TaggedObject) seq[1];
+                Asn1TaggedObject tagged = (Asn1TaggedObject)seq[1];
                 if (!tagged.IsExplicit() || tagged.TagNo != 0)
                     throw new ArgumentException("Bad tag for 'content'", "seq");
 
@@ -47,8 +47,8 @@ namespace Org.BouncyCastle.Asn1.Cms
         }
 
         public ContentInfo(
-            DerObjectIdentifier	contentType,
-            Asn1Encodable		content)
+            DerObjectIdentifier contentType,
+            Asn1Encodable content)
         {
             this.contentType = contentType;
             this.content = content;

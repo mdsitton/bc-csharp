@@ -12,60 +12,60 @@ using Org.BouncyCastle.Utilities;
 
 namespace Org.BouncyCastle.X509
 {
-	/// <remarks>Class to produce an X.509 Version 2 AttributeCertificate.</remarks>
-	public class X509V2AttributeCertificateGenerator
-	{
-		private readonly X509ExtensionsGenerator extGenerator = new X509ExtensionsGenerator();
+    /// <remarks>Class to produce an X.509 Version 2 AttributeCertificate.</remarks>
+    public class X509V2AttributeCertificateGenerator
+    {
+        private readonly X509ExtensionsGenerator extGenerator = new X509ExtensionsGenerator();
 
-		private V2AttributeCertificateInfoGenerator	acInfoGen;
-		private DerObjectIdentifier sigOID;
-		private AlgorithmIdentifier sigAlgId;
-		private string signatureAlgorithm;
+        private V2AttributeCertificateInfoGenerator acInfoGen;
+        private DerObjectIdentifier sigOID;
+        private AlgorithmIdentifier sigAlgId;
+        private string signatureAlgorithm;
 
-		public X509V2AttributeCertificateGenerator()
-		{
-			acInfoGen = new V2AttributeCertificateInfoGenerator();
-		}
+        public X509V2AttributeCertificateGenerator()
+        {
+            acInfoGen = new V2AttributeCertificateInfoGenerator();
+        }
 
-		/// <summary>Reset the generator</summary>
-		public void Reset()
-		{
-			acInfoGen = new V2AttributeCertificateInfoGenerator();
-			extGenerator.Reset();
-		}
+        /// <summary>Reset the generator</summary>
+        public void Reset()
+        {
+            acInfoGen = new V2AttributeCertificateInfoGenerator();
+            extGenerator.Reset();
+        }
 
-		/// <summary>Set the Holder of this Attribute Certificate.</summary>
-		public void SetHolder(
-			AttributeCertificateHolder holder)
-		{
-			acInfoGen.SetHolder(holder.holder);
-		}
+        /// <summary>Set the Holder of this Attribute Certificate.</summary>
+        public void SetHolder(
+            AttributeCertificateHolder holder)
+        {
+            acInfoGen.SetHolder(holder.holder);
+        }
 
-		/// <summary>Set the issuer.</summary>
-		public void SetIssuer(
-			AttributeCertificateIssuer issuer)
-		{
-			acInfoGen.SetIssuer(AttCertIssuer.GetInstance(issuer.form));
-		}
+        /// <summary>Set the issuer.</summary>
+        public void SetIssuer(
+            AttributeCertificateIssuer issuer)
+        {
+            acInfoGen.SetIssuer(AttCertIssuer.GetInstance(issuer.form));
+        }
 
-		/// <summary>Set the serial number for the certificate.</summary>
-		public void SetSerialNumber(
-			BigInteger serialNumber)
-		{
-			acInfoGen.SetSerialNumber(new DerInteger(serialNumber));
-		}
+        /// <summary>Set the serial number for the certificate.</summary>
+        public void SetSerialNumber(
+            BigInteger serialNumber)
+        {
+            acInfoGen.SetSerialNumber(new DerInteger(serialNumber));
+        }
 
-		public void SetNotBefore(
-			DateTime date)
-		{
-			acInfoGen.SetStartDate(new DerGeneralizedTime(date));
-		}
+        public void SetNotBefore(
+            DateTime date)
+        {
+            acInfoGen.SetStartDate(new DerGeneralizedTime(date));
+        }
 
-		public void SetNotAfter(
-			DateTime date)
-		{
-			acInfoGen.SetEndDate(new DerGeneralizedTime(date));
-		}
+        public void SetNotAfter(
+            DateTime date)
+        {
+            acInfoGen.SetEndDate(new DerGeneralizedTime(date));
+        }
 
         /// <summary>
         /// Set the signature algorithm. This can be either a name or an OID, names
@@ -74,70 +74,70 @@ namespace Org.BouncyCastle.X509
         /// <param name="signatureAlgorithm">The algorithm name.</param>
         [Obsolete("Not needed if Generate used with an ISignatureFactory")]
         public void SetSignatureAlgorithm(
-			string signatureAlgorithm)
-		{
-			this.signatureAlgorithm = signatureAlgorithm;
+            string signatureAlgorithm)
+        {
+            this.signatureAlgorithm = signatureAlgorithm;
 
-			try
-			{
-				sigOID = X509Utilities.GetAlgorithmOid(signatureAlgorithm);
-			}
-			catch (Exception)
-			{
-				throw new ArgumentException("Unknown signature type requested");
-			}
+            try
+            {
+                sigOID = X509Utilities.GetAlgorithmOid(signatureAlgorithm);
+            }
+            catch (Exception)
+            {
+                throw new ArgumentException("Unknown signature type requested");
+            }
 
-			sigAlgId = X509Utilities.GetSigAlgID(sigOID, signatureAlgorithm);
+            sigAlgId = X509Utilities.GetSigAlgID(sigOID, signatureAlgorithm);
 
-			acInfoGen.SetSignature(sigAlgId);
-		}
+            acInfoGen.SetSignature(sigAlgId);
+        }
 
-		/// <summary>Add an attribute.</summary>
-		public void AddAttribute(
-			X509Attribute attribute)
-		{
-			acInfoGen.AddAttribute(AttributeX509.GetInstance(attribute.ToAsn1Object()));
-		}
+        /// <summary>Add an attribute.</summary>
+        public void AddAttribute(
+            X509Attribute attribute)
+        {
+            acInfoGen.AddAttribute(AttributeX509.GetInstance(attribute.ToAsn1Object()));
+        }
 
-		public void SetIssuerUniqueId(
-			bool[] iui)
-		{
-			// TODO convert bool array to bit string
-			//acInfoGen.SetIssuerUniqueID(iui);
-			throw Platform.CreateNotImplementedException("SetIssuerUniqueId()");
-		}
+        public void SetIssuerUniqueId(
+            bool[] iui)
+        {
+            // TODO convert bool array to bit string
+            //acInfoGen.SetIssuerUniqueID(iui);
+            throw Platform.CreateNotImplementedException("SetIssuerUniqueId()");
+        }
 
-		/// <summary>Add a given extension field for the standard extensions tag.</summary>
-		public void AddExtension(
-			string			oid,
-			bool			critical,
-			Asn1Encodable	extensionValue)
-		{
-			extGenerator.AddExtension(new DerObjectIdentifier(oid), critical, extensionValue);
-		}
+        /// <summary>Add a given extension field for the standard extensions tag.</summary>
+        public void AddExtension(
+            string oid,
+            bool critical,
+            Asn1Encodable extensionValue)
+        {
+            extGenerator.AddExtension(new DerObjectIdentifier(oid), critical, extensionValue);
+        }
 
-		/// <summary>
-		/// Add a given extension field for the standard extensions tag.
-		/// The value parameter becomes the contents of the octet string associated
-		/// with the extension.
-		/// </summary>
-		public void AddExtension(
-			string	oid,
-			bool	critical,
-			byte[]	extensionValue)
-		{
-			extGenerator.AddExtension(new DerObjectIdentifier(oid), critical, extensionValue);
-		}
+        /// <summary>
+        /// Add a given extension field for the standard extensions tag.
+        /// The value parameter becomes the contents of the octet string associated
+        /// with the extension.
+        /// </summary>
+        public void AddExtension(
+            string oid,
+            bool critical,
+            byte[] extensionValue)
+        {
+            extGenerator.AddExtension(new DerObjectIdentifier(oid), critical, extensionValue);
+        }
 
         /// <summary>
         /// Generate an X509 certificate, based on the current issuer and subject.
         /// </summary>
         [Obsolete("Use Generate with an ISignatureFactory")]
         public IX509AttributeCertificate Generate(
-			AsymmetricKeyParameter privateKey)
-		{
-			return Generate(privateKey, null);
-		}
+            AsymmetricKeyParameter privateKey)
+        {
+            return Generate(privateKey, null);
+        }
 
         /// <summary>
         /// Generate an X509 certificate, based on the current issuer and subject,
@@ -145,8 +145,8 @@ namespace Org.BouncyCastle.X509
         /// </summary>
         [Obsolete("Use Generate with an ISignatureFactory")]
         public IX509AttributeCertificate Generate(
-			AsymmetricKeyParameter	privateKey,
-			SecureRandom			random)
+            AsymmetricKeyParameter privateKey,
+            SecureRandom random)
         {
             return Generate(new Asn1SignatureFactory(signatureAlgorithm, privateKey, random));
         }
@@ -159,9 +159,9 @@ namespace Org.BouncyCastle.X509
         public IX509AttributeCertificate Generate(ISignatureFactory signatureCalculatorFactory)
         {
             if (!extGenerator.IsEmpty)
-			{
-				acInfoGen.SetExtensions(extGenerator.Generate());
-			}
+            {
+                acInfoGen.SetExtensions(extGenerator.Generate());
+            }
 
             AlgorithmIdentifier sigAlgID = (AlgorithmIdentifier)signatureCalculatorFactory.AlgorithmDetails;
 
@@ -178,25 +178,25 @@ namespace Org.BouncyCastle.X509
             Platform.Dispose(streamCalculator.Stream);
 
             try
-			{
+            {
                 DerBitString signatureValue = new DerBitString(((IBlockResult)streamCalculator.GetResult()).Collect());
 
                 return new X509V2AttributeCertificate(new AttributeCertificate(acInfo, sigAlgID, signatureValue));
-			}
-			catch (Exception e)
-			{
-				// TODO
-//				throw new ExtCertificateEncodingException("constructed invalid certificate", e);
-				throw new CertificateEncodingException("constructed invalid certificate", e);
-			}
-		}
+            }
+            catch (Exception e)
+            {
+                // TODO
+                //				throw new ExtCertificateEncodingException("constructed invalid certificate", e);
+                throw new CertificateEncodingException("constructed invalid certificate", e);
+            }
+        }
 
-		/// <summary>
-		/// Allows enumeration of the signature names supported by the generator.
-		/// </summary>
-		public IEnumerable SignatureAlgNames
-		{
-			get { return X509Utilities.GetAlgNames(); }
-		}
-	}
+        /// <summary>
+        /// Allows enumeration of the signature names supported by the generator.
+        /// </summary>
+        public IEnumerable SignatureAlgNames
+        {
+            get { return X509Utilities.GetAlgNames(); }
+        }
+    }
 }

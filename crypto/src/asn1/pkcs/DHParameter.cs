@@ -11,49 +11,49 @@ namespace Org.BouncyCastle.Asn1.Pkcs
     {
         internal DerInteger p, g, l;
 
-		public DHParameter(
-            BigInteger	p,
-            BigInteger	g,
-            int			l)
+        public DHParameter(
+            BigInteger p,
+            BigInteger g,
+            int l)
         {
             this.p = new DerInteger(p);
             this.g = new DerInteger(g);
 
-			if (l != 0)
+            if (l != 0)
             {
                 this.l = new DerInteger(l);
             }
         }
 
-		public DHParameter(
+        public DHParameter(
             Asn1Sequence seq)
         {
             IEnumerator e = seq.GetEnumerator();
 
-			e.MoveNext();
+            e.MoveNext();
             p = (DerInteger)e.Current;
 
-			e.MoveNext();
+            e.MoveNext();
             g = (DerInteger)e.Current;
 
-			if (e.MoveNext())
+            if (e.MoveNext())
             {
-                l = (DerInteger) e.Current;
+                l = (DerInteger)e.Current;
             }
         }
 
-		public BigInteger P
-		{
-			get { return p.PositiveValue; }
-		}
+        public BigInteger P
+        {
+            get { return p.PositiveValue; }
+        }
 
-		public BigInteger G
-		{
-			get { return g.PositiveValue; }
-		}
+        public BigInteger G
+        {
+            get { return g.PositiveValue; }
+        }
 
-		public BigInteger L
-		{
+        public BigInteger L
+        {
             get { return l == null ? null : l.PositiveValue; }
         }
 

@@ -21,63 +21,63 @@ namespace Org.BouncyCastle.Asn1.X509.Qualified
     * </pre>
     */
     public class SemanticsInformation
-		: Asn1Encodable
+        : Asn1Encodable
     {
-        private readonly DerObjectIdentifier	semanticsIdentifier;
-        private readonly GeneralName[]			nameRegistrationAuthorities;
+        private readonly DerObjectIdentifier semanticsIdentifier;
+        private readonly GeneralName[] nameRegistrationAuthorities;
 
-		public static SemanticsInformation GetInstance(
-			object obj)
+        public static SemanticsInformation GetInstance(
+            object obj)
         {
             if (obj == null || obj is SemanticsInformation)
             {
-                return (SemanticsInformation) obj;
+                return (SemanticsInformation)obj;
             }
 
-			if (obj is Asn1Sequence)
+            if (obj is Asn1Sequence)
             {
                 return new SemanticsInformation(Asn1Sequence.GetInstance(obj));
             }
 
-			throw new ArgumentException("unknown object in GetInstance: " + Platform.GetTypeName(obj), "obj");
-		}
+            throw new ArgumentException("unknown object in GetInstance: " + Platform.GetTypeName(obj), "obj");
+        }
 
-		public SemanticsInformation(
-			Asn1Sequence seq)
+        public SemanticsInformation(
+            Asn1Sequence seq)
         {
             if (seq.Count < 1)
             {
                 throw new ArgumentException("no objects in SemanticsInformation");
             }
 
-			IEnumerator e = seq.GetEnumerator();
-			e.MoveNext();
+            IEnumerator e = seq.GetEnumerator();
+            e.MoveNext();
             object obj = e.Current;
             if (obj is DerObjectIdentifier)
             {
                 semanticsIdentifier = DerObjectIdentifier.GetInstance(obj);
                 if (e.MoveNext())
                 {
-                    obj  = e.Current;
+                    obj = e.Current;
                 }
                 else
                 {
-                    obj  = null;
+                    obj = null;
                 }
             }
 
-			if (obj  != null)
+            if (obj != null)
             {
-                Asn1Sequence generalNameSeq = Asn1Sequence.GetInstance(obj );
+                Asn1Sequence generalNameSeq = Asn1Sequence.GetInstance(obj);
                 nameRegistrationAuthorities = new GeneralName[generalNameSeq.Count];
-                for (int i= 0; i < generalNameSeq.Count; i++)
+                for (int i = 0; i < generalNameSeq.Count; i++)
                 {
                     nameRegistrationAuthorities[i] = GeneralName.GetInstance(generalNameSeq[i]);
                 }
             }
         }
 
-		public SemanticsInformation(
+        public SemanticsInformation(
             DerObjectIdentifier semanticsIdentifier,
             GeneralName[] generalNames)
         {
@@ -85,21 +85,21 @@ namespace Org.BouncyCastle.Asn1.X509.Qualified
             this.nameRegistrationAuthorities = generalNames;
         }
 
-		public SemanticsInformation(
-			DerObjectIdentifier semanticsIdentifier)
+        public SemanticsInformation(
+            DerObjectIdentifier semanticsIdentifier)
         {
             this.semanticsIdentifier = semanticsIdentifier;
         }
 
         public SemanticsInformation(
-			GeneralName[] generalNames)
+            GeneralName[] generalNames)
         {
             this.nameRegistrationAuthorities = generalNames;
         }
 
-		public DerObjectIdentifier SemanticsIdentifier { get { return semanticsIdentifier; } }
+        public DerObjectIdentifier SemanticsIdentifier { get { return semanticsIdentifier; } }
 
-		public GeneralName[] GetNameRegistrationAuthorities()
+        public GeneralName[] GetNameRegistrationAuthorities()
         {
             return nameRegistrationAuthorities;
         }

@@ -27,7 +27,8 @@ namespace Org.BouncyCastle.Security
     /// </remarks>
     public sealed class CipherUtilities
     {
-        private enum CipherAlgorithm {
+        private enum CipherAlgorithm
+        {
             AES,
             ARC4,
             ARIA,
@@ -278,12 +279,12 @@ namespace Org.BouncyCastle.Security
                 throw new ArgumentNullException("mechanism");
 
             mechanism = Platform.ToUpperInvariant(mechanism);
-            string aliased = (string) algorithms[mechanism];
+            string aliased = (string)algorithms[mechanism];
 
             if (aliased != null)
                 mechanism = aliased;
 
-            return (DerObjectIdentifier) oids[mechanism];
+            return (DerObjectIdentifier)oids[mechanism];
         }
 
         public static ICollection Algorithms
@@ -306,7 +307,7 @@ namespace Org.BouncyCastle.Security
             algorithm = Platform.ToUpperInvariant(algorithm);
 
             {
-                string aliased = (string) algorithms[algorithm];
+                string aliased = (string)algorithms[algorithm];
 
                 if (aliased != null)
                     algorithm = aliased;
@@ -689,14 +690,14 @@ namespace Org.BouncyCastle.Security
                             aeadBlockCipher = new CcmBlockCipher(blockCipher);
                             break;
                         case CipherMode.CFB:
-                        {
-                            int bits = (di < 0)
-                                ?	8 * blockCipher.GetBlockSize()
-                                :	int.Parse(mode.Substring(di));
-    
-                            blockCipher = new CfbBlockCipher(blockCipher, bits);
-                            break;
-                        }
+                            {
+                                int bits = (di < 0)
+                                    ? 8 * blockCipher.GetBlockSize()
+                                    : int.Parse(mode.Substring(di));
+
+                                blockCipher = new CfbBlockCipher(blockCipher, bits);
+                                break;
+                            }
                         case CipherMode.CTR:
                             blockCipher = new SicBlockCipher(blockCipher);
                             break;
@@ -717,14 +718,14 @@ namespace Org.BouncyCastle.Security
                             aeadBlockCipher = new OcbBlockCipher(blockCipher, CreateBlockCipher(cipherAlgorithm));
                             break;
                         case CipherMode.OFB:
-                        {
-                            int bits = (di < 0)
-                                ?	8 * blockCipher.GetBlockSize()
-                                :	int.Parse(mode.Substring(di));
-    
-                            blockCipher = new OfbBlockCipher(blockCipher, bits);
-                            break;
-                        }
+                            {
+                                int bits = (di < 0)
+                                    ? 8 * blockCipher.GetBlockSize()
+                                    : int.Parse(mode.Substring(di));
+
+                                blockCipher = new OfbBlockCipher(blockCipher, bits);
+                                break;
+                            }
                         case CipherMode.OPENPGPCFB:
                             blockCipher = new OpenPgpCfbBlockCipher(blockCipher);
                             break;
@@ -786,7 +787,7 @@ namespace Org.BouncyCastle.Security
         public static string GetAlgorithmName(
             DerObjectIdentifier oid)
         {
-            return (string) algorithms[oid.Id];
+            return (string)algorithms[oid.Id];
         }
 
         private static int GetDigitIndex(

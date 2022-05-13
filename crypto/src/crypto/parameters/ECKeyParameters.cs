@@ -21,9 +21,9 @@ namespace Org.BouncyCastle.Crypto.Parameters
         private readonly DerObjectIdentifier publicKeyParamSet;
 
         protected ECKeyParameters(
-            string				algorithm,
-            bool				isPrivate,
-            ECDomainParameters	parameters)
+            string algorithm,
+            bool isPrivate,
+            ECDomainParameters parameters)
             : base(isPrivate)
         {
             if (algorithm == null)
@@ -36,9 +36,9 @@ namespace Org.BouncyCastle.Crypto.Parameters
         }
 
         protected ECKeyParameters(
-            string				algorithm,
-            bool				isPrivate,
-            DerObjectIdentifier	publicKeyParamSet)
+            string algorithm,
+            bool isPrivate,
+            DerObjectIdentifier publicKeyParamSet)
             : base(isPrivate)
         {
             if (algorithm == null)

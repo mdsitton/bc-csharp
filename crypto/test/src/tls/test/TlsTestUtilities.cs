@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Globalization;
 using System.IO;
@@ -145,27 +145,27 @@ namespace Org.BouncyCastle.Tls.Tests
         {
             switch (signatureAlgorithm)
             {
-            case SignatureAlgorithm.rsa:
-            case SignatureAlgorithm.rsa_pss_rsae_sha256:
-            case SignatureAlgorithm.rsa_pss_rsae_sha384:
-            case SignatureAlgorithm.rsa_pss_rsae_sha512:
-                return "rsa";
-            case SignatureAlgorithm.dsa:
-                return "dsa";
-            case SignatureAlgorithm.ecdsa:
-                return "ecdsa";
-            case SignatureAlgorithm.ed25519:
-                return "ed25519";
-            case SignatureAlgorithm.ed448:
-                return "ed448";
-            case SignatureAlgorithm.rsa_pss_pss_sha256:
-                return "rsa_pss_256";
-            case SignatureAlgorithm.rsa_pss_pss_sha384:
-                return "rsa_pss_384";
-            case SignatureAlgorithm.rsa_pss_pss_sha512:
-                return "rsa_pss_512";
-            default:
-                throw new TlsFatalAlert(AlertDescription.internal_error);
+                case SignatureAlgorithm.rsa:
+                case SignatureAlgorithm.rsa_pss_rsae_sha256:
+                case SignatureAlgorithm.rsa_pss_rsae_sha384:
+                case SignatureAlgorithm.rsa_pss_rsae_sha512:
+                    return "rsa";
+                case SignatureAlgorithm.dsa:
+                    return "dsa";
+                case SignatureAlgorithm.ecdsa:
+                    return "ecdsa";
+                case SignatureAlgorithm.ed25519:
+                    return "ed25519";
+                case SignatureAlgorithm.ed448:
+                    return "ed448";
+                case SignatureAlgorithm.rsa_pss_pss_sha256:
+                    return "rsa_pss_256";
+                case SignatureAlgorithm.rsa_pss_pss_sha384:
+                    return "rsa_pss_384";
+                case SignatureAlgorithm.rsa_pss_pss_sha512:
+                    return "rsa_pss_512";
+                default:
+                    throw new TlsFatalAlert(AlertDescription.internal_error);
             }
         }
 
@@ -257,7 +257,7 @@ namespace Org.BouncyCastle.Tls.Tests
             if (signatureAndHashAlgorithm == null)
                 return null;
 
-            return LoadSignerCredentials(context, new string[]{ certResource }, keyResource,
+            return LoadSignerCredentials(context, new string[] { certResource }, keyResource,
                 signatureAndHashAlgorithm);
         }
 
@@ -268,12 +268,12 @@ namespace Org.BouncyCastle.Tls.Tests
 
             switch (signatureAlgorithm)
             {
-            case SignatureAlgorithm.rsa:
-            case SignatureAlgorithm.rsa_pss_rsae_sha256:
-            case SignatureAlgorithm.rsa_pss_rsae_sha384:
-            case SignatureAlgorithm.rsa_pss_rsae_sha512:
-                sigName += "-sign";
-                break;
+                case SignatureAlgorithm.rsa:
+                case SignatureAlgorithm.rsa_pss_rsae_sha256:
+                case SignatureAlgorithm.rsa_pss_rsae_sha384:
+                case SignatureAlgorithm.rsa_pss_rsae_sha512:
+                    sigName += "-sign";
+                    break;
             }
 
             string certResource = "x509-server-" + sigName + ".pem";
@@ -370,7 +370,7 @@ namespace Org.BouncyCastle.Tls.Tests
         }
 
         internal static PemObject LoadPemResource(string resource)
-           
+
         {
             Stream s = SimpleTest.GetTestDataAsStream("tls." + resource);
             PemReader p = new PemReader(new StreamReader(s));
@@ -402,7 +402,7 @@ namespace Org.BouncyCastle.Tls.Tests
                     TlsCertificate caCert = LoadCertificateResource(crypto, caCertResource);
                     if (null != caCert)
                     {
-                        return new TlsCertificate[]{ eeCert, caCert };
+                        return new TlsCertificate[] { eeCert, caCert };
                     }
                 }
             }

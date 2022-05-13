@@ -11,18 +11,14 @@ namespace Org.BouncyCastle.Asn1.X509
      *      extendedKeyUsage ::= Sequence SIZE (1..MAX) OF KeyPurposeId
      * </pre>
      */
-    public class ExtendedKeyUsage
-        : Asn1Encodable
+    public class ExtendedKeyUsage : Asn1Encodable
     {
-        public static ExtendedKeyUsage GetInstance(
-            Asn1TaggedObject	obj,
-            bool				explicitly)
+        public static ExtendedKeyUsage GetInstance(Asn1TaggedObject obj, bool explicitly)
         {
             return GetInstance(Asn1Sequence.GetInstance(obj, explicitly));
         }
 
-        public static ExtendedKeyUsage GetInstance(
-            object obj)
+        public static ExtendedKeyUsage GetInstance(object obj)
         {
             if (obj is ExtendedKeyUsage)
                 return (ExtendedKeyUsage)obj;
@@ -41,8 +37,7 @@ namespace Org.BouncyCastle.Asn1.X509
         internal readonly IDictionary usageTable = Platform.CreateHashtable();
         internal readonly Asn1Sequence seq;
 
-        private ExtendedKeyUsage(
-            Asn1Sequence seq)
+        private ExtendedKeyUsage(Asn1Sequence seq)
         {
             this.seq = seq;
 
@@ -54,8 +49,7 @@ namespace Org.BouncyCastle.Asn1.X509
             }
         }
 
-        public ExtendedKeyUsage(
-            params KeyPurposeID[] usages)
+        public ExtendedKeyUsage(params KeyPurposeID[] usages)
         {
             this.seq = new DerSequence(usages);
 
@@ -65,17 +59,7 @@ namespace Org.BouncyCastle.Asn1.X509
             }
         }
 
-#if !(SILVERLIGHT || PORTABLE)
-        [Obsolete]
-        public ExtendedKeyUsage(
-            ArrayList usages)
-            : this((IEnumerable)usages)
-        {
-        }
-#endif
-
-        public ExtendedKeyUsage(
-            IEnumerable usages)
+        public ExtendedKeyUsage(IEnumerable usages)
         {
             Asn1EncodableVector v = new Asn1EncodableVector();
 
@@ -90,19 +74,10 @@ namespace Org.BouncyCastle.Asn1.X509
             this.seq = new DerSequence(v);
         }
 
-        public bool HasKeyPurposeId(
-            KeyPurposeID keyPurposeId)
+        public bool HasKeyPurposeId(KeyPurposeID keyPurposeId)
         {
             return usageTable.Contains(keyPurposeId);
         }
-
-#if !(SILVERLIGHT || PORTABLE)
-        [Obsolete("Use 'GetAllUsages'")]
-        public ArrayList GetUsages()
-        {
-            return new ArrayList(usageTable.Values);
-        }
-#endif
 
         /**
          * Returns all extended key usages.

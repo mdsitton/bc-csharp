@@ -405,7 +405,7 @@ namespace Org.BouncyCastle.Math.EC.Tests
             int rounds = System.Math.Max(2, System.Math.Min(10, 32 - 3 * logSize));
 
             ECPoint p = q;
-            for (int i = 0; ; )
+            for (int i = 0; ;)
             {
                 ImplTestEncoding(p);
                 if (++i == rounds)

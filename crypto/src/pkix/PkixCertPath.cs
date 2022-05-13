@@ -16,7 +16,7 @@ using Org.BouncyCastle.Utilities.Collections;
 
 namespace Org.BouncyCastle.Pkix
 {
-	/**
+    /**
 	 * An immutable sequence of certificates (a certification path).<br />
 	 * <br />
 	 * This is an abstract class that defines the methods common to all CertPaths.
@@ -75,13 +75,13 @@ namespace Org.BouncyCastle.Pkix
 	 * @see CertificateFactory
 	 * @see CertPathBuilder
 	 */
-	/// <summary>
-	/// CertPath implementation for X.509 certificates.
-	/// </summary>
-	public class PkixCertPath
-//		: CertPath
-	{
-		internal static readonly IList certPathEncodings;
+    /// <summary>
+    /// CertPath implementation for X.509 certificates.
+    /// </summary>
+    public class PkixCertPath
+    //		: CertPath
+    {
+        internal static readonly IList certPathEncodings;
 
         static PkixCertPath()
         {
@@ -94,134 +94,134 @@ namespace Org.BouncyCastle.Pkix
 
         private readonly IList certificates;
 
-		/**
+        /**
 		 * @param certs
 		 */
-		private static IList SortCerts(
-			IList certs)
-		{
-			if (certs.Count < 2)
-				return certs;
+        private static IList SortCerts(
+            IList certs)
+        {
+            if (certs.Count < 2)
+                return certs;
 
-			X509Name issuer = ((X509Certificate)certs[0]).IssuerDN;
-			bool okay = true;
+            X509Name issuer = ((X509Certificate)certs[0]).IssuerDN;
+            bool okay = true;
 
-			for (int i = 1; i != certs.Count; i++)
-			{
-				X509Certificate cert = (X509Certificate)certs[i];
+            for (int i = 1; i != certs.Count; i++)
+            {
+                X509Certificate cert = (X509Certificate)certs[i];
 
-				if (issuer.Equivalent(cert.SubjectDN, true))
-				{
-					issuer = ((X509Certificate)certs[i]).IssuerDN;
-				}
-				else
-				{
-					okay = false;
-					break;
-				}
-			}
+                if (issuer.Equivalent(cert.SubjectDN, true))
+                {
+                    issuer = ((X509Certificate)certs[i]).IssuerDN;
+                }
+                else
+                {
+                    okay = false;
+                    break;
+                }
+            }
 
-			if (okay)
-				return certs;
+            if (okay)
+                return certs;
 
-			// find end-entity cert
+            // find end-entity cert
             IList retList = Platform.CreateArrayList(certs.Count);
             IList orig = Platform.CreateArrayList(certs);
 
-			for (int i = 0; i < certs.Count; i++)
-			{
-				X509Certificate cert = (X509Certificate)certs[i];
-				bool           found = false;
+            for (int i = 0; i < certs.Count; i++)
+            {
+                X509Certificate cert = (X509Certificate)certs[i];
+                bool found = false;
 
-				X509Name subject = cert.SubjectDN;
-				foreach (X509Certificate c in certs)
-				{
-					if (c.IssuerDN.Equivalent(subject, true))
-					{
-						found = true;
-						break;
-					}
-				}
+                X509Name subject = cert.SubjectDN;
+                foreach (X509Certificate c in certs)
+                {
+                    if (c.IssuerDN.Equivalent(subject, true))
+                    {
+                        found = true;
+                        break;
+                    }
+                }
 
-				if (!found)
-				{
-					retList.Add(cert);
-					certs.RemoveAt(i);
-				}
-			}
+                if (!found)
+                {
+                    retList.Add(cert);
+                    certs.RemoveAt(i);
+                }
+            }
 
-			// can only have one end entity cert - something's wrong, give up.
-			if (retList.Count > 1)
-				return orig;
+            // can only have one end entity cert - something's wrong, give up.
+            if (retList.Count > 1)
+                return orig;
 
-			for (int i = 0; i != retList.Count; i++)
-			{
-				issuer = ((X509Certificate)retList[i]).IssuerDN;
+            for (int i = 0; i != retList.Count; i++)
+            {
+                issuer = ((X509Certificate)retList[i]).IssuerDN;
 
-				for (int j = 0; j < certs.Count; j++)
-				{
-					X509Certificate c = (X509Certificate)certs[j];
-					if (issuer.Equivalent(c.SubjectDN, true))
-					{
-						retList.Add(c);
-						certs.RemoveAt(j);
-						break;
-					}
-				}
-			}
+                for (int j = 0; j < certs.Count; j++)
+                {
+                    X509Certificate c = (X509Certificate)certs[j];
+                    if (issuer.Equivalent(c.SubjectDN, true))
+                    {
+                        retList.Add(c);
+                        certs.RemoveAt(j);
+                        break;
+                    }
+                }
+            }
 
-			// make sure all certificates are accounted for.
-			if (certs.Count > 0)
-				return orig;
+            // make sure all certificates are accounted for.
+            if (certs.Count > 0)
+                return orig;
 
-			return retList;
-		}
+            return retList;
+        }
 
-		/**
+        /**
 		 * Creates a CertPath of the specified type.
 		 * This constructor is protected because most users should use
 		 * a CertificateFactory to create CertPaths.
 		 * @param type the standard name of the type of Certificatesin this path
 		 **/
-		public PkixCertPath(
-			ICollection certificates)
-//			: base("X.509")
-		{
-			this.certificates = SortCerts(Platform.CreateArrayList(certificates));
-		}
+        public PkixCertPath(
+            ICollection certificates)
+        //			: base("X.509")
+        {
+            this.certificates = SortCerts(Platform.CreateArrayList(certificates));
+        }
 
-		public PkixCertPath(
-			Stream inStream)
-			: this(inStream, "PkiPath")
-		{
-		}
+        public PkixCertPath(
+            Stream inStream)
+            : this(inStream, "PkiPath")
+        {
+        }
 
-		/**
+        /**
 		 * Creates a CertPath of the specified type.
 		 * This constructor is protected because most users should use
 		 * a CertificateFactory to create CertPaths.
 		 *
 		 * @param type the standard name of the type of Certificatesin this path
 		 **/
-		public PkixCertPath(
-			Stream	inStream,
-			string	encoding)
-//			: base("X.509")
-		{
+        public PkixCertPath(
+            Stream inStream,
+            string encoding)
+        //			: base("X.509")
+        {
             string upper = Platform.ToUpperInvariant(encoding);
 
             IList certs;
-			try
-			{
-				if (upper.Equals(Platform.ToUpperInvariant("PkiPath")))
-				{
-					Asn1InputStream derInStream = new Asn1InputStream(inStream);
-					Asn1Object derObject = derInStream.ReadObject();
-					if (!(derObject is Asn1Sequence))
-					{
-						throw new CertificateException(
-							"input stream does not contain a ASN1 SEQUENCE while reading PkiPath encoded data to load CertPath");
-					}
+            try
+            {
+                if (upper.Equals(Platform.ToUpperInvariant("PkiPath")))
+                {
+                    Asn1InputStream derInStream = new Asn1InputStream(inStream);
+                    Asn1Object derObject = derInStream.ReadObject();
+                    if (!(derObject is Asn1Sequence))
+                    {
+                        throw new CertificateException(
+                            "input stream does not contain a ASN1 SEQUENCE while reading PkiPath encoded data to load CertPath");
+                    }
 
                     certs = Platform.CreateArrayList();
 
@@ -232,28 +232,28 @@ namespace Org.BouncyCastle.Pkix
 
                         // TODO Is inserting at the front important (list will be sorted later anyway)?
                         certs.Insert(0, new X509CertificateParser().ReadCertificate(certInStream));
-					}
-				}
+                    }
+                }
                 else if (upper.Equals("PKCS7") || upper.Equals("PEM"))
-				{
+                {
                     certs = Platform.CreateArrayList(new X509CertificateParser().ReadCertificates(inStream));
-				}
-				else
-				{
-					throw new CertificateException("unsupported encoding: " + encoding);
-				}
-			}
-			catch (IOException ex)
-			{
-				throw new CertificateException(
-					"IOException throw while decoding CertPath:\n"
-					+ ex.ToString());
-			}
+                }
+                else
+                {
+                    throw new CertificateException("unsupported encoding: " + encoding);
+                }
+            }
+            catch (IOException ex)
+            {
+                throw new CertificateException(
+                    "IOException throw while decoding CertPath:\n"
+                    + ex.ToString());
+            }
 
-			this.certificates = SortCerts(certs);
-		}
+            this.certificates = SortCerts(certs);
+        }
 
-		/**
+        /**
 		 * Returns an iteration of the encodings supported by this
 		 * certification path, with the default encoding
 		 * first. Attempts to modify the returned Iterator via its
@@ -261,12 +261,12 @@ namespace Org.BouncyCastle.Pkix
 		 *
 		 * @return an Iterator over the names of the supported encodings (as Strings)
 		 **/
-		public virtual IEnumerable Encodings
-		{
+        public virtual IEnumerable Encodings
+        {
             get { return new EnumerableProxy(certPathEncodings); }
-		}
+        }
 
-		/**
+        /**
 		* Compares this certification path for equality with the specified object.
 		* Two CertPaths are equal if and only if their types are equal and their
 		* certificate Lists (and by implication the Certificates in those Lists)
@@ -283,68 +283,68 @@ namespace Org.BouncyCastle.Pkix
 		*
 		* @see Object#hashCode() Object.hashCode()
 		*/
-		public override bool Equals(
-			object obj)
-		{
-			if (this == obj)
-				return true;
+        public override bool Equals(
+            object obj)
+        {
+            if (this == obj)
+                return true;
 
-			PkixCertPath other = obj as PkixCertPath;
-			if (other == null)
-				return false;
+            PkixCertPath other = obj as PkixCertPath;
+            if (other == null)
+                return false;
 
-//			if (!this.Type.Equals(other.Type))
-//				return false;
+            //			if (!this.Type.Equals(other.Type))
+            //				return false;
 
-			//return this.Certificates.Equals(other.Certificates);
+            //return this.Certificates.Equals(other.Certificates);
 
-			// TODO Extract this to a utility class
-			IList thisCerts = this.Certificates;
-			IList otherCerts = other.Certificates;
+            // TODO Extract this to a utility class
+            IList thisCerts = this.Certificates;
+            IList otherCerts = other.Certificates;
 
-			if (thisCerts.Count != otherCerts.Count)
-				return false;
+            if (thisCerts.Count != otherCerts.Count)
+                return false;
 
-			IEnumerator e1 = thisCerts.GetEnumerator();
-			IEnumerator e2 = otherCerts.GetEnumerator();
+            IEnumerator e1 = thisCerts.GetEnumerator();
+            IEnumerator e2 = otherCerts.GetEnumerator();
 
-			while (e1.MoveNext())
-			{
-				e2.MoveNext();
+            while (e1.MoveNext())
+            {
+                e2.MoveNext();
 
-				if (!Platform.Equals(e1.Current, e2.Current))
-					return false;
-			}
+                if (!Platform.Equals(e1.Current, e2.Current))
+                    return false;
+            }
 
-			return true;
-		}
+            return true;
+        }
 
-		public override int GetHashCode()
-		{
-			// FIXME?
-			return this.Certificates.GetHashCode();
-		}
+        public override int GetHashCode()
+        {
+            // FIXME?
+            return this.Certificates.GetHashCode();
+        }
 
-		/**
+        /**
 		 * Returns the encoded form of this certification path, using
 		 * the default encoding.
 		 *
 		 * @return the encoded bytes
 		 * @exception CertificateEncodingException if an encoding error occurs
 		 **/
-		public virtual byte[] GetEncoded()
-		{
-			foreach (object enc in Encodings)
-			{
-				if (enc is string)
-				{
-					return GetEncoded((string)enc);
-				}
-			}
-			return null;
-		}
+        public virtual byte[] GetEncoded()
+        {
+            foreach (object enc in Encodings)
+            {
+                if (enc is string)
+                {
+                    return GetEncoded((string)enc);
+                }
+            }
+            return null;
+        }
 
-		/**
+        /**
 		 * Returns the encoded form of this certification path, using
 		 * the specified encoding.
 		 *
@@ -354,107 +354,107 @@ namespace Org.BouncyCastle.Pkix
 		 * occurs or the encoding requested is not supported
 		 *
 		 */
-		public virtual byte[] GetEncoded(
-			string encoding)
-		{
-			if (Platform.EqualsIgnoreCase(encoding, "PkiPath"))
-			{
-				Asn1EncodableVector v = new Asn1EncodableVector();
+        public virtual byte[] GetEncoded(
+            string encoding)
+        {
+            if (Platform.EqualsIgnoreCase(encoding, "PkiPath"))
+            {
+                Asn1EncodableVector v = new Asn1EncodableVector();
 
-				for (int i = certificates.Count - 1; i >= 0; i--)
-				{
-					v.Add(ToAsn1Object((X509Certificate) certificates[i]));
-				}
+                for (int i = certificates.Count - 1; i >= 0; i--)
+                {
+                    v.Add(ToAsn1Object((X509Certificate)certificates[i]));
+                }
 
-				return ToDerEncoded(new DerSequence(v));
-			}
+                return ToDerEncoded(new DerSequence(v));
+            }
             else if (Platform.EqualsIgnoreCase(encoding, "PKCS7"))
-			{
-				Asn1.Pkcs.ContentInfo encInfo = new Asn1.Pkcs.ContentInfo(
-					PkcsObjectIdentifiers.Data, null);
+            {
+                Asn1.Pkcs.ContentInfo encInfo = new Asn1.Pkcs.ContentInfo(
+                    PkcsObjectIdentifiers.Data, null);
 
-				Asn1EncodableVector v = new Asn1EncodableVector();
-				for (int i = 0; i != certificates.Count; i++)
-				{
-					v.Add(ToAsn1Object((X509Certificate)certificates[i]));
-				}
+                Asn1EncodableVector v = new Asn1EncodableVector();
+                for (int i = 0; i != certificates.Count; i++)
+                {
+                    v.Add(ToAsn1Object((X509Certificate)certificates[i]));
+                }
 
-				Asn1.Pkcs.SignedData sd = new Asn1.Pkcs.SignedData(
-					new DerInteger(1),
-					new DerSet(),
-					encInfo,
-					new DerSet(v),
-					null,
-					new DerSet());
+                Asn1.Pkcs.SignedData sd = new Asn1.Pkcs.SignedData(
+                    new DerInteger(1),
+                    new DerSet(),
+                    encInfo,
+                    new DerSet(v),
+                    null,
+                    new DerSet());
 
-				return ToDerEncoded(new Asn1.Pkcs.ContentInfo(PkcsObjectIdentifiers.SignedData, sd));
-			}
+                return ToDerEncoded(new Asn1.Pkcs.ContentInfo(PkcsObjectIdentifiers.SignedData, sd));
+            }
             else if (Platform.EqualsIgnoreCase(encoding, "PEM"))
-			{
-				MemoryStream bOut = new MemoryStream();
-				PemWriter pWrt = new PemWriter(new StreamWriter(bOut));
+            {
+                MemoryStream bOut = new MemoryStream();
+                PemWriter pWrt = new PemWriter(new StreamWriter(bOut));
 
-				try
-				{
-					for (int i = 0; i != certificates.Count; i++)
-					{
-						pWrt.WriteObject(certificates[i]);
-					}
+                try
+                {
+                    for (int i = 0; i != certificates.Count; i++)
+                    {
+                        pWrt.WriteObject(certificates[i]);
+                    }
 
                     Platform.Dispose(pWrt.Writer);
-				}
-				catch (Exception)
-				{
-					throw new CertificateEncodingException("can't encode certificate for PEM encoded path");
-				}
+                }
+                catch (Exception)
+                {
+                    throw new CertificateEncodingException("can't encode certificate for PEM encoded path");
+                }
 
-				return bOut.ToArray();
-			}
-			else
-			{
-				throw new CertificateEncodingException("unsupported encoding: " + encoding);
-			}
-		}
+                return bOut.ToArray();
+            }
+            else
+            {
+                throw new CertificateEncodingException("unsupported encoding: " + encoding);
+            }
+        }
 
-		/// <summary>
-		/// Returns the list of certificates in this certification
-		/// path.
-		/// </summary>
-		public virtual IList Certificates
-		{
+        /// <summary>
+        /// Returns the list of certificates in this certification
+        /// path.
+        /// </summary>
+        public virtual IList Certificates
+        {
             get { return CollectionUtilities.ReadOnly(certificates); }
-		}
+        }
 
-		/**
+        /**
 		 * Return a DERObject containing the encoded certificate.
 		 *
 		 * @param cert the X509Certificate object to be encoded
 		 *
 		 * @return the DERObject
 		 **/
-		private Asn1Object ToAsn1Object(
-			X509Certificate cert)
-		{
-			try
-			{
-				return Asn1Object.FromByteArray(cert.GetEncoded());
-			}
-			catch (Exception e)
-			{
-				throw new CertificateEncodingException("Exception while encoding certificate", e);
-			}
-		}
+        private Asn1Object ToAsn1Object(
+            X509Certificate cert)
+        {
+            try
+            {
+                return Asn1Object.FromByteArray(cert.GetEncoded());
+            }
+            catch (Exception e)
+            {
+                throw new CertificateEncodingException("Exception while encoding certificate", e);
+            }
+        }
 
-		private byte[] ToDerEncoded(Asn1Encodable obj)
-		{
-			try
-			{
-				return obj.GetEncoded(Asn1Encodable.Der);
-			}
-			catch (IOException e)
-			{
-				throw new CertificateEncodingException("Exception thrown", e);
-			}
-		}
-	}
+        private byte[] ToDerEncoded(Asn1Encodable obj)
+        {
+            try
+            {
+                return obj.GetEncoded(Asn1Encodable.Der);
+            }
+            catch (IOException e)
+            {
+                throw new CertificateEncodingException("Exception thrown", e);
+            }
+        }
+    }
 }

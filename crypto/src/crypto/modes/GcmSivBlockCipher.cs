@@ -487,13 +487,8 @@ namespace Org.BouncyCastle.Crypto.Modes
         private int encryptPlain(byte[] pCounter, byte[] pTarget, int pOffset)
         {
             /* Access buffer and length */
-#if PORTABLE
-            byte[] thePlainBuf = thePlain.ToArray();
-            int thePlainLen = thePlainBuf.Length;
-#else
             byte[] thePlainBuf = thePlain.GetBuffer();
             int thePlainLen = (int)thePlain.Length;
-#endif
 
             byte[] mySrc = thePlainBuf;
             byte[] myCounter = Arrays.Clone(pCounter);
@@ -532,13 +527,8 @@ namespace Org.BouncyCastle.Crypto.Modes
         private void decryptPlain()
         {
             /* Access buffer and length */
-#if PORTABLE
-            byte[] theEncDataBuf = theEncData.ToArray();
-            int theEncDataLen = theEncDataBuf.Length;
-#else
             byte[] theEncDataBuf = theEncData.GetBuffer();
             int theEncDataLen = (int)theEncData.Length;
-#endif
 
             byte[] mySrc = theEncDataBuf;
             int myRemaining = theEncDataLen - BUFLEN;

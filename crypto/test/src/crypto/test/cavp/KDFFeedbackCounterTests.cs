@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 
 using NUnit.Framework;
@@ -68,7 +68,7 @@ namespace Org.BouncyCastle.Crypto.Tests.Cavp
                     string rlen = vector.HeaderAsString("RLEN");
                     if (rlen == null)
                     {
-                       Fail("No RLEN");
+                        Fail("No RLEN");
                     }
                     r = Int32.Parse(rlen.Split('_')[0]);
                 }

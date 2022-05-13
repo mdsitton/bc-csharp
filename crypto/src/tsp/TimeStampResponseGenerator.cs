@@ -168,8 +168,8 @@ namespace Org.BouncyCastle.Tsp
         public TimeStampResponse GenerateGrantedResponse(
             TimeStampRequest request,
             BigInteger serialNumber,
-            DateTimeObject genTime, 
-            String statusString, 
+            DateTimeObject genTime,
+            String statusString,
             X509Extensions additionalExtensions)
         {
             TimeStampResp resp;
@@ -190,7 +190,7 @@ namespace Org.BouncyCastle.Tsp
                 ContentInfo tstTokenContentInfo;
                 try
                 {
-                    TimeStampToken token = tokenGenerator.Generate(request, serialNumber, genTime.Value,additionalExtensions);
+                    TimeStampToken token = tokenGenerator.Generate(request, serialNumber, genTime.Value, additionalExtensions);
                     byte[] encoded = token.ToCmsSignedData().GetEncoded();
 
                     tstTokenContentInfo = ContentInfo.GetInstance(Asn1Object.FromByteArray(encoded));
@@ -223,7 +223,7 @@ namespace Org.BouncyCastle.Tsp
                 throw new TspException("created badly formatted response!", e);
             }
         }
-       
+
 
 
         class FailInfo

@@ -16,7 +16,7 @@ namespace Org.BouncyCastle.Asn1
         {
             internal static readonly Asn1UniversalType Instance = new Meta();
 
-            private Meta() : base(typeof(DerUtcTime), Asn1Tags.UtcTime) {}
+            private Meta() : base(typeof(DerUtcTime), Asn1Tags.UtcTime) { }
 
             internal override Asn1Object FromImplicitPrimitive(DerOctetString octetString)
             {
@@ -24,7 +24,7 @@ namespace Org.BouncyCastle.Asn1
             }
         }
 
-		/**
+        /**
          * return a UTC Time from the passed in object.
          *
          * @exception ArgumentException if the object cannot be converted.
@@ -81,34 +81,30 @@ namespace Org.BouncyCastle.Asn1
          */
         public DerUtcTime(string time)
         {
-			if (time == null)
-				throw new ArgumentNullException("time");
+            if (time == null)
+                throw new ArgumentNullException("time");
 
-			this.time = time;
+            this.time = time;
 
-			try
-			{
-				ToDateTime();
-			}
-			catch (FormatException e)
-			{
-				throw new ArgumentException("invalid date string: " + e.Message);
-			}
+            try
+            {
+                ToDateTime();
+            }
+            catch (FormatException e)
+            {
+                throw new ArgumentException("invalid date string: " + e.Message);
+            }
         }
 
-		/**
+        /**
          * base constructor from a DateTime object
          */
         public DerUtcTime(DateTime time)
         {
-#if PORTABLE
             this.time = time.ToUniversalTime().ToString("yyMMddHHmmss", CultureInfo.InvariantCulture) + "Z";
-#else
-            this.time = time.ToString("yyMMddHHmmss", CultureInfo.InvariantCulture) + "Z";
-#endif
         }
 
-		internal DerUtcTime(byte[] contents)
+        internal DerUtcTime(byte[] contents)
         {
             //
             // explicitly convert to characters
@@ -116,54 +112,54 @@ namespace Org.BouncyCastle.Asn1
             this.time = Strings.FromAsciiByteArray(contents);
         }
 
-//		public DateTime ToDateTime()
-//		{
-//			string tm = this.AdjustedTimeString;
-//
-//			return new DateTime(
-//				Int16.Parse(tm.Substring(0, 4)),
-//				Int16.Parse(tm.Substring(4, 2)),
-//				Int16.Parse(tm.Substring(6, 2)),
-//				Int16.Parse(tm.Substring(8, 2)),
-//				Int16.Parse(tm.Substring(10, 2)),
-//				Int16.Parse(tm.Substring(12, 2)));
-//		}
+        //		public DateTime ToDateTime()
+        //		{
+        //			string tm = this.AdjustedTimeString;
+        //
+        //			return new DateTime(
+        //				Int16.Parse(tm.Substring(0, 4)),
+        //				Int16.Parse(tm.Substring(4, 2)),
+        //				Int16.Parse(tm.Substring(6, 2)),
+        //				Int16.Parse(tm.Substring(8, 2)),
+        //				Int16.Parse(tm.Substring(10, 2)),
+        //				Int16.Parse(tm.Substring(12, 2)));
+        //		}
 
-		/**
+        /**
 		 * return the time as a date based on whatever a 2 digit year will return. For
 		 * standardised processing use ToAdjustedDateTime().
 		 *
 		 * @return the resulting date
 		 * @exception ParseException if the date string cannot be parsed.
 		 */
-		public DateTime ToDateTime()
-		{
-			return ParseDateString(TimeString, @"yyMMddHHmmss'GMT'zzz");
-		}
+        public DateTime ToDateTime()
+        {
+            return ParseDateString(TimeString, @"yyMMddHHmmss'GMT'zzz");
+        }
 
-		/**
+        /**
 		* return the time as an adjusted date
 		* in the range of 1950 - 2049.
 		*
 		* @return a date in the range of 1950 to 2049.
 		* @exception ParseException if the date string cannot be parsed.
 		*/
-		public DateTime ToAdjustedDateTime()
-		{
-			return ParseDateString(AdjustedTimeString, @"yyyyMMddHHmmss'GMT'zzz");
-		}
+        public DateTime ToAdjustedDateTime()
+        {
+            return ParseDateString(AdjustedTimeString, @"yyyyMMddHHmmss'GMT'zzz");
+        }
 
-		private DateTime ParseDateString(string dateStr, string formatStr)
-		{
-			DateTime dt = DateTime.ParseExact(
-				dateStr,
-				formatStr,
-				DateTimeFormatInfo.InvariantInfo);
+        private DateTime ParseDateString(string dateStr, string formatStr)
+        {
+            DateTime dt = DateTime.ParseExact(
+                dateStr,
+                formatStr,
+                DateTimeFormatInfo.InvariantInfo);
 
-			return dt.ToUniversalTime();
-		}
+            return dt.ToUniversalTime();
+        }
 
-		/**
+        /**
          * return the time - always in the form of
          *  YYMMDDhhmmssGMT(+hh:mm|-hh:mm).
          * <p>
@@ -181,68 +177,68 @@ namespace Org.BouncyCastle.Asn1
          */
         public string TimeString
         {
-			get
-			{
-				//
-				// standardise the format.
-				//
-				if (time.IndexOf('-') < 0 && time.IndexOf('+') < 0)
-				{
-					if (time.Length == 11)
-					{
-						return time.Substring(0, 10) + "00GMT+00:00";
-					}
-					else
-					{
-						return time.Substring(0, 12) + "GMT+00:00";
-					}
-				}
-				else
-				{
-					int index = time.IndexOf('-');
-					if (index < 0)
-					{
-						index = time.IndexOf('+');
-					}
-					string d = time;
+            get
+            {
+                //
+                // standardise the format.
+                //
+                if (time.IndexOf('-') < 0 && time.IndexOf('+') < 0)
+                {
+                    if (time.Length == 11)
+                    {
+                        return time.Substring(0, 10) + "00GMT+00:00";
+                    }
+                    else
+                    {
+                        return time.Substring(0, 12) + "GMT+00:00";
+                    }
+                }
+                else
+                {
+                    int index = time.IndexOf('-');
+                    if (index < 0)
+                    {
+                        index = time.IndexOf('+');
+                    }
+                    string d = time;
 
-					if (index == time.Length - 3)
-					{
-						d += "00";
-					}
+                    if (index == time.Length - 3)
+                    {
+                        d += "00";
+                    }
 
-					if (index == 10)
-					{
-						return d.Substring(0, 10) + "00GMT" + d.Substring(10, 3) + ":" + d.Substring(13, 2);
-					}
-					else
-					{
-						return d.Substring(0, 12) + "GMT" + d.Substring(12, 3) + ":" +  d.Substring(15, 2);
-					}
-				}
-			}
+                    if (index == 10)
+                    {
+                        return d.Substring(0, 10) + "00GMT" + d.Substring(10, 3) + ":" + d.Substring(13, 2);
+                    }
+                    else
+                    {
+                        return d.Substring(0, 12) + "GMT" + d.Substring(12, 3) + ":" + d.Substring(15, 2);
+                    }
+                }
+            }
         }
 
-		[Obsolete("Use 'AdjustedTimeString' property instead")]
-		public string AdjustedTime
-		{
-			get { return AdjustedTimeString; }
-		}
+        [Obsolete("Use 'AdjustedTimeString' property instead")]
+        public string AdjustedTime
+        {
+            get { return AdjustedTimeString; }
+        }
 
-		/// <summary>
-		/// Return a time string as an adjusted date with a 4 digit year.
-		/// This goes in the range of 1950 - 2049.
-		/// </summary>
-		public string AdjustedTimeString
-		{
-			get
-			{
-				string d = TimeString;
-				string c = d[0] < '5' ? "20" : "19";
+        /// <summary>
+        /// Return a time string as an adjusted date with a 4 digit year.
+        /// This goes in the range of 1950 - 2049.
+        /// </summary>
+        public string AdjustedTimeString
+        {
+            get
+            {
+                string d = TimeString;
+                string c = d[0] < '5' ? "20" : "19";
 
-				return c + d;
-			}
-		}
+                return c + d;
+            }
+        }
 
         private byte[] GetOctets()
         {
@@ -260,21 +256,21 @@ namespace Org.BouncyCastle.Asn1
         }
 
         protected override bool Asn1Equals(Asn1Object asn1Object)
-		{
-			DerUtcTime that = asn1Object as DerUtcTime;
+        {
+            DerUtcTime that = asn1Object as DerUtcTime;
             return null != that
                 && this.time.Equals(that.time);
         }
 
-		protected override int Asn1GetHashCode()
-		{
+        protected override int Asn1GetHashCode()
+        {
             return time.GetHashCode();
         }
 
-		public override string ToString()
-		{
-			return time;
-		}
+        public override string ToString()
+        {
+            return time;
+        }
 
         internal static DerUtcTime CreatePrimitive(byte[] contents)
         {

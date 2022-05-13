@@ -23,7 +23,8 @@ namespace Org.BouncyCastle.Security
     /// </remarks>
     public sealed class DigestUtilities
     {
-        private enum DigestAlgorithm {
+        private enum DigestAlgorithm
+        {
             BLAKE2B_160, BLAKE2B_256, BLAKE2B_384, BLAKE2B_512,
             BLAKE2S_128, BLAKE2S_160, BLAKE2S_224, BLAKE2S_256,
             DSTU7564_256, DSTU7564_384, DSTU7564_512,
@@ -91,7 +92,7 @@ namespace Org.BouncyCastle.Security
             algorithms["RIPEMD-256"] = "RIPEMD256";
             algorithms[TeleTrusTObjectIdentifiers.RipeMD256.Id] = "RIPEMD256";
             algorithms["RIPEMD-320"] = "RIPEMD320";
-//			algorithms[TeleTrusTObjectIdentifiers.RipeMD320.Id] = "RIPEMD320";
+            //			algorithms[TeleTrusTObjectIdentifiers.RipeMD320.Id] = "RIPEMD320";
 
             algorithms[CryptoProObjectIdentifiers.GostR3411.Id] = "GOST3411";
 
@@ -181,12 +182,12 @@ namespace Org.BouncyCastle.Security
                 throw new System.ArgumentNullException("mechanism");
 
             mechanism = Platform.ToUpperInvariant(mechanism);
-            string aliased = (string) algorithms[mechanism];
+            string aliased = (string)algorithms[mechanism];
 
             if (aliased != null)
                 mechanism = aliased;
 
-            return (DerObjectIdentifier) oids[mechanism];
+            return (DerObjectIdentifier)oids[mechanism];
         }
 
         public static ICollection Algorithms
@@ -204,7 +205,7 @@ namespace Org.BouncyCastle.Security
             string algorithm)
         {
             string upper = Platform.ToUpperInvariant(algorithm);
-            string mechanism = (string) algorithms[upper];
+            string mechanism = (string)algorithms[upper];
 
             if (mechanism == null)
             {
@@ -273,7 +274,7 @@ namespace Org.BouncyCastle.Security
         public static string GetAlgorithmName(
             DerObjectIdentifier oid)
         {
-            return (string) algorithms[oid.Id];
+            return (string)algorithms[oid.Id];
         }
 
         public static byte[] CalculateDigest(DerObjectIdentifier id, byte[] input)
@@ -297,8 +298,8 @@ namespace Org.BouncyCastle.Security
         }
 
         public static byte[] DoFinal(
-            IDigest	digest,
-            byte[]	input)
+            IDigest digest,
+            byte[] input)
         {
             digest.BlockUpdate(input, 0, input.Length);
             return DoFinal(digest);

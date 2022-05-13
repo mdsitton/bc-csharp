@@ -72,7 +72,7 @@ namespace Org.BouncyCastle.Crypto.Tests
 
                     if (null != curve && null != k && null != x && null != y)
                     {
-                        testVectors.Add(new object[] {curve, k, x, y});
+                        testVectors.Add(new object[] { curve, k, x, y });
                         k = null;
                         x = null;
                         y = null;

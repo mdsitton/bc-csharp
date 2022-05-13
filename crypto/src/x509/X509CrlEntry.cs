@@ -12,31 +12,31 @@ using Org.BouncyCastle.X509.Extension;
 
 namespace Org.BouncyCastle.X509
 {
-	/**
+    /**
 	 * The following extensions are listed in RFC 2459 as relevant to CRL Entries
 	 *
 	 * ReasonCode Hode Instruction Code Invalidity Date Certificate Issuer
 	 * (critical)
 	 */
-	public class X509CrlEntry
-		: X509ExtensionBase
-	{
-		private CrlEntry	c;
-		private bool		isIndirect;
-		private X509Name	previousCertificateIssuer;
-		private X509Name	certificateIssuer;
+    public class X509CrlEntry
+        : X509ExtensionBase
+    {
+        private CrlEntry c;
+        private bool isIndirect;
+        private X509Name previousCertificateIssuer;
+        private X509Name certificateIssuer;
 
         private volatile bool hashValueSet;
         private volatile int hashValue;
 
-		public X509CrlEntry(
-			CrlEntry c)
-		{
-			this.c = c;
-			this.certificateIssuer = loadCertificateIssuer();
-		}
+        public X509CrlEntry(
+            CrlEntry c)
+        {
+            this.c = c;
+            this.certificateIssuer = loadCertificateIssuer();
+        }
 
-		/**
+        /**
 		* Constructor for CRLEntries of indirect CRLs. If <code>isIndirect</code>
 		* is <code>false</code> {@link #getCertificateIssuer()} will always
 		* return <code>null</code>, <code>previousCertificateIssuer</code> is
@@ -53,86 +53,86 @@ namespace Org.BouncyCastle.X509
 		* @param previousCertificateIssuer
 		*            Certificate issuer of the previous CrlEntry.
 		*/
-		public X509CrlEntry(
-			CrlEntry		c,
-			bool			isIndirect,
-			X509Name		previousCertificateIssuer)
-		{
-			this.c = c;
-			this.isIndirect = isIndirect;
-			this.previousCertificateIssuer = previousCertificateIssuer;
-			this.certificateIssuer = loadCertificateIssuer();
-		}
+        public X509CrlEntry(
+            CrlEntry c,
+            bool isIndirect,
+            X509Name previousCertificateIssuer)
+        {
+            this.c = c;
+            this.isIndirect = isIndirect;
+            this.previousCertificateIssuer = previousCertificateIssuer;
+            this.certificateIssuer = loadCertificateIssuer();
+        }
 
-		private X509Name loadCertificateIssuer()
-		{
-			if (!isIndirect)
-			{
-				return null;
-			}
+        private X509Name loadCertificateIssuer()
+        {
+            if (!isIndirect)
+            {
+                return null;
+            }
 
-			Asn1OctetString ext = GetExtensionValue(X509Extensions.CertificateIssuer);
-			if (ext == null)
-			{
-				return previousCertificateIssuer;
-			}
+            Asn1OctetString ext = GetExtensionValue(X509Extensions.CertificateIssuer);
+            if (ext == null)
+            {
+                return previousCertificateIssuer;
+            }
 
-			try
-			{
-				GeneralName[] names = GeneralNames.GetInstance(
-					X509ExtensionUtilities.FromExtensionValue(ext)).GetNames();
+            try
+            {
+                GeneralName[] names = GeneralNames.GetInstance(
+                    X509ExtensionUtilities.FromExtensionValue(ext)).GetNames();
 
-				for (int i = 0; i < names.Length; i++)
-				{
-					if (names[i].TagNo == GeneralName.DirectoryName)
-					{
-						return X509Name.GetInstance(names[i].Name);
-					}
-				}
-			}
-			catch (Exception)
-			{
-			}
+                for (int i = 0; i < names.Length; i++)
+                {
+                    if (names[i].TagNo == GeneralName.DirectoryName)
+                    {
+                        return X509Name.GetInstance(names[i].Name);
+                    }
+                }
+            }
+            catch (Exception)
+            {
+            }
 
-			return null;
-		}
+            return null;
+        }
 
-		public X509Name GetCertificateIssuer()
-		{
-			return certificateIssuer;
-		}
+        public X509Name GetCertificateIssuer()
+        {
+            return certificateIssuer;
+        }
 
-		protected override X509Extensions GetX509Extensions()
-		{
-			return c.Extensions;
-		}
+        protected override X509Extensions GetX509Extensions()
+        {
+            return c.Extensions;
+        }
 
-		public byte[] GetEncoded()
-		{
-			try
-			{
-				return c.GetDerEncoded();
-			}
-			catch (Exception e)
-			{
-				throw new CrlException(e.ToString());
-			}
-		}
+        public byte[] GetEncoded()
+        {
+            try
+            {
+                return c.GetDerEncoded();
+            }
+            catch (Exception e)
+            {
+                throw new CrlException(e.ToString());
+            }
+        }
 
-		public BigInteger SerialNumber
-		{
-			get { return c.UserCertificate.Value; }
-		}
+        public BigInteger SerialNumber
+        {
+            get { return c.UserCertificate.Value; }
+        }
 
-		public DateTime RevocationDate
-		{
-			get { return c.RevocationDate.ToDateTime(); }
-		}
+        public DateTime RevocationDate
+        {
+            get { return c.RevocationDate.ToDateTime(); }
+        }
 
-		public bool HasExtensions
-		{
-			get { return c.Extensions != null; }
-		}
+        public bool HasExtensions
+        {
+            get { return c.Extensions != null; }
+        }
 
         public override bool Equals(object other)
         {
@@ -163,70 +163,70 @@ namespace Org.BouncyCastle.X509
             return hashValue;
         }
 
-		public override string ToString()
-		{
-			StringBuilder buf = new StringBuilder();
-			string nl = Platform.NewLine;
+        public override string ToString()
+        {
+            StringBuilder buf = new StringBuilder();
+            string nl = Platform.NewLine;
 
-			buf.Append("        userCertificate: ").Append(this.SerialNumber).Append(nl);
-			buf.Append("         revocationDate: ").Append(this.RevocationDate).Append(nl);
-			buf.Append("      certificateIssuer: ").Append(this.GetCertificateIssuer()).Append(nl);
+            buf.Append("        userCertificate: ").Append(this.SerialNumber).Append(nl);
+            buf.Append("         revocationDate: ").Append(this.RevocationDate).Append(nl);
+            buf.Append("      certificateIssuer: ").Append(this.GetCertificateIssuer()).Append(nl);
 
-			X509Extensions extensions = c.Extensions;
+            X509Extensions extensions = c.Extensions;
 
-			if (extensions != null)
-			{
-				IEnumerator e = extensions.ExtensionOids.GetEnumerator();
-				if (e.MoveNext())
-				{
-					buf.Append("   crlEntryExtensions:").Append(nl);
+            if (extensions != null)
+            {
+                IEnumerator e = extensions.ExtensionOids.GetEnumerator();
+                if (e.MoveNext())
+                {
+                    buf.Append("   crlEntryExtensions:").Append(nl);
 
-					do
-					{
-						DerObjectIdentifier oid = (DerObjectIdentifier)e.Current;
-						X509Extension ext = extensions.GetExtension(oid);
+                    do
+                    {
+                        DerObjectIdentifier oid = (DerObjectIdentifier)e.Current;
+                        X509Extension ext = extensions.GetExtension(oid);
 
-						if (ext.Value != null)
-						{
+                        if (ext.Value != null)
+                        {
                             Asn1Object obj = X509ExtensionUtilities.FromExtensionValue(ext.Value);
 
-							buf.Append("                       critical(")
-								.Append(ext.IsCritical)
-								.Append(") ");
-							try
-							{
-								if (oid.Equals(X509Extensions.ReasonCode))
-								{
-									buf.Append(new CrlReason(DerEnumerated.GetInstance(obj)));
-								}
-								else if (oid.Equals(X509Extensions.CertificateIssuer))
-								{
-									buf.Append("Certificate issuer: ").Append(
-										GeneralNames.GetInstance((Asn1Sequence)obj));
-								}
-								else 
-								{
-									buf.Append(oid.Id);
-									buf.Append(" value = ").Append(Asn1Dump.DumpAsString(obj));
-								}
-								buf.Append(nl);
-							}
-							catch (Exception)
-							{
-								buf.Append(oid.Id);
-								buf.Append(" value = ").Append("*****").Append(nl);
-							}
-						}
-						else
-						{
-							buf.Append(nl);
-						}
-					}
-					while (e.MoveNext());
-				}
-			}
+                            buf.Append("                       critical(")
+                                .Append(ext.IsCritical)
+                                .Append(") ");
+                            try
+                            {
+                                if (oid.Equals(X509Extensions.ReasonCode))
+                                {
+                                    buf.Append(new CrlReason(DerEnumerated.GetInstance(obj)));
+                                }
+                                else if (oid.Equals(X509Extensions.CertificateIssuer))
+                                {
+                                    buf.Append("Certificate issuer: ").Append(
+                                        GeneralNames.GetInstance((Asn1Sequence)obj));
+                                }
+                                else
+                                {
+                                    buf.Append(oid.Id);
+                                    buf.Append(" value = ").Append(Asn1Dump.DumpAsString(obj));
+                                }
+                                buf.Append(nl);
+                            }
+                            catch (Exception)
+                            {
+                                buf.Append(oid.Id);
+                                buf.Append(" value = ").Append("*****").Append(nl);
+                            }
+                        }
+                        else
+                        {
+                            buf.Append(nl);
+                        }
+                    }
+                    while (e.MoveNext());
+                }
+            }
 
-			return buf.ToString();
-		}
-	}
+            return buf.ToString();
+        }
+    }
 }

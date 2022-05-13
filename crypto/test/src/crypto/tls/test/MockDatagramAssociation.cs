@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.IO;
 using System.Net;
@@ -35,7 +35,7 @@ namespace Org.BouncyCastle.Crypto.Tls.Tests
         }
 
         private class MockDatagramTransport
-            :   DatagramTransport
+            : DatagramTransport
         {
             private readonly MockDatagramAssociation mOuter;
 

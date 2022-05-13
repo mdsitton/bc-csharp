@@ -27,30 +27,30 @@ namespace Org.BouncyCastle.Asn1
             int count = octetStrings.Length;
             switch (count)
             {
-            case 0:
-                return EmptyOctets;
-            case 1:
-                return octetStrings[0].contents;
-            default:
-            {
-                int totalOctets = 0;
-                for (int i = 0; i < count; ++i)
-                {
-                    totalOctets += octetStrings[i].contents.Length;
-                }
+                case 0:
+                    return EmptyOctets;
+                case 1:
+                    return octetStrings[0].contents;
+                default:
+                    {
+                        int totalOctets = 0;
+                        for (int i = 0; i < count; ++i)
+                        {
+                            totalOctets += octetStrings[i].contents.Length;
+                        }
 
-                byte[] str = new byte[totalOctets];
-                int pos = 0;
-                for (int i = 0; i < count; ++i)
-                {
-                    byte[] octets = octetStrings[i].contents;
-                    Array.Copy(octets, 0, str, pos, octets.Length);
-                    pos += octets.Length;
-                }
+                        byte[] str = new byte[totalOctets];
+                        int pos = 0;
+                        for (int i = 0; i < count; ++i)
+                        {
+                            byte[] octets = octetStrings[i].contents;
+                            Array.Copy(octets, 0, str, pos, octets.Length);
+                            pos += octets.Length;
+                        }
 
-                Debug.Assert(pos == totalOctets);
-                return str;
-            }
+                        Debug.Assert(pos == totalOctets);
+                        return str;
+                    }
             }
         }
 
@@ -77,9 +77,9 @@ namespace Org.BouncyCastle.Asn1
         }
 
         public BerOctetString(byte[] contents)
-			: this(contents, DefaultSegmentLimit)
-		{
-		}
+            : this(contents, DefaultSegmentLimit)
+        {
+        }
 
         public BerOctetString(Asn1OctetString[] elements)
             : this(elements, DefaultSegmentLimit)
@@ -106,19 +106,19 @@ namespace Org.BouncyCastle.Asn1
         /**
          * return the DER octets that make up this string.
          */
-		public IEnumerator GetEnumerator()
-		{
-			if (elements == null)
+        public IEnumerator GetEnumerator()
+        {
+            if (elements == null)
                 return new ChunkEnumerator(contents, segmentLimit);
 
-			return elements.GetEnumerator();
-		}
+            return elements.GetEnumerator();
+        }
 
-		[Obsolete("Use GetEnumerator() instead")]
+        [Obsolete("Use GetEnumerator() instead")]
         public IEnumerator GetObjects()
         {
-			return GetEnumerator();
-		}
+            return GetEnumerator();
+        }
 
         internal override IAsn1Encoding GetEncoding(int encoding)
         {

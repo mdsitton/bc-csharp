@@ -130,23 +130,23 @@ namespace Org.BouncyCastle.Asn1.Pkcs
 
                 switch (tag)
                 {
-                case 0:
-                {
-                    this.attributes = Asn1Set.GetInstance(tagged, false);
-                    break;
-                }
-                case 1:
-                {
-                    if (versionValue < 1)
-                        throw new ArgumentException("'publicKey' requires version v2(1) or later", "seq");
+                    case 0:
+                        {
+                            this.attributes = Asn1Set.GetInstance(tagged, false);
+                            break;
+                        }
+                    case 1:
+                        {
+                            if (versionValue < 1)
+                                throw new ArgumentException("'publicKey' requires version v2(1) or later", "seq");
 
-                    this.publicKey = DerBitString.GetInstance(tagged, false);
-                    break;
-                }
-                default:
-                {
-                    throw new ArgumentException("unknown optional field in private key info", "seq");
-                }
+                            this.publicKey = DerBitString.GetInstance(tagged, false);
+                            break;
+                        }
+                    default:
+                        {
+                            throw new ArgumentException("unknown optional field in private key info", "seq");
+                        }
                 }
             }
         }
@@ -175,7 +175,7 @@ namespace Org.BouncyCastle.Asn1.Pkcs
         public virtual Asn1OctetString PrivateKeyData
         {
             get { return privateKey; }
-        } 
+        }
 
         public virtual Asn1Object ParsePrivateKey()
         {

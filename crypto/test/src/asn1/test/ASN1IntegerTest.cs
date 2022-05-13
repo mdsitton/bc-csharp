@@ -24,9 +24,6 @@ namespace Org.BouncyCastle.Asn1.Tests
 
         public override void PerformTest()
         {
-#if NETCF_1_0 || NETCF_2_0 || SILVERLIGHT || (PORTABLE && !DOTNET) || NET_1_1
-            // Can't SetEnvironmentVariable !
-#else
             SetAllowUnsafeProperty(true);
 
             Asn1Sequence.GetInstance(suspectKey);
@@ -351,11 +348,7 @@ namespace Org.BouncyCastle.Asn1.Tests
 
         private void SetAllowUnsafeProperty(bool allowUnsafe)
         {
-#if NETCF_1_0 || NETCF_2_0 || SILVERLIGHT || (PORTABLE && !DOTNET) || NET_1_1
-            // Can't SetEnvironmentVariable !
-#else
             Environment.SetEnvironmentVariable(DerInteger.AllowUnsafeProperty, allowUnsafe ? "true" : "false");
-#endif
         }
 
         private void CheckIntValue(DerInteger i, int n)

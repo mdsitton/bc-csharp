@@ -38,8 +38,8 @@ namespace Org.BouncyCastle.Asn1.Tests
         }
 
         private IAsn1Convertible createEntryValue(
-            DerObjectIdentifier	oid,
-            string				value)
+            DerObjectIdentifier oid,
+            string value)
         {
             IDictionary attrs = new Hashtable();
             attrs.Add(oid, value);
@@ -57,8 +57,8 @@ namespace Org.BouncyCastle.Asn1.Tests
         }
 
         private IAsn1Convertible createEntryValueFromString(
-            DerObjectIdentifier	oid,
-            string				val)
+            DerObjectIdentifier oid,
+            string val)
         {
             IDictionary attrs = new Hashtable();
             attrs.Add(oid, val);
@@ -67,16 +67,16 @@ namespace Org.BouncyCastle.Asn1.Tests
 
             X509Name name = new X509Name(new X509Name(ord, attrs).ToString());
 
-            Asn1Sequence seq = (Asn1Sequence) name.ToAsn1Object();
-            Asn1Set asn1Set = (Asn1Set) seq[0];
-            seq = (Asn1Sequence) asn1Set[0];
+            Asn1Sequence seq = (Asn1Sequence)name.ToAsn1Object();
+            Asn1Set asn1Set = (Asn1Set)seq[0];
+            seq = (Asn1Sequence)asn1Set[0];
 
             return seq[1];
         }
 
         private void doTestEncodingPrintableString(
-            DerObjectIdentifier	oid,
-            string				value)
+            DerObjectIdentifier oid,
+            string value)
         {
             IAsn1Convertible converted = createEntryValue(oid, value);
             if (!(converted is DerPrintableString))
@@ -87,7 +87,7 @@ namespace Org.BouncyCastle.Asn1.Tests
 
         private void doTestEncodingIA5String(
             DerObjectIdentifier oid,
-            string				value)
+            string value)
         {
             IAsn1Convertible converted = createEntryValue(oid, value);
             if (!(converted is DerIA5String))
@@ -97,8 +97,8 @@ namespace Org.BouncyCastle.Asn1.Tests
         }
 
         private void doTestEncodingGeneralizedTime(
-            DerObjectIdentifier	oid,
-            string				val)
+            DerObjectIdentifier oid,
+            string val)
         {
             IAsn1Convertible converted = createEntryValue(oid, val);
             if (!(converted is DerGeneralizedTime))
@@ -195,10 +195,10 @@ namespace Org.BouncyCastle.Asn1.Tests
             }
 
             // FIXME Sort out X509Name hashcode problem
-//			if (name1.GetHashCode() != name2.GetHashCode())
-//			{
-//				Fail("Failed reverse name test GetHashCode");
-//			}
+            //			if (name1.GetHashCode() != name2.GetHashCode())
+            //			{
+            //				Fail("Failed reverse name test GetHashCode");
+            //			}
 
             if (name1.Equivalent(name2, true))
             {
@@ -395,10 +395,10 @@ namespace Org.BouncyCastle.Asn1.Tests
                 Fail("inequality test with sequence and bad set");
             }
 
-//			if (name1.Equals(new DerSequence(new DerSet(new DerSet(v))), true))
-//			{
-//				Fail("inequality test with sequence and bad set");
-//			}
+            //			if (name1.Equals(new DerSequence(new DerSet(new DerSet(v))), true))
+            //			{
+            //				Fail("inequality test with sequence and bad set");
+            //			}
             try
             {
                 X509Name.GetInstance(new DerSequence(new DerSet(new DerSet(v))));
@@ -414,10 +414,10 @@ namespace Org.BouncyCastle.Asn1.Tests
                 Fail("inequality test with sequence and short sequence");
             }
 
-//			if (name1.Equals(new DerSequence(new DerSet(DerSequence.Empty)), true))
-//			{
-//				Fail("inequality test with sequence and short sequence");
-//			}
+            //			if (name1.Equals(new DerSequence(new DerSet(DerSequence.Empty)), true))
+            //			{
+            //				Fail("inequality test with sequence and short sequence");
+            //			}
             try
             {
                 X509Name.GetInstance(new DerSequence(new DerSet(DerSequence.Empty)));
@@ -477,7 +477,7 @@ namespace Org.BouncyCastle.Asn1.Tests
 
             DerUtf8String converted = (DerUtf8String)
                 new X509DefaultEntryConverter().GetConvertedValue(
-                X509Name.L , hexEncodedString);
+                X509Name.L, hexEncodedString);
 
             if (!converted.Equals(testString))
             {
@@ -487,8 +487,8 @@ namespace Org.BouncyCastle.Asn1.Tests
             //
             // try escaped.
             //
-            converted = (DerUtf8String) new X509DefaultEntryConverter().GetConvertedValue(
-                X509Name.L , "\\" + hexEncodedString);
+            converted = (DerUtf8String)new X509DefaultEntryConverter().GetConvertedValue(
+                X509Name.L, "\\" + hexEncodedString);
 
             if (!converted.Equals(new DerUtf8String(hexEncodedString)))
             {
@@ -613,8 +613,8 @@ namespace Org.BouncyCastle.Asn1.Tests
         }
 
         private void equalityTest(
-            X509Name	x509Name,
-            X509Name	x509Name1)
+            X509Name x509Name,
+            X509Name x509Name1)
         {
             if (!x509Name.Equivalent(x509Name1))
             {
@@ -622,10 +622,10 @@ namespace Org.BouncyCastle.Asn1.Tests
             }
 
             // FIXME Sort out X509Name hashcode problem
-//			if (x509Name.GetHashCode() != x509Name1.GetHashCode())
-//			{
-//				Fail("GetHashCode test failed for " + x509Name + " : " + x509Name1);
-//			}
+            //			if (x509Name.GetHashCode() != x509Name1.GetHashCode())
+            //			{
+            //				Fail("GetHashCode test failed for " + x509Name + " : " + x509Name1);
+            //			}
 
             if (!x509Name.Equivalent(x509Name1, true))
             {
@@ -634,8 +634,8 @@ namespace Org.BouncyCastle.Asn1.Tests
         }
 
         private bool CompareVectors(
-            IList	one,
-            IList	two)
+            IList one,
+            IList two)
         {
             if (one.Count != two.Count)
                 return false;

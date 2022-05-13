@@ -3,9 +3,6 @@ using System.Collections;
 using System.IO;
 using System.Text;
 
-#if SILVERLIGHT || PORTABLE
-using System.Collections.Generic;
-#endif
 
 using Org.BouncyCastle.Asn1.Pkcs;
 using Org.BouncyCastle.Utilities;
@@ -24,8 +21,7 @@ namespace Org.BouncyCastle.Asn1.X509
     *                                   value ANY }
     * </pre>
     */
-    public class X509Name
-        : Asn1Encodable
+    public class X509Name : Asn1Encodable
     {
         /**
         * country code - StringType(SIZE(2))
@@ -140,7 +136,7 @@ namespace Org.BouncyCastle.Asn1.X509
         /**
          * ISIS-MTT NameAtBirth - DirectoryString(SIZE(1..64)
          */
-        public static readonly DerObjectIdentifier NameAtBirth =  new DerObjectIdentifier("1.3.36.8.3.14");
+        public static readonly DerObjectIdentifier NameAtBirth = new DerObjectIdentifier("1.3.36.8.3.14");
 
         /**
          * RFC 3039 PostalAddress - SEQUENCE SIZE (1..6) OF
@@ -199,7 +195,7 @@ namespace Org.BouncyCastle.Asn1.X509
         * determines whether or not strings should be processed and printed
         * from back to front.
         */
-//        public static bool DefaultReverse = false;
+        //        public static bool DefaultReverse = false;
         public static bool DefaultReverse
         {
             get { return defaultReverse[0]; }
@@ -208,7 +204,6 @@ namespace Org.BouncyCastle.Asn1.X509
 
         private static readonly bool[] defaultReverse = { false };
 
-#if SILVERLIGHT || PORTABLE
         /**
         * default look up table translating OID values into their common symbols following
         * the convention in RFC 2253 with a few extras
@@ -230,29 +225,6 @@ namespace Org.BouncyCastle.Asn1.X509
         * look up table translating common symbols into their OIDS.
         */
         public static readonly IDictionary DefaultLookup = Platform.CreateHashtable();
-#else
-        /**
-        * default look up table translating OID values into their common symbols following
-        * the convention in RFC 2253 with a few extras
-        */
-        public static readonly Hashtable DefaultSymbols = new Hashtable();
-
-        /**
-         * look up table translating OID values into their common symbols following the convention in RFC 2253
-         */
-        public static readonly Hashtable RFC2253Symbols = new Hashtable();
-
-        /**
-         * look up table translating OID values into their common symbols following the convention in RFC 1779
-         *
-         */
-        public static readonly Hashtable RFC1779Symbols = new Hashtable();
-
-        /**
-        * look up table translating common symbols into their OIDS.
-        */
-        public static readonly Hashtable DefaultLookup = new Hashtable();
-#endif
 
         static X509Name()
         {
@@ -343,9 +315,9 @@ namespace Org.BouncyCastle.Asn1.X509
         private readonly IList ordering = Platform.CreateArrayList();
         private readonly X509NameEntryConverter converter;
 
-        private IList		    values = Platform.CreateArrayList();
-        private IList           added = Platform.CreateArrayList();
-        private Asn1Sequence	seq;
+        private IList values = Platform.CreateArrayList();
+        private IList added = Platform.CreateArrayList();
+        private Asn1Sequence seq;
 
         /**
         * Return a X509Name based on the passed in tagged object.
@@ -354,15 +326,12 @@ namespace Org.BouncyCastle.Asn1.X509
         * @param explicitly true if explicitly tagged false otherwise.
         * @return the X509Name
         */
-        public static X509Name GetInstance(
-            Asn1TaggedObject	obj,
-            bool				explicitly)
+        public static X509Name GetInstance(Asn1TaggedObject obj, bool explicitly)
         {
             return GetInstance(Asn1Sequence.GetInstance(obj, explicitly));
         }
 
-        public static X509Name GetInstance(
-            object obj)
+        public static X509Name GetInstance(object obj)
         {
             if (obj is X509Name)
                 return (X509Name)obj;
@@ -380,8 +349,7 @@ namespace Org.BouncyCastle.Asn1.X509
         *
         * the principal will be a list of constructed sets, each containing an (OID, string) pair.
         */
-        protected X509Name(
-            Asn1Sequence seq)
+        protected X509Name(Asn1Sequence seq)
         {
             this.seq = seq;
 
@@ -427,9 +395,7 @@ namespace Org.BouncyCastle.Asn1.X509
         * construction process. The ordering ArrayList should contain the OIDs
         * in the order they are meant to be encoded or printed in ToString.</p>
         */
-        public X509Name(
-            IList       ordering,
-            IDictionary attributes)
+        public X509Name(IList ordering, IDictionary attributes)
             : this(ordering, attributes, new X509DefaultEntryConverter())
         {
         }
@@ -445,10 +411,7 @@ namespace Org.BouncyCastle.Asn1.X509
         * The passed in converter will be used to convert the strings into their
         * ASN.1 counterparts.</p>
         */
-        public X509Name(
-            IList                   ordering,
-            IDictionary             attributes,
-            X509NameEntryConverter	converter)
+        public X509Name(IList ordering, IDictionary attributes, X509NameEntryConverter converter)
         {
             this.converter = converter;
 
@@ -469,9 +432,7 @@ namespace Org.BouncyCastle.Asn1.X509
         /**
         * Takes two vectors one of the oids and the other of the values.
         */
-        public X509Name(
-            IList   oids,
-            IList   values)
+        public X509Name(IList oids, IList values)
             : this(oids, values, new X509DefaultEntryConverter())
         {
         }
@@ -482,10 +443,7 @@ namespace Org.BouncyCastle.Asn1.X509
         * The passed in converter will be used to convert the strings into their
         * ASN.1 counterparts.</p>
         */
-        public X509Name(
-            IList			    	oids,
-            IList		    		values,
-            X509NameEntryConverter	converter)
+        public X509Name(IList oids, IList values, X509NameEntryConverter converter)
         {
             this.converter = converter;
 
@@ -506,8 +464,7 @@ namespace Org.BouncyCastle.Asn1.X509
         * Takes an X509 dir name as a string of the format "C=AU, ST=Victoria", or
         * some such, converting it into an ordered set of name attributes.
         */
-        public X509Name(
-            string dirName)
+        public X509Name(string dirName)
             : this(DefaultReverse, (IDictionary)DefaultLookup, dirName)
         {
         }
@@ -518,9 +475,7 @@ namespace Org.BouncyCastle.Asn1.X509
         * string value being converted to its associated ASN.1 type using the passed
         * in converter.
         */
-        public X509Name(
-            string					dirName,
-            X509NameEntryConverter	converter)
+        public X509Name(string dirName, X509NameEntryConverter converter)
             : this(DefaultReverse, DefaultLookup, dirName, converter)
         {
         }
@@ -531,9 +486,7 @@ namespace Org.BouncyCastle.Asn1.X509
         * is true, create the encoded version of the sequence starting from the
         * last element in the string.
         */
-        public X509Name(
-            bool	reverse,
-            string	dirName)
+        public X509Name(bool reverse, string dirName)
             : this(reverse, (IDictionary)DefaultLookup, dirName)
         {
         }
@@ -545,10 +498,7 @@ namespace Org.BouncyCastle.Asn1.X509
         * in converter. If reverse is true the ASN.1 sequence representing the DN will
         * be built by starting at the end of the string, rather than the start.
         */
-        public X509Name(
-            bool					reverse,
-            string					dirName,
-            X509NameEntryConverter	converter)
+        public X509Name(bool reverse, string dirName, X509NameEntryConverter converter)
             : this(reverse, DefaultLookup, dirName, converter)
         {
         }
@@ -566,17 +516,12 @@ namespace Org.BouncyCastle.Asn1.X509
         * @param lookUp table of names and their oids.
         * @param dirName the X.500 string to be parsed.
         */
-        public X509Name(
-            bool		reverse,
-            IDictionary lookUp,
-            string		dirName)
+        public X509Name(bool reverse, IDictionary lookUp, string dirName)
             : this(reverse, lookUp, dirName, new X509DefaultEntryConverter())
         {
         }
 
-        private DerObjectIdentifier DecodeOid(
-            string		name,
-            IDictionary lookUp)
+        private DerObjectIdentifier DecodeOid(string name, IDictionary lookUp)
         {
             if (Platform.StartsWith(Platform.ToUpperInvariant(name), "OID."))
             {
@@ -587,7 +532,7 @@ namespace Org.BouncyCastle.Asn1.X509
                 return new DerObjectIdentifier(name);
             }
 
-            DerObjectIdentifier oid = (DerObjectIdentifier)lookUp[Platform.ToLowerInvariant(name)];
+            DerObjectIdentifier oid = (DerObjectIdentifier)lookUp[name.ToLowerInvariant()];
             if (oid == null)
             {
                 throw new ArgumentException("Unknown object id - " + name + " - passed to distinguished name");
@@ -609,11 +554,7 @@ namespace Org.BouncyCastle.Asn1.X509
         * @param dirName the string dirName
         * @param converter the converter to convert string values into their ASN.1 equivalents
         */
-        public X509Name(
-            bool					reverse,
-            IDictionary				lookUp,
-            string					dirName,
-            X509NameEntryConverter	converter)
+        public X509Name(bool reverse, IDictionary lookUp, string dirName, X509NameEntryConverter converter)
         {
             this.converter = converter;
             X509NameTokenizer nTok = new X509NameTokenizer(dirName);
@@ -630,7 +571,7 @@ namespace Org.BouncyCastle.Asn1.X509
 
                 string name = token.Substring(0, index);
                 string value = token.Substring(index + 1);
-                DerObjectIdentifier	oid = DecodeOid(name, lookUp);
+                DerObjectIdentifier oid = DecodeOid(name, lookUp);
 
                 if (value.IndexOf('+') > 0)
                 {
@@ -663,9 +604,9 @@ namespace Org.BouncyCastle.Asn1.X509
 
             if (reverse)
             {
-//				this.ordering.Reverse();
-//				this.values.Reverse();
-//				this.added.Reverse();
+                //				this.ordering.Reverse();
+                //				this.values.Reverse();
+                //				this.added.Reverse();
                 IList o = Platform.CreateArrayList();
                 IList v = Platform.CreateArrayList();
                 IList a = Platform.CreateArrayList();
@@ -673,7 +614,7 @@ namespace Org.BouncyCastle.Asn1.X509
 
                 for (int i = 0; i < this.ordering.Count; i++)
                 {
-                    if (!((bool) this.added[i]))
+                    if (!((bool)this.added[i]))
                     {
                         count = 0;
                     }
@@ -694,16 +635,16 @@ namespace Org.BouncyCastle.Asn1.X509
         /**
         * return an IList of the oids in the name, in the order they were found.
         */
-        public IList GetOidList()
+        public List<string> GetOidList()
         {
-            return Platform.CreateArrayList(ordering);
+            return new List<string>();
         }
 
         /**
         * return an IList of the values found in the name, in the order they
         * were found.
         */
-        public IList GetValueList()
+        public List<string> GetValueList()
         {
             return GetValueList(null);
         }
@@ -712,16 +653,16 @@ namespace Org.BouncyCastle.Asn1.X509
          * return an IList of the values found in the name, in the order they
          * were found, with the DN label corresponding to passed in oid.
          */
-        public IList GetValueList(DerObjectIdentifier oid)
+        public List<string> GetValueList(DerObjectIdentifier oid)
         {
-            IList v = Platform.CreateArrayList();
+            List<string> v = new List<string>();
             for (int i = 0; i != values.Count; i++)
             {
                 if (null == oid || oid.Equals(ordering[i]))
                 {
                     string val = (string)values[i];
 
-                    if (Platform.StartsWith(val, "\\#"))
+                    if (val.StartsWith("\\#", StringComparison.Ordinal))
                     {
                         val = val.Substring(1);
                     }
@@ -774,9 +715,7 @@ namespace Org.BouncyCastle.Asn1.X509
         /// <param name="other">The X509Name object to test equivalency against.</param>
         /// <param name="inOrder">If true, the order of elements must be the same,
         /// as well as the values associated with each element.</param>
-        public bool Equivalent(
-            X509Name	other,
-            bool		inOrder)
+        public bool Equivalent(X509Name other, bool inOrder)
         {
             if (!inOrder)
                 return this.Equivalent(other);
@@ -794,14 +733,14 @@ namespace Org.BouncyCastle.Asn1.X509
 
             for (int i = 0; i < orderingSize; i++)
             {
-                DerObjectIdentifier oid = (DerObjectIdentifier) ordering[i];
-                DerObjectIdentifier oOid = (DerObjectIdentifier) other.ordering[i];
+                DerObjectIdentifier oid = (DerObjectIdentifier)ordering[i];
+                DerObjectIdentifier oOid = (DerObjectIdentifier)other.ordering[i];
 
                 if (!oid.Equals(oOid))
                     return false;
 
-                string val = (string) values[i];
-                string oVal = (string) other.values[i];
+                string val = (string)values[i];
+                string oVal = (string)other.values[i];
 
                 if (!equivalentStrings(val, oVal))
                     return false;
@@ -813,8 +752,7 @@ namespace Org.BouncyCastle.Asn1.X509
         /**
          * test for equivalence - note: case is ignored.
          */
-        public bool Equivalent(
-            X509Name other)
+        public bool Equivalent(X509Name other)
         {
             if (other == null)
                 return false;
@@ -848,7 +786,7 @@ namespace Org.BouncyCastle.Asn1.X509
             for (int i = start; i != end; i += delta)
             {
                 bool found = false;
-                DerObjectIdentifier  oid = (DerObjectIdentifier)ordering[i];
+                DerObjectIdentifier oid = (DerObjectIdentifier)ordering[i];
                 string value = (string)values[i];
 
                 for (int j = 0; j < orderingSize; j++)
@@ -867,7 +805,7 @@ namespace Org.BouncyCastle.Asn1.X509
                         if (equivalentStrings(value, oValue))
                         {
                             indexes[j] = true;
-                            found      = true;
+                            found = true;
                             break;
                         }
                     }
@@ -882,9 +820,7 @@ namespace Org.BouncyCastle.Asn1.X509
             return true;
         }
 
-        private static bool equivalentStrings(
-            string	s1,
-            string	s2)
+        private static bool equivalentStrings(string s1, string s2)
         {
             string v1 = canonicalize(s1);
             string v2 = canonicalize(s2);
@@ -903,26 +839,23 @@ namespace Org.BouncyCastle.Asn1.X509
             return true;
         }
 
-        private static string canonicalize(
-            string s)
+        private static string canonicalize(string s)
         {
-            string v = Platform.ToLowerInvariant(s).Trim();
-
-            if (Platform.StartsWith(v, "#"))
+            string v = s.ToLowerInvariant().Trim();
+            if (v.StartsWith('#'))
             {
                 Asn1Object obj = decodeObject(v);
 
-                if (obj is IAsn1String)
+                if (obj is IAsn1String str)
                 {
-                    v = Platform.ToLowerInvariant(((IAsn1String)obj).GetString()).Trim();
+                    v = str.GetString().ToLowerInvariant().Trim();
                 }
             }
 
             return v;
         }
 
-        private static Asn1Object decodeObject(
-            string v)
+        private static Asn1Object decodeObject(string v)
         {
             try
             {
@@ -934,8 +867,7 @@ namespace Org.BouncyCastle.Asn1.X509
             }
         }
 
-        private static string stripInternalSpaces(
-            string str)
+        private static string stripInternalSpaces(string str)
         {
             StringBuilder res = new StringBuilder();
 
@@ -959,11 +891,10 @@ namespace Org.BouncyCastle.Asn1.X509
             return res.ToString();
         }
 
-        private void AppendValue(
-            StringBuilder		buf,
-            IDictionary         oidSymbols,
-            DerObjectIdentifier	oid,
-            string				val)
+        private void AppendValue(StringBuilder buf,
+            IDictionary oidSymbols,
+            DerObjectIdentifier oid,
+            string val)
         {
             string sym = (string)oidSymbols[oid];
 
@@ -984,7 +915,7 @@ namespace Org.BouncyCastle.Asn1.X509
 
             int end = buf.Length;
 
-            if (Platform.StartsWith(val, "\\#"))
+            if (val.StartsWith("\\#", StringComparison.Ordinal))
             {
                 index += 2;
             }
@@ -1020,21 +951,15 @@ namespace Org.BouncyCastle.Asn1.X509
         * @param reverse if true start at the end of the sequence and work back.
         * @param oidSymbols look up table strings for oids.
         */
-        public string ToString(
-            bool		reverse,
-            IDictionary oidSymbols)
+        public string ToString(bool reverse, IDictionary oidSymbols)
         {
-#if SILVERLIGHT || PORTABLE
             List<object> components = new List<object>();
-#else
-            ArrayList components = new ArrayList();
-#endif
 
             StringBuilder ava = null;
 
             for (int i = 0; i < ordering.Count; i++)
             {
-                if ((bool) added[i])
+                if ((bool)added[i])
                 {
                     ava.Append('+');
                     AppendValue(ava, oidSymbols,
@@ -1074,7 +999,7 @@ namespace Org.BouncyCastle.Asn1.X509
 
         public override string ToString()
         {
-            return ToString(DefaultReverse, (IDictionary)DefaultSymbols);
+            return ToString(DefaultReverse, DefaultSymbols);
         }
     }
 }

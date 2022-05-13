@@ -6,13 +6,12 @@ namespace Org.BouncyCastle.Utilities.IO
 {
     public abstract class BaseInputStream : Stream
     {
-		private bool closed;
+        private bool closed;
 
-		public sealed override bool CanRead { get { return !closed; } }
+        public sealed override bool CanRead { get { return !closed; } }
         public sealed override bool CanSeek { get { return false; } }
         public sealed override bool CanWrite { get { return false; } }
 
-#if PORTABLE
         protected override void Dispose(bool disposing)
         {
             if (disposing)
@@ -21,15 +20,14 @@ namespace Org.BouncyCastle.Utilities.IO
             }
             base.Dispose(disposing);
         }
-#else
-		public override void Close()
+
+        public override void Close()
         {
             closed = true;
             base.Close();
         }
-#endif
 
-        public sealed override void Flush() {}
+        public sealed override void Flush() { }
         public sealed override long Length { get { throw new NotSupportedException(); } }
         public sealed override long Position
         {
@@ -47,7 +45,7 @@ namespace Org.BouncyCastle.Utilities.IO
                 {
                     int b = ReadByte();
                     if (b == -1) break;
-                    buffer[pos++] = (byte) b;
+                    buffer[pos++] = (byte)b;
                 }
             }
             catch (IOException)

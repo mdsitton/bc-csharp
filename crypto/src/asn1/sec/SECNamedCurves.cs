@@ -47,7 +47,7 @@ namespace Org.BouncyCastle.Asn1.Sec
         internal class Secp112r1Holder
             : X9ECParametersHolder
         {
-            private Secp112r1Holder() {}
+            private Secp112r1Holder() { }
 
             internal static readonly X9ECParametersHolder Instance = new Secp112r1Holder();
 
@@ -69,7 +69,7 @@ namespace Org.BouncyCastle.Asn1.Sec
                 ECCurve curve = Curve;
 
                 X9ECPoint G = ConfigureBasepoint(curve,
-                    "0409487239995A5EE76B55F9C2F098A89CE5AF8724C0A23E0E0FF77500"); 
+                    "0409487239995A5EE76B55F9C2F098A89CE5AF8724C0A23E0E0FF77500");
 
                 return new X9ECParameters(curve, G, curve.Order, curve.Cofactor, S);
             }
@@ -81,7 +81,7 @@ namespace Org.BouncyCastle.Asn1.Sec
         internal class Secp112r2Holder
             : X9ECParametersHolder
         {
-            private Secp112r2Holder() {}
+            private Secp112r2Holder() { }
 
             internal static readonly X9ECParametersHolder Instance = new Secp112r2Holder();
 
@@ -115,7 +115,7 @@ namespace Org.BouncyCastle.Asn1.Sec
         internal class Secp128r1Holder
             : X9ECParametersHolder
         {
-            private Secp128r1Holder() {}
+            private Secp128r1Holder() { }
 
             internal static readonly X9ECParametersHolder Instance = new Secp128r1Holder();
 
@@ -149,7 +149,7 @@ namespace Org.BouncyCastle.Asn1.Sec
         internal class Secp128r2Holder
             : X9ECParametersHolder
         {
-            private Secp128r2Holder() {}
+            private Secp128r2Holder() { }
 
             internal static readonly X9ECParametersHolder Instance = new Secp128r2Holder();
 
@@ -183,7 +183,7 @@ namespace Org.BouncyCastle.Asn1.Sec
         internal class Secp160k1Holder
             : X9ECParametersHolder
         {
-            private Secp160k1Holder() {}
+            private Secp160k1Holder() { }
 
             internal static readonly X9ECParametersHolder Instance = new Secp160k1Holder();
 
@@ -231,7 +231,7 @@ namespace Org.BouncyCastle.Asn1.Sec
         internal class Secp160r1Holder
             : X9ECParametersHolder
         {
-            private Secp160r1Holder() {}
+            private Secp160r1Holder() { }
 
             internal static readonly X9ECParametersHolder Instance = new Secp160r1Holder();
 
@@ -265,7 +265,7 @@ namespace Org.BouncyCastle.Asn1.Sec
         internal class Secp160r2Holder
             : X9ECParametersHolder
         {
-            private Secp160r2Holder() {}
+            private Secp160r2Holder() { }
 
             internal static readonly X9ECParametersHolder Instance = new Secp160r2Holder();
 
@@ -299,7 +299,7 @@ namespace Org.BouncyCastle.Asn1.Sec
         internal class Secp192k1Holder
             : X9ECParametersHolder
         {
-            private Secp192k1Holder() {}
+            private Secp192k1Holder() { }
 
             internal static readonly X9ECParametersHolder Instance = new Secp192k1Holder();
 
@@ -347,7 +347,7 @@ namespace Org.BouncyCastle.Asn1.Sec
         internal class Secp192r1Holder
             : X9ECParametersHolder
         {
-            private Secp192r1Holder() {}
+            private Secp192r1Holder() { }
 
             internal static readonly X9ECParametersHolder Instance = new Secp192r1Holder();
 
@@ -381,7 +381,7 @@ namespace Org.BouncyCastle.Asn1.Sec
         internal class Secp224k1Holder
             : X9ECParametersHolder
         {
-            private Secp224k1Holder() {}
+            private Secp224k1Holder() { }
 
             internal static readonly X9ECParametersHolder Instance = new Secp224k1Holder();
 
@@ -429,7 +429,7 @@ namespace Org.BouncyCastle.Asn1.Sec
         internal class Secp224r1Holder
             : X9ECParametersHolder
         {
-            private Secp224r1Holder() {}
+            private Secp224r1Holder() { }
 
             internal static readonly X9ECParametersHolder Instance = new Secp224r1Holder();
 
@@ -463,7 +463,7 @@ namespace Org.BouncyCastle.Asn1.Sec
         internal class Secp256k1Holder
             : X9ECParametersHolder
         {
-            private Secp256k1Holder() {}
+            private Secp256k1Holder() { }
 
             internal static readonly X9ECParametersHolder Instance = new Secp256k1Holder();
 
@@ -511,7 +511,7 @@ namespace Org.BouncyCastle.Asn1.Sec
         internal class Secp256r1Holder
             : X9ECParametersHolder
         {
-            private Secp256r1Holder() {}
+            private Secp256r1Holder() { }
 
             internal static readonly X9ECParametersHolder Instance = new Secp256r1Holder();
 
@@ -545,7 +545,7 @@ namespace Org.BouncyCastle.Asn1.Sec
         internal class Secp384r1Holder
             : X9ECParametersHolder
         {
-            private Secp384r1Holder() {}
+            private Secp384r1Holder() { }
 
             internal static readonly X9ECParametersHolder Instance = new Secp384r1Holder();
 
@@ -580,7 +580,7 @@ namespace Org.BouncyCastle.Asn1.Sec
         internal class Secp521r1Holder
             : X9ECParametersHolder
         {
-            private Secp521r1Holder() {}
+            private Secp521r1Holder() { }
 
             internal static readonly X9ECParametersHolder Instance = new Secp521r1Holder();
 
@@ -615,7 +615,7 @@ namespace Org.BouncyCastle.Asn1.Sec
         internal class Sect113r1Holder
             : X9ECParametersHolder
         {
-            private Sect113r1Holder() {}
+            private Sect113r1Holder() { }
 
             internal static readonly X9ECParametersHolder Instance = new Sect113r1Holder();
 
@@ -650,7 +650,7 @@ namespace Org.BouncyCastle.Asn1.Sec
         internal class Sect113r2Holder
             : X9ECParametersHolder
         {
-            private Sect113r2Holder() {}
+            private Sect113r2Holder() { }
 
             internal static readonly X9ECParametersHolder Instance = new Sect113r2Holder();
 
@@ -685,7 +685,7 @@ namespace Org.BouncyCastle.Asn1.Sec
         internal class Sect131r1Holder
             : X9ECParametersHolder
         {
-            private Sect131r1Holder() {}
+            private Sect131r1Holder() { }
 
             internal static readonly X9ECParametersHolder Instance = new Sect131r1Holder();
 
@@ -722,7 +722,7 @@ namespace Org.BouncyCastle.Asn1.Sec
         internal class Sect131r2Holder
             : X9ECParametersHolder
         {
-            private Sect131r2Holder() {}
+            private Sect131r2Holder() { }
 
             internal static readonly X9ECParametersHolder Instance = new Sect131r2Holder();
 
@@ -759,7 +759,7 @@ namespace Org.BouncyCastle.Asn1.Sec
         internal class Sect163k1Holder
             : X9ECParametersHolder
         {
-            private Sect163k1Holder() {}
+            private Sect163k1Holder() { }
 
             internal static readonly X9ECParametersHolder Instance = new Sect163k1Holder();
 
@@ -796,7 +796,7 @@ namespace Org.BouncyCastle.Asn1.Sec
         internal class Sect163r1Holder
             : X9ECParametersHolder
         {
-            private Sect163r1Holder() {}
+            private Sect163r1Holder() { }
 
             internal static readonly X9ECParametersHolder Instance = new Sect163r1Holder();
 
@@ -833,7 +833,7 @@ namespace Org.BouncyCastle.Asn1.Sec
         internal class Sect163r2Holder
             : X9ECParametersHolder
         {
-            private Sect163r2Holder() {}
+            private Sect163r2Holder() { }
 
             internal static readonly X9ECParametersHolder Instance = new Sect163r2Holder();
 
@@ -870,7 +870,7 @@ namespace Org.BouncyCastle.Asn1.Sec
         internal class Sect193r1Holder
             : X9ECParametersHolder
         {
-            private Sect193r1Holder() {}
+            private Sect193r1Holder() { }
 
             internal static readonly X9ECParametersHolder Instance = new Sect193r1Holder();
 
@@ -905,7 +905,7 @@ namespace Org.BouncyCastle.Asn1.Sec
         internal class Sect193r2Holder
             : X9ECParametersHolder
         {
-            private Sect193r2Holder() {}
+            private Sect193r2Holder() { }
 
             internal static readonly X9ECParametersHolder Instance = new Sect193r2Holder();
 
@@ -940,7 +940,7 @@ namespace Org.BouncyCastle.Asn1.Sec
         internal class Sect233k1Holder
             : X9ECParametersHolder
         {
-            private Sect233k1Holder() {}
+            private Sect233k1Holder() { }
 
             internal static readonly X9ECParametersHolder Instance = new Sect233k1Holder();
 
@@ -975,7 +975,7 @@ namespace Org.BouncyCastle.Asn1.Sec
         internal class Sect233r1Holder
             : X9ECParametersHolder
         {
-            private Sect233r1Holder() {}
+            private Sect233r1Holder() { }
 
             internal static readonly X9ECParametersHolder Instance = new Sect233r1Holder();
 
@@ -1010,7 +1010,7 @@ namespace Org.BouncyCastle.Asn1.Sec
         internal class Sect239k1Holder
             : X9ECParametersHolder
         {
-            private Sect239k1Holder() {}
+            private Sect239k1Holder() { }
 
             internal static readonly X9ECParametersHolder Instance = new Sect239k1Holder();
 
@@ -1045,7 +1045,7 @@ namespace Org.BouncyCastle.Asn1.Sec
         internal class Sect283k1Holder
             : X9ECParametersHolder
         {
-            private Sect283k1Holder() {}
+            private Sect283k1Holder() { }
 
             internal static readonly X9ECParametersHolder Instance = new Sect283k1Holder();
 
@@ -1083,7 +1083,7 @@ namespace Org.BouncyCastle.Asn1.Sec
         internal class Sect283r1Holder
             : X9ECParametersHolder
         {
-            private Sect283r1Holder() {}
+            private Sect283r1Holder() { }
 
             internal static readonly X9ECParametersHolder Instance = new Sect283r1Holder();
 
@@ -1121,7 +1121,7 @@ namespace Org.BouncyCastle.Asn1.Sec
         internal class Sect409k1Holder
             : X9ECParametersHolder
         {
-            private Sect409k1Holder() {}
+            private Sect409k1Holder() { }
 
             internal static readonly X9ECParametersHolder Instance = new Sect409k1Holder();
 
@@ -1157,7 +1157,7 @@ namespace Org.BouncyCastle.Asn1.Sec
         internal class Sect409r1Holder
             : X9ECParametersHolder
         {
-            private Sect409r1Holder() {}
+            private Sect409r1Holder() { }
 
             internal static readonly X9ECParametersHolder Instance = new Sect409r1Holder();
 
@@ -1193,7 +1193,7 @@ namespace Org.BouncyCastle.Asn1.Sec
         internal class Sect571k1Holder
             : X9ECParametersHolder
         {
-            private Sect571k1Holder() {}
+            private Sect571k1Holder() { }
 
             internal static readonly X9ECParametersHolder Instance = new Sect571k1Holder();
 
@@ -1231,7 +1231,7 @@ namespace Org.BouncyCastle.Asn1.Sec
         internal class Sect571r1Holder
             : X9ECParametersHolder
         {
-            private Sect571r1Holder() {}
+            private Sect571r1Holder() { }
 
             internal static readonly X9ECParametersHolder Instance = new Sect571r1Holder();
 
@@ -1269,9 +1269,9 @@ namespace Org.BouncyCastle.Asn1.Sec
         private static readonly IDictionary names = Platform.CreateHashtable();
 
         private static void DefineCurve(
-            string					name,
-            DerObjectIdentifier		oid,
-            X9ECParametersHolder	holder)
+            string name,
+            DerObjectIdentifier oid,
+            X9ECParametersHolder holder)
         {
             objIds.Add(Platform.ToUpperInvariant(name), oid);
             names.Add(oid, name);

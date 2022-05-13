@@ -16,14 +16,14 @@ namespace Org.BouncyCastle.Asn1.Cms
         private static readonly DerInteger Version4 = new DerInteger(4);
         private static readonly DerInteger Version5 = new DerInteger(5);
 
-        private readonly DerInteger		version;
-        private readonly Asn1Set		digestAlgorithms;
-        private readonly ContentInfo	contentInfo;
-        private readonly Asn1Set		certificates;
-        private readonly Asn1Set		crls;
-        private readonly Asn1Set		signerInfos;
-        private readonly bool			certsBer;
-        private readonly bool		    crlsBer;
+        private readonly DerInteger version;
+        private readonly Asn1Set digestAlgorithms;
+        private readonly ContentInfo contentInfo;
+        private readonly Asn1Set certificates;
+        private readonly Asn1Set crls;
+        private readonly Asn1Set signerInfos;
+        private readonly bool certsBer;
+        private readonly bool crlsBer;
 
         public static SignedData GetInstance(object obj)
         {
@@ -35,11 +35,11 @@ namespace Org.BouncyCastle.Asn1.Cms
         }
 
         public SignedData(
-            Asn1Set     digestAlgorithms,
+            Asn1Set digestAlgorithms,
             ContentInfo contentInfo,
-            Asn1Set     certificates,
-            Asn1Set     crls,
-            Asn1Set     signerInfos)
+            Asn1Set certificates,
+            Asn1Set crls,
+            Asn1Set signerInfos)
         {
             this.version = CalculateVersion(contentInfo.ContentType, certificates, crls, signerInfos);
             this.digestAlgorithms = digestAlgorithms;
@@ -70,10 +70,10 @@ namespace Org.BouncyCastle.Asn1.Cms
         //       ELSE version MUST be 1
         //
         private DerInteger CalculateVersion(
-            DerObjectIdentifier	contentOid,
-            Asn1Set				certs,
-            Asn1Set				crls,
-            Asn1Set				signerInfs)
+            DerObjectIdentifier contentOid,
+            Asn1Set certs,
+            Asn1Set crls,
+            Asn1Set signerInfs)
         {
             bool otherCert = false;
             bool otherCrl = false;
@@ -199,7 +199,7 @@ namespace Org.BouncyCastle.Asn1.Cms
                 }
                 else
                 {
-                    signerInfos = (Asn1Set) o;
+                    signerInfos = (Asn1Set)o;
                 }
             }
         }

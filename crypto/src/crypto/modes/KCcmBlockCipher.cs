@@ -7,7 +7,7 @@ using Org.BouncyCastle.Utilities;
 
 namespace Org.BouncyCastle.Crypto.Modes
 {
-    public class KCcmBlockCipher: IAeadBlockCipher
+    public class KCcmBlockCipher : IAeadBlockCipher
     {
         private static readonly int BYTES_IN_INT = 4;
         private static readonly int BITS_IN_BYTE = 8;
@@ -57,7 +57,7 @@ namespace Org.BouncyCastle.Crypto.Modes
         /// Base constructor. Nb value is set to 4.
         /// </summary>
         /// <param name="engine">base cipher to use under CCM.</param>
-        public KCcmBlockCipher(IBlockCipher engine): this(engine, 4)
+        public KCcmBlockCipher(IBlockCipher engine) : this(engine, 4)
         {
         }
 
@@ -90,32 +90,32 @@ namespace Org.BouncyCastle.Crypto.Modes
         public virtual void Init(bool forEncryption, ICipherParameters parameters)
         {
 
-                ICipherParameters cipherParameters;
+            ICipherParameters cipherParameters;
             if (parameters is AeadParameters)
             {
 
-                    AeadParameters param = (AeadParameters)parameters;
+                AeadParameters param = (AeadParameters)parameters;
 
-                    if (param.MacSize > MAX_MAC_BIT_LENGTH || param.MacSize < MIN_MAC_BIT_LENGTH || param.MacSize % 8 != 0)
-                    {
-                        throw new ArgumentException("Invalid mac size specified");
-                    }
+                if (param.MacSize > MAX_MAC_BIT_LENGTH || param.MacSize < MIN_MAC_BIT_LENGTH || param.MacSize % 8 != 0)
+                {
+                    throw new ArgumentException("Invalid mac size specified");
+                }
 
-                    nonce = param.GetNonce();
-                    macSize = param.MacSize / BITS_IN_BYTE;
-                    initialAssociatedText = param.GetAssociatedText();
-                    cipherParameters = param.Key;
+                nonce = param.GetNonce();
+                macSize = param.MacSize / BITS_IN_BYTE;
+                initialAssociatedText = param.GetAssociatedText();
+                cipherParameters = param.Key;
             }
             else if (parameters is ParametersWithIV)
             {
-                    nonce = ((ParametersWithIV)parameters).GetIV();
-                    macSize = engine.GetBlockSize(); // use default blockSize for MAC if it is not specified
-                    initialAssociatedText = null;
-                    cipherParameters = ((ParametersWithIV)parameters).Parameters;
+                nonce = ((ParametersWithIV)parameters).GetIV();
+                macSize = engine.GetBlockSize(); // use default blockSize for MAC if it is not specified
+                initialAssociatedText = null;
+                cipherParameters = ((ParametersWithIV)parameters).Parameters;
             }
             else
             {
-                    throw new ArgumentException("Invalid parameters specified");
+                throw new ArgumentException("Invalid parameters specified");
             }
 
             this.mac = new byte[macSize];
@@ -243,13 +243,8 @@ namespace Org.BouncyCastle.Crypto.Modes
 
             if (associatedText.Length > 0)
             {
-#if PORTABLE
-                byte[] aad = associatedText.ToArray();
-                int aadLen = aad.Length;
-#else
                 byte[] aad = associatedText.GetBuffer();
                 int aadLen = (int)associatedText.Length;
-#endif
 
                 int dataLen = forEncryption ? (int)data.Length : ((int)data.Length - macSize);
 
@@ -272,14 +267,14 @@ namespace Org.BouncyCastle.Crypto.Modes
                     outOff += engine.GetBlockSize();
                 }
 
-                for (int byteIndex = 0; byteIndex<counter.Length; byteIndex++)
+                for (int byteIndex = 0; byteIndex < counter.Length; byteIndex++)
                 {
                     s[byteIndex] += counter[byteIndex];
                 }
 
                 engine.ProcessBlock(s, 0, buffer, 0);
 
-                for (int byteIndex = 0; byteIndex<macSize; byteIndex++)
+                for (int byteIndex = 0; byteIndex < macSize; byteIndex++)
                 {
                     output[outOff + byteIndex] = (byte)(buffer[byteIndex] ^ macBlock[byteIndex]);
                 }
@@ -298,7 +293,7 @@ namespace Org.BouncyCastle.Crypto.Modes
 
                 int blocks = len / engine.GetBlockSize();
 
-                for (int blockNum = 0; blockNum<blocks; blockNum++)
+                for (int blockNum = 0; blockNum < blocks; blockNum++)
                 {
                     ProcessBlock(input, inOff, len, output, outOff);
 
@@ -308,21 +303,21 @@ namespace Org.BouncyCastle.Crypto.Modes
 
                 if (len > inOff)
                 {
-                    for (int byteIndex = 0; byteIndex<counter.Length; byteIndex++)
+                    for (int byteIndex = 0; byteIndex < counter.Length; byteIndex++)
                     {
                         s[byteIndex] += counter[byteIndex];
                     }
 
                     engine.ProcessBlock(s, 0, buffer, 0);
 
-                    for (int byteIndex = 0; byteIndex<macSize; byteIndex++)
+                    for (int byteIndex = 0; byteIndex < macSize; byteIndex++)
                     {
                         output[outOff + byteIndex] = (byte)(buffer[byteIndex] ^ input[inOff + byteIndex]);
                     }
                     outOff += macSize;
                 }
 
-                for (int byteIndex = 0; byteIndex<counter.Length; byteIndex++)
+                for (int byteIndex = 0; byteIndex < counter.Length; byteIndex++)
                 {
                     s[byteIndex] += counter[byteIndex];
                 }
@@ -385,13 +380,8 @@ namespace Org.BouncyCastle.Crypto.Modes
 
         public virtual int DoFinal(byte[] output, int outOff)
         {
-#if PORTABLE
-            byte[] buf = data.ToArray();
-            int bufLen = buf.Length;
-#else
             byte[] buf = data.GetBuffer();
             int bufLen = (int)data.Length;
-#endif
 
             int len = ProcessPacket(buf, 0, bufLen, output, outOff);
 

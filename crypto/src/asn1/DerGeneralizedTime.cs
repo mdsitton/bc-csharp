@@ -17,7 +17,7 @@ namespace Org.BouncyCastle.Asn1
         {
             internal static readonly Asn1UniversalType Instance = new Meta();
 
-            private Meta() : base(typeof(DerGeneralizedTime), Asn1Tags.GeneralizedTime) {}
+            private Meta() : base(typeof(DerGeneralizedTime), Asn1Tags.GeneralizedTime) { }
 
             internal override Asn1Object FromImplicitPrimitive(DerOctetString octetString)
             {
@@ -80,8 +80,7 @@ namespace Org.BouncyCastle.Asn1
          * @param time the time string.
          * @exception ArgumentException if string is an illegal format.
          */
-        public DerGeneralizedTime(
-            string time)
+        public DerGeneralizedTime(string time)
         {
             this.time = time;
 
@@ -98,18 +97,12 @@ namespace Org.BouncyCastle.Asn1
         /**
          * base constructor from a local time object
          */
-        public DerGeneralizedTime(
-            DateTime time)
+        public DerGeneralizedTime(DateTime time)
         {
-#if PORTABLE
             this.time = time.ToUniversalTime().ToString(@"yyyyMMddHHmmss\Z");
-#else
-            this.time = time.ToString(@"yyyyMMddHHmmss\Z");
-#endif
         }
 
-        internal DerGeneralizedTime(
-            byte[] bytes)
+        internal DerGeneralizedTime(byte[] bytes)
         {
             //
             // explicitly convert to characters
@@ -121,10 +114,7 @@ namespace Org.BouncyCastle.Asn1
          * Return the time.
          * @return The time string as it appeared in the encoded object.
          */
-        public string TimeString
-        {
-            get { return time; }
-        }
+        public string TimeString => time;
 
         /**
          * return the time - always in the form of
@@ -181,7 +171,6 @@ namespace Org.BouncyCastle.Asn1
             char sign = '+';
             DateTime time = ToDateTime();
 
-#if SILVERLIGHT || PORTABLE
             long offset = time.Ticks - time.ToUniversalTime().Ticks;
             if (offset < 0)
             {
@@ -190,17 +179,6 @@ namespace Org.BouncyCastle.Asn1
             }
             int hours = (int)(offset / TimeSpan.TicksPerHour);
             int minutes = (int)(offset / TimeSpan.TicksPerMinute) % 60;
-#else
-            // Note: GetUtcOffset incorporates Daylight Savings offset
-            TimeSpan offset =  TimeZone.CurrentTimeZone.GetUtcOffset(time);
-            if (offset.CompareTo(TimeSpan.Zero) < 0)
-            {
-                sign = '-';
-                offset = offset.Duration();
-            }
-            int hours = offset.Hours;
-            int minutes = offset.Minutes;
-#endif
 
             return "GMT" + sign + Convert(hours) + ":" + Convert(minutes);
         }
@@ -262,7 +240,7 @@ namespace Org.BouncyCastle.Asn1
                 }
 
                 // TODO?
-//				dateF.setTimeZone(new SimpleTimeZone(0, TimeZone.getDefault().getID()));
+                //				dateF.setTimeZone(new SimpleTimeZone(0, TimeZone.getDefault().getID()));
             }
 
             return ParseDateString(d, formatStr, makeUniversal);
@@ -279,7 +257,7 @@ namespace Org.BouncyCastle.Asn1
             return sb.ToString();
         }
 
-        private DateTime ParseDateString(string	s, string format, bool makeUniversal)
+        private DateTime ParseDateString(string s, string format, bool makeUniversal)
         {
             /*
              * NOTE: DateTime.Kind and DateTimeStyles.AssumeUniversal not available in .NET 1.1

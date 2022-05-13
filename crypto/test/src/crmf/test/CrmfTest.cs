@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 
 using NUnit.Framework;
@@ -41,7 +41,7 @@ namespace Org.BouncyCastle.Crmf.Tests
             TestBasicMessageWithArchiveControl();
             TestBasicMessageWithArchiveControlJVMGenerated();
         }
-        
+
         [Test]
         public void TestFromJVM()
         {
@@ -74,12 +74,12 @@ namespace Org.BouncyCastle.Crmf.Tests
             CertificateRequestMessageBuilder certReqBuild = new CertificateRequestMessageBuilder(BigInteger.One);
 
             certReqBuild.SetSubject(new X509Name("CN=Test"))
-                .SetPublicKey(SubjectPublicKeyInfoFactory.CreateSubjectPublicKeyInfo(rsaKeyPair.Public))                
+                .SetPublicKey(SubjectPublicKeyInfoFactory.CreateSubjectPublicKeyInfo(rsaKeyPair.Public))
                 .SetProofOfPossessionSignKeySigner(new Asn1SignatureFactory("SHA1WithRSA", rsaKeyPair.Private));
 
             CertificateRequestMessage certificateRequestMessage = certReqBuild.Build();
 
-            IsTrue("Signing Key Pop Valid",certificateRequestMessage.IsValidSigningKeyPop(new Asn1VerifierFactoryProvider(rsaKeyPair.Public)));
+            IsTrue("Signing Key Pop Valid", certificateRequestMessage.IsValidSigningKeyPop(new Asn1VerifierFactoryProvider(rsaKeyPair.Public)));
             IsTrue(certificateRequestMessage.GetCertTemplate().Subject.Equivalent(new X509Name("CN=Test")));
             IsTrue(certificateRequestMessage.GetCertTemplate().PublicKey.Equals(SubjectPublicKeyInfoFactory.CreateSubjectPublicKeyInfo(rsaKeyPair.Public)));
         }
@@ -107,7 +107,7 @@ namespace Org.BouncyCastle.Crmf.Tests
             CertificateRequestMessageBuilder certificateRequestMessageBuilder = new CertificateRequestMessageBuilder(BigInteger.One);
             certificateRequestMessageBuilder.SetSubject(new X509Name("CN=Test"));
             certificateRequestMessageBuilder.SetPublicKey(publicKeyInfo);
-           
+
             certificateRequestMessageBuilder.AddControl(
                 new PkiArchiveControlBuilder(privateInfo, new GeneralName(new X509Name("CN=Test")))
                     .AddRecipientGenerator(new KeyTransRecipientInfoGenerator(cert, new Asn1KeyWrapper("RSA/None/OAEPwithSHA256andMGF1Padding", cert)))
@@ -117,9 +117,9 @@ namespace Org.BouncyCastle.Crmf.Tests
             CertificateRequestMessage msg = certificateRequestMessageBuilder.Build();
 
             IsTrue(Arrays.AreEqual(msg.GetCertTemplate().Subject.GetEncoded(), new X509Name("CN=Test").GetEncoded()));
-            IsTrue(Arrays.AreEqual(msg.GetCertTemplate().PublicKey.GetEncoded(),publicKeyInfo.GetEncoded()));
+            IsTrue(Arrays.AreEqual(msg.GetCertTemplate().PublicKey.GetEncoded(), publicKeyInfo.GetEncoded()));
 
-            CheckCertReqMsgWithArchiveControl(rsaKeyPair,msg);
+            CheckCertReqMsgWithArchiveControl(rsaKeyPair, msg);
             CheckCertReqMsgWithArchiveControl(rsaKeyPair, new CertificateRequestMessage(msg.GetEncoded()));
         }
 
@@ -134,7 +134,7 @@ namespace Org.BouncyCastle.Crmf.Tests
             CertificateRequestMessage msg = new CertificateRequestMessage(
                 Hex.Decode("308202af308202ab0201013071a511300f310d300b0603550403130454657374a65c300d06092a864886f70d0101010500034b003048024100a9a94b7b98dc3daf8cac032a14bd4510832b0e007edbdafc065e328645a35828b8185cdbf73ed495c88436b11a9322965595d2e4c1dd63c3c4d41812f876b3070203010001308202313082022d06092b0601050507050104a082021ea082021a0201003171306f0201003019300f310d300b06035504030c04546573740206016859de5806300d06092a864886f70d0101010500044066f1a72f808908af784b83c07895276104d7c4caaee6090212ce5b27517aec510425b784352b5342c999f844b8796286f10a59807e290f06aa39f8cba86dd6bf308201a0060b2a864886f70d0109100115301d060960864801650304010204104aceaa277cc7974ea2a775ff9db6062580820170c648e70c25c4789d2ff4ed398e5536efb45d2dd8ba76a628ad30bf9596a18337afc0f596f0c18e05fb3fa9944ed9691dae1d9b327b5bbafaaa63efb0e22d675811c27bfb023b80184325fd4b67b3b9e41bf43c5583a86433b230e09a34b61397ddff0eadf10c883fc1f01860e2a56ab4002dcc4d4925c53e09dde0b99928fdf602bce544722155cebd8816e91a411a99feea07695774cd8883034022d57f64e9cd3383c3125c48db2936b7395a22b17910be1f2c0b8650bdb5bd752ffc40fcd30169e5ae3a4ac7ad9cc850e9c17bbcf8e1a1898d0d8be19145c484467b8f1124657a5e08c10fc67416274990cc16d55c9fb76c265dd436b7e803425892297f1a08e4fab8e178874b2b3bf9c749693d609db208e9a3ebbddd26cd6a1b33c0201532170dc6c303e7ac0c42ba0bc54dfb928b228842b6bb08d8dc411d262dabf140a8b5a5c67ea486c1877a2fc000981d54cf2decaf1cfeebcf83134992b09a2b1fe9e02da25b874604b5d8bbd609875ba8"));
 
-            AsymmetricCipherKeyPair rsaKeyPair = new AsymmetricCipherKeyPair(publicKey,privateKey);
+            AsymmetricCipherKeyPair rsaKeyPair = new AsymmetricCipherKeyPair(publicKey, privateKey);
 
             SubjectPublicKeyInfo publicKeyInfo = SubjectPublicKeyInfoFactory.CreateSubjectPublicKeyInfo(publicKey);
 
@@ -143,8 +143,8 @@ namespace Org.BouncyCastle.Crmf.Tests
 
             CheckCertReqMsgWithArchiveControl(rsaKeyPair, msg);
             CheckCertReqMsgWithArchiveControl(rsaKeyPair, new CertificateRequestMessage(msg.GetEncoded()));
-        
-            CheckCertReqMsgWithArchiveControl(rsaKeyPair,msg);
+
+            CheckCertReqMsgWithArchiveControl(rsaKeyPair, msg);
         }
 
         private void CheckCertReqMsgWithArchiveControl(AsymmetricCipherKeyPair kp, CertificateRequestMessage certReqMessage)
@@ -156,7 +156,7 @@ namespace Org.BouncyCastle.Crmf.Tests
             IsTrue(archiveControl.EnvelopedData);
             RecipientInformationStore recips = archiveControl.GetEnvelopedData().GetRecipientInfos();
 
-            IList collection =  (IList)recips.GetRecipients();
+            IList collection = (IList)recips.GetRecipients();
 
             IsTrue(collection.Count == 1);
             KeyTransRecipientInformation info = (KeyTransRecipientInformation)collection[0];
@@ -165,9 +165,9 @@ namespace Org.BouncyCastle.Crmf.Tests
 
             IsTrue(encKeyWithId.HasIdentifier);
             IsTrue(!encKeyWithId.IsIdentifierUtf8String); // GeneralName at this point.
-            
+
             IsTrue("Name", X509Name.GetInstance(GeneralName.GetInstance(encKeyWithId.Identifier).Name).Equivalent(new X509Name("CN=Test")));
-          
+
             PrivateKeyInfo privateKeyInfo = PrivateKeyInfoFactory.CreatePrivateKeyInfo(kp.Private);
             IsTrue("Private Key", Arrays.AreEqual(privateKeyInfo.GetEncoded(), encKeyWithId.PrivateKey.GetEncoded()));
         }

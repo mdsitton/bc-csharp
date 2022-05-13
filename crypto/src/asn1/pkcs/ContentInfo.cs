@@ -8,8 +8,8 @@ namespace Org.BouncyCastle.Asn1.Pkcs
     public class ContentInfo
         : Asn1Encodable
     {
-        private readonly DerObjectIdentifier	contentType;
-        private readonly Asn1Encodable			content;
+        private readonly DerObjectIdentifier contentType;
+        private readonly Asn1Encodable content;
 
         public static ContentInfo GetInstance(object obj)
         {
@@ -24,17 +24,17 @@ namespace Org.BouncyCastle.Asn1.Pkcs
         private ContentInfo(
             Asn1Sequence seq)
         {
-            contentType = (DerObjectIdentifier) seq[0];
+            contentType = (DerObjectIdentifier)seq[0];
 
             if (seq.Count > 1)
             {
-                content = ((Asn1TaggedObject) seq[1]).GetObject();
+                content = ((Asn1TaggedObject)seq[1]).GetObject();
             }
         }
 
         public ContentInfo(
-            DerObjectIdentifier	contentType,
-            Asn1Encodable		content)
+            DerObjectIdentifier contentType,
+            Asn1Encodable content)
         {
             this.contentType = contentType;
             this.content = content;

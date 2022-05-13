@@ -69,7 +69,7 @@ namespace Org.BouncyCastle.Bcpg.OpenPgp.Tests
             + "BQkB4TOAAAoJEJh8Njfhe8KmG7kAniuRkaFFv1pdCBN8JJXpcorHmyouAJ9L"
             + "xxmusffR6OI7WgD3XZ0AL8zUC7ACAAA=");
 
-//		private static readonly char[] pass1 = "qwertzuiop".ToCharArray();
+        //		private static readonly char[] pass1 = "qwertzuiop".ToCharArray();
 
         private static readonly byte[] pub2 = Base64.Decode(
             "mQGiBEBtfW8RBADfWjTxFedIbGBNVgh064D/OCf6ul7x4PGsCl+BkAyheYkr"
@@ -871,7 +871,7 @@ namespace Org.BouncyCastle.Bcpg.OpenPgp.Tests
             + "AkKqia4CGwwFCQAk6gAACgkQ4w0TkGUaiMzdqgCgl2jw5hfk/JsyjulQqe1Nps1q"
             + "Lx0AoMdnFMZmTMLHn8scUW2j9XO312tmsAIAAA==");
 
-//		private static readonly char[] sec10pass = "test".ToCharArray();
+        //		private static readonly char[] sec10pass = "test".ToCharArray();
 
         private static readonly byte[] subKeyBindingKey = Base64.Decode(
             "mQGiBDWagYwRBAD7UcH4TAIp7tmUoHBNxVxCVz2ZrNo79M6fV63riOiH2uDxfIpr"
@@ -899,7 +899,7 @@ namespace Org.BouncyCastle.Bcpg.OpenPgp.Tests
             + "gXxbBCVSTxYMJheXt2xMXsuJAD8DBRg1moGU8gBo4j+O/10RAgWdAKCPhaFIXuC8"
             + "/cdiNMxTDw9ug3De5QCfYXmDzRSFUu/nrCi8yz/l09wsnxo=");
 
-//		private static readonly byte[] subKeyBindingCheckSum = Base64.Decode("3HU+");
+        //		private static readonly byte[] subKeyBindingCheckSum = Base64.Decode("3HU+");
 
         //
         // PGP8 with SHA1 checksum.
@@ -2542,13 +2542,13 @@ namespace Org.BouncyCastle.Bcpg.OpenPgp.Tests
 
             if (en.MoveNext())
             {
-                PgpPublicKey key = (PgpPublicKey) en.Current;
+                PgpPublicKey key = (PgpPublicKey)en.Current;
 
                 IEnumerator sEn = key.GetSignatures().GetEnumerator();
 
                 if (sEn.MoveNext())
                 {
-                    PgpSignature sig = (PgpSignature) sEn.Current;
+                    PgpSignature sig = (PgpSignature)sEn.Current;
                     if (sig.KeyAlgorithm != PublicKeyAlgorithmTag.Experimental_1)
                     {
                         Fail("experimental signature not found");

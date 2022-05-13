@@ -36,7 +36,7 @@ namespace Org.BouncyCastle.Asn1.Anssi
         internal class Frp256v1Holder
             : X9ECParametersHolder
         {
-            private Frp256v1Holder() {}
+            private Frp256v1Holder() { }
 
             internal static readonly X9ECParametersHolder Instance = new Frp256v1Holder();
 
@@ -68,9 +68,9 @@ namespace Org.BouncyCastle.Asn1.Anssi
         private static readonly IDictionary names = Platform.CreateHashtable();
 
         private static void DefineCurve(
-            string					name,
-            DerObjectIdentifier		oid,
-            X9ECParametersHolder	holder)
+            string name,
+            DerObjectIdentifier oid,
+            X9ECParametersHolder holder)
         {
             objIds.Add(Platform.ToUpperInvariant(name), oid);
             names.Add(oid, name);

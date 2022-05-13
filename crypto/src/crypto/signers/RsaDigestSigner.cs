@@ -55,27 +55,27 @@ namespace Org.BouncyCastle.Crypto.Signers
         }
 
         public RsaDigestSigner(IDigest digest)
-            :   this(digest, (DerObjectIdentifier)oidMap[digest.AlgorithmName])
+            : this(digest, (DerObjectIdentifier)oidMap[digest.AlgorithmName])
         {
         }
 
         public RsaDigestSigner(IDigest digest, DerObjectIdentifier digestOid)
-            :   this(digest, new AlgorithmIdentifier(digestOid, DerNull.Instance))
+            : this(digest, new AlgorithmIdentifier(digestOid, DerNull.Instance))
         {
         }
 
         public RsaDigestSigner(IDigest digest, AlgorithmIdentifier algId)
-            :   this(new RsaCoreEngine(), digest, algId)
+            : this(new RsaCoreEngine(), digest, algId)
         {
         }
 
         public RsaDigestSigner(IRsa rsa, IDigest digest, DerObjectIdentifier digestOid)
-            :   this(rsa, digest, new AlgorithmIdentifier(digestOid, DerNull.Instance))
+            : this(rsa, digest, new AlgorithmIdentifier(digestOid, DerNull.Instance))
         {
         }
 
         public RsaDigestSigner(IRsa rsa, IDigest digest, AlgorithmIdentifier algId)
-            :   this(new RsaBlindedEngine(rsa), digest, algId)
+            : this(new RsaBlindedEngine(rsa), digest, algId)
         {
         }
 
@@ -98,8 +98,8 @@ namespace Org.BouncyCastle.Crypto.Signers
          * @param param necessary parameters.
          */
         public virtual void Init(
-            bool				forSigning,
-            ICipherParameters	parameters)
+            bool forSigning,
+            ICipherParameters parameters)
         {
             this.forSigning = forSigning;
             AsymmetricKeyParameter k;
@@ -137,9 +137,9 @@ namespace Org.BouncyCastle.Crypto.Signers
          * update the internal digest with the byte array in
          */
         public virtual void BlockUpdate(
-            byte[]	input,
-            int		inOff,
-            int		length)
+            byte[] input,
+            int inOff,
+            int length)
         {
             digest.BlockUpdate(input, inOff, length);
         }

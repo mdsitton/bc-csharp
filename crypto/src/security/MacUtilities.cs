@@ -85,28 +85,28 @@ namespace Org.BouncyCastle.Security
             algorithms["1.3.14.3.2.26"] = "PBEWITHHMACSHA1";
         }
 
-//		/// <summary>
-//		/// Returns a ObjectIdentifier for a given digest mechanism.
-//		/// </summary>
-//		/// <param name="mechanism">A string representation of the digest meanism.</param>
-//		/// <returns>A DerObjectIdentifier, null if the Oid is not available.</returns>
-//		public static DerObjectIdentifier GetObjectIdentifier(
-//			string mechanism)
-//		{
-//			mechanism = (string) algorithms[Platform.ToUpperInvariant(mechanism)];
-//
-//			if (mechanism != null)
-//			{
-//				return (DerObjectIdentifier)oids[mechanism];
-//			}
-//
-//			return null;
-//		}
+        //		/// <summary>
+        //		/// Returns a ObjectIdentifier for a given digest mechanism.
+        //		/// </summary>
+        //		/// <param name="mechanism">A string representation of the digest meanism.</param>
+        //		/// <returns>A DerObjectIdentifier, null if the Oid is not available.</returns>
+        //		public static DerObjectIdentifier GetObjectIdentifier(
+        //			string mechanism)
+        //		{
+        //			mechanism = (string) algorithms[Platform.ToUpperInvariant(mechanism)];
+        //
+        //			if (mechanism != null)
+        //			{
+        //				return (DerObjectIdentifier)oids[mechanism];
+        //			}
+        //
+        //			return null;
+        //		}
 
-//		public static ICollection Algorithms
-//		{
-//			get { return oids.Keys; }
-//		}
+        //		public static ICollection Algorithms
+        //		{
+        //			get { return oids.Keys; }
+        //		}
 
         public static IMac GetMac(
             DerObjectIdentifier id)
@@ -119,7 +119,7 @@ namespace Org.BouncyCastle.Security
         {
             string upper = Platform.ToUpperInvariant(algorithm);
 
-            string mechanism = (string) algorithms[upper];
+            string mechanism = (string)algorithms[upper];
 
             if (mechanism == null)
             {
@@ -241,7 +241,7 @@ namespace Org.BouncyCastle.Security
         public static string GetAlgorithmName(
             DerObjectIdentifier oid)
         {
-            return (string) algorithms[oid.Id];
+            return (string)algorithms[oid.Id];
         }
 
         public static byte[] CalculateMac(string algorithm, ICipherParameters cp, byte[] input)

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.IO;
 
@@ -9,7 +9,7 @@ using Org.BouncyCastle.Utilities.Encoders;
 namespace Org.BouncyCastle.Crypto.Tls.Tests
 {
     internal class MockPskTlsClient
-        :   PskTlsClient
+        : PskTlsClient
     {
         internal TlsSession mSession;
 
@@ -19,7 +19,7 @@ namespace Org.BouncyCastle.Crypto.Tls.Tests
         }
 
         internal MockPskTlsClient(TlsSession session, TlsPskIdentity pskIdentity)
-            :   base(pskIdentity)
+            : base(pskIdentity)
         {
             this.mSession = session;
         }
@@ -83,7 +83,7 @@ namespace Org.BouncyCastle.Crypto.Tls.Tests
 
         public override ProtocolVersion MinimumVersion
         {
-	        get { return ProtocolVersion.TLSv12; }
+            get { return ProtocolVersion.TLSv12; }
         }
 
         public override IDictionary GetClientExtensions()
@@ -106,7 +106,7 @@ namespace Org.BouncyCastle.Crypto.Tls.Tests
         }
 
         internal class MyTlsAuthentication
-            :   ServerOnlyTlsAuthentication
+            : ServerOnlyTlsAuthentication
         {
             private readonly TlsContext mContext;
 

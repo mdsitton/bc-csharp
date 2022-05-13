@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.IO;
 
@@ -8,7 +8,7 @@ using Org.BouncyCastle.Utilities;
 namespace Org.BouncyCastle.Crypto.Tls.Tests
 {
     internal class MockTlsServer
-        :   DefaultTlsServer
+        : DefaultTlsServer
     {
         public override void NotifyAlertRaised(byte alertLevel, byte alertDescription, string message, Exception cause)
         {
@@ -88,13 +88,13 @@ namespace Org.BouncyCastle.Crypto.Tls.Tests
         protected override TlsEncryptionCredentials GetRsaEncryptionCredentials()
         {
             return TlsTestUtilities.LoadEncryptionCredentials(mContext,
-                new string[]{ "x509-server-rsa-enc.pem", "x509-ca-rsa.pem" }, "x509-server-key-rsa-enc.pem");
+                new string[] { "x509-server-rsa-enc.pem", "x509-ca-rsa.pem" }, "x509-server-key-rsa-enc.pem");
         }
 
         protected override TlsSignerCredentials GetRsaSignerCredentials()
         {
             return TlsTestUtilities.LoadSignerCredentials(mContext, mSupportedSignatureAlgorithms,
-                SignatureAlgorithm.rsa, new string[]{ "x509-server-rsa-sign.pem", "x509-ca-rsa.pem" },
+                SignatureAlgorithm.rsa, new string[] { "x509-server-rsa-sign.pem", "x509-ca-rsa.pem" },
                 "x509-server-key-rsa-sign.pem");
         }
     }

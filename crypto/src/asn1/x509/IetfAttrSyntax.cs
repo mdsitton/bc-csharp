@@ -11,20 +11,20 @@ namespace Org.BouncyCastle.Asn1.X509
     public class IetfAttrSyntax
         : Asn1Encodable
     {
-        public const int ValueOctets	= 1;
-        public const int ValueOid		= 2;
-        public const int ValueUtf8		= 3;
+        public const int ValueOctets = 1;
+        public const int ValueOid = 2;
+        public const int ValueUtf8 = 3;
 
-		internal readonly GeneralNames	policyAuthority;
+        internal readonly GeneralNames policyAuthority;
         internal readonly Asn1EncodableVector values = new Asn1EncodableVector();
 
-		internal int valueChoice = -1;
+        internal int valueChoice = -1;
 
-		/**
+        /**
          *
          */
         public IetfAttrSyntax(
-			Asn1Sequence seq)
+            Asn1Sequence seq)
         {
             int i = 0;
 
@@ -39,15 +39,15 @@ namespace Org.BouncyCastle.Asn1.X509
                 i++;
             }
 
-			if (!(seq[i] is Asn1Sequence))
+            if (!(seq[i] is Asn1Sequence))
             {
                 throw new ArgumentException("Non-IetfAttrSyntax encoding");
             }
 
-			seq = (Asn1Sequence) seq[i];
+            seq = (Asn1Sequence)seq[i];
 
-			foreach (Asn1Object obj in seq)
-			{
+            foreach (Asn1Object obj in seq)
+            {
                 int type;
 
                 if (obj is DerObjectIdentifier)
@@ -67,69 +67,69 @@ namespace Org.BouncyCastle.Asn1.X509
                     throw new ArgumentException("Bad value type encoding IetfAttrSyntax");
                 }
 
-				if (valueChoice < 0)
+                if (valueChoice < 0)
                 {
                     valueChoice = type;
                 }
 
-				if (type != valueChoice)
+                if (type != valueChoice)
                 {
                     throw new ArgumentException("Mix of value types in IetfAttrSyntax");
                 }
 
-				values.Add(obj);
+                values.Add(obj);
             }
         }
 
-		public GeneralNames PolicyAuthority
-		{
-			get { return policyAuthority; }
-		}
+        public GeneralNames PolicyAuthority
+        {
+            get { return policyAuthority; }
+        }
 
-		public int ValueType
-		{
-			get { return valueChoice; }
-		}
+        public int ValueType
+        {
+            get { return valueChoice; }
+        }
 
-		public object[] GetValues()
+        public object[] GetValues()
         {
             if (this.ValueType == ValueOctets)
             {
                 Asn1OctetString[] tmp = new Asn1OctetString[values.Count];
 
-				for (int i = 0; i != tmp.Length; i++)
+                for (int i = 0; i != tmp.Length; i++)
                 {
-                    tmp[i] = (Asn1OctetString) values[i];
+                    tmp[i] = (Asn1OctetString)values[i];
                 }
 
-				return tmp;
+                return tmp;
             }
 
-			if (this.ValueType == ValueOid)
+            if (this.ValueType == ValueOid)
             {
                 DerObjectIdentifier[] tmp = new DerObjectIdentifier[values.Count];
 
                 for (int i = 0; i != tmp.Length; i++)
                 {
-                    tmp[i] = (DerObjectIdentifier) values[i];
+                    tmp[i] = (DerObjectIdentifier)values[i];
                 }
 
-				return tmp;
+                return tmp;
             }
 
-			{
-				DerUtf8String[] tmp = new DerUtf8String[values.Count];
+            {
+                DerUtf8String[] tmp = new DerUtf8String[values.Count];
 
-				for (int i = 0; i != tmp.Length; i++)
-				{
-					tmp[i] = (DerUtf8String) values[i];
-				}
+                for (int i = 0; i != tmp.Length; i++)
+                {
+                    tmp[i] = (DerUtf8String)values[i];
+                }
 
-				return tmp;
-			}
+                return tmp;
+            }
         }
 
-		/**
+        /**
          *
          * <pre>
          *

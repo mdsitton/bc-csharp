@@ -13,9 +13,9 @@ namespace Org.BouncyCastle.Asn1.CryptoPro
     */
     public sealed class Gost3410NamedParameters
     {
-		private Gost3410NamedParameters()
-		{
-		}
+        private Gost3410NamedParameters()
+        {
+        }
 
         private static readonly IDictionary objIds = Platform.CreateHashtable();
         private static readonly IDictionary parameters = Platform.CreateHashtable();
@@ -65,7 +65,7 @@ namespace Org.BouncyCastle.Asn1.CryptoPro
             new BigInteger("133531813272720673433859519948319001217942375967847486899482359599369642528734712461590403327731821410328012529253871914788598993103310567744136196364803064721377826656898686468463277710150809401182608770201615324990468332931294920912776241137878030224355746606283971659376426832674269780880061631528163475887")
             );
 
-		static Gost3410NamedParameters()
+        static Gost3410NamedParameters()
         {
             parameters[CryptoProObjectIdentifiers.GostR3410x94CryptoProA] = cryptoProA;
             parameters[CryptoProObjectIdentifiers.GostR3410x94CryptoProB] = cryptoProB;
@@ -75,12 +75,12 @@ namespace Org.BouncyCastle.Asn1.CryptoPro
             //parameters[CryptoProObjectIdentifiers.GostR3410x94CryptoProXchB] = cryptoProXchA;
             //parameters[CryptoProObjectIdentifiers.GostR3410x94CryptoProXchC] = cryptoProXchA;
 
-			objIds["GostR3410-94-CryptoPro-A"] = CryptoProObjectIdentifiers.GostR3410x94CryptoProA;
+            objIds["GostR3410-94-CryptoPro-A"] = CryptoProObjectIdentifiers.GostR3410x94CryptoProA;
             objIds["GostR3410-94-CryptoPro-B"] = CryptoProObjectIdentifiers.GostR3410x94CryptoProB;
             objIds["GostR3410-94-CryptoPro-XchA"] = CryptoProObjectIdentifiers.GostR3410x94CryptoProXchA;
         }
 
-		/**
+        /**
         * return the GOST3410ParamSetParameters object for the given OID, null if it
         * isn't present.
         *
@@ -89,35 +89,35 @@ namespace Org.BouncyCastle.Asn1.CryptoPro
         public static Gost3410ParamSetParameters GetByOid(
             DerObjectIdentifier oid)
         {
-            return (Gost3410ParamSetParameters) parameters[oid];
+            return (Gost3410ParamSetParameters)parameters[oid];
         }
 
-		/**
+        /**
         * returns an enumeration containing the name strings for parameters
         * contained in this structure.
         */
         public static IEnumerable Names
         {
-			get { return new EnumerableProxy(objIds.Keys); }
+            get { return new EnumerableProxy(objIds.Keys); }
         }
 
-		public static Gost3410ParamSetParameters GetByName(
+        public static Gost3410ParamSetParameters GetByName(
             string name)
         {
-            DerObjectIdentifier oid = (DerObjectIdentifier) objIds[name];
+            DerObjectIdentifier oid = (DerObjectIdentifier)objIds[name];
 
             if (oid != null)
             {
-                return (Gost3410ParamSetParameters) parameters[oid];
+                return (Gost3410ParamSetParameters)parameters[oid];
             }
 
             return null;
         }
 
         public static DerObjectIdentifier GetOid(
-			string name)
+            string name)
         {
-            return (DerObjectIdentifier) objIds[name];
+            return (DerObjectIdentifier)objIds[name];
         }
     }
 }

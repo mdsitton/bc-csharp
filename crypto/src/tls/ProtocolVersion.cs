@@ -244,21 +244,21 @@ namespace Org.BouncyCastle.Tls
             int major = MajorVersion, minor = MinorVersion;
             switch (major)
             {
-            case 0x03:
-                switch (minor)
-                {
-                    case 0xFF: return null;
-                    default: return Get(major, minor + 1);
-                }
-            case 0xFE:
-                switch (minor)
-                {
-                    case 0x00: return null;
-                    case 0xFF: return DTLSv12;
-                    default: return Get(major, minor - 1);
-                }
-            default:
-                return null;
+                case 0x03:
+                    switch (minor)
+                    {
+                        case 0xFF: return null;
+                        default: return Get(major, minor + 1);
+                    }
+                case 0xFE:
+                    switch (minor)
+                    {
+                        case 0x00: return null;
+                        case 0xFF: return DTLSv12;
+                        default: return Get(major, minor - 1);
+                    }
+                default:
+                    return null;
             }
         }
 
@@ -340,46 +340,46 @@ namespace Org.BouncyCastle.Tls
         {
             switch (major)
             {
-            case 0x03:
-            {
-                switch (minor)
-                {
-                case 0x00:
-                    return SSLv3;
-                case 0x01:
-                    return TLSv10;
-                case 0x02:
-                    return TLSv11;
                 case 0x03:
-                    return TLSv12;
-                case 0x04:
-                    return TLSv13;
-                }
-                return GetUnknownVersion(major, minor, "TLS");
-            }
-            case 0xFE:
-            {
-                switch (minor)
-                {
-                case 0xFF:
-                    return DTLSv10;
+                    {
+                        switch (minor)
+                        {
+                            case 0x00:
+                                return SSLv3;
+                            case 0x01:
+                                return TLSv10;
+                            case 0x02:
+                                return TLSv11;
+                            case 0x03:
+                                return TLSv12;
+                            case 0x04:
+                                return TLSv13;
+                        }
+                        return GetUnknownVersion(major, minor, "TLS");
+                    }
                 case 0xFE:
-                    throw new ArgumentException("{0xFE, 0xFE} is a reserved protocol version");
-                case 0xFD:
-                    return DTLSv12;
-                }
-                return GetUnknownVersion(major, minor, "DTLS");
-            }
-            default:
-            {
-                return GetUnknownVersion(major, minor, "UNKNOWN");
-            }
+                    {
+                        switch (minor)
+                        {
+                            case 0xFF:
+                                return DTLSv10;
+                            case 0xFE:
+                                throw new ArgumentException("{0xFE, 0xFE} is a reserved protocol version");
+                            case 0xFD:
+                                return DTLSv12;
+                        }
+                        return GetUnknownVersion(major, minor, "DTLS");
+                    }
+                default:
+                    {
+                        return GetUnknownVersion(major, minor, "UNKNOWN");
+                    }
             }
         }
 
         public ProtocolVersion[] Only()
         {
-            return new ProtocolVersion[]{ this };
+            return new ProtocolVersion[] { this };
         }
 
         public override string ToString()

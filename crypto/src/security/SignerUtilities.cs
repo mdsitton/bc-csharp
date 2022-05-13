@@ -45,9 +45,9 @@ namespace Org.BouncyCastle.Security
             algorithms["MD4WITHRSAENCRYPTION"] = "MD4withRSA";
             algorithms[PkcsObjectIdentifiers.MD4WithRsaEncryption.Id] = "MD4withRSA";
             algorithms[OiwObjectIdentifiers.MD4WithRsa.Id] = "MD4withRSA";
-			algorithms[OiwObjectIdentifiers.MD4WithRsaEncryption.Id] = "MD4withRSA";
+            algorithms[OiwObjectIdentifiers.MD4WithRsaEncryption.Id] = "MD4withRSA";
 
-			algorithms["MD5WITHRSA"] = "MD5withRSA";
+            algorithms["MD5WITHRSA"] = "MD5withRSA";
             algorithms["MD5WITHRSAENCRYPTION"] = "MD5withRSA";
             algorithms[PkcsObjectIdentifiers.MD5WithRsaEncryption.Id] = "MD5withRSA";
             algorithms[OiwObjectIdentifiers.MD5WithRsa.Id] = "MD5withRSA";
@@ -462,12 +462,12 @@ namespace Org.BouncyCastle.Security
                 throw new ArgumentNullException("mechanism");
 
             mechanism = Platform.ToUpperInvariant(mechanism);
-            string aliased = (string) algorithms[mechanism];
+            string aliased = (string)algorithms[mechanism];
 
             if (aliased != null)
                 mechanism = aliased;
 
-            return (DerObjectIdentifier) oids[mechanism];
+            return (DerObjectIdentifier)oids[mechanism];
         }
 
         public static ICollection Algorithms
@@ -489,7 +489,7 @@ namespace Org.BouncyCastle.Security
 
             algorithm = Platform.ToUpperInvariant(algorithm);
 
-            string mechanism = (string) algorithms[algorithm];
+            string mechanism = (string)algorithms[algorithm];
 
             if (mechanism == null)
                 mechanism = algorithm;
@@ -511,7 +511,7 @@ namespace Org.BouncyCastle.Security
         }
 
         private static Asn1Encodable GetPssX509Parameters(
-            string	digestName)
+            string digestName)
         {
             AlgorithmIdentifier hashAlgorithm = new AlgorithmIdentifier(
                 DigestUtilities.GetObjectIdentifier(digestName), DerNull.Instance);
@@ -539,7 +539,7 @@ namespace Org.BouncyCastle.Security
 
             algorithm = Platform.ToUpperInvariant(algorithm);
 
-            string mechanism = (string) algorithms[algorithm];
+            string mechanism = (string)algorithms[algorithm];
 
             if (mechanism == null)
                 mechanism = algorithm;
@@ -680,7 +680,7 @@ namespace Org.BouncyCastle.Security
         public static string GetEncodingName(
             DerObjectIdentifier oid)
         {
-            return (string) algorithms[oid.Id];
+            return (string)algorithms[oid.Id];
         }
 
         public static ISigner InitSigner(DerObjectIdentifier algorithmOid, bool forSigning, AsymmetricKeyParameter privateKey, SecureRandom random)

@@ -2,11 +2,9 @@ using System;
 
 namespace Org.BouncyCastle.Security
 {
-#if !(NETCF_1_0 || NETCF_2_0 || SILVERLIGHT || PORTABLE)
     [Serializable]
-#endif
     public class SecurityUtilityException
-		: Exception
+        : Exception
     {
         /**
         * base constructor.
@@ -15,21 +13,21 @@ namespace Org.BouncyCastle.Security
         {
         }
 
-		/**
+        /**
          * create a SecurityUtilityException with the given message.
          *
          * @param message the message to be carried with the exception.
          */
         public SecurityUtilityException(
             string message)
-			: base(message)
+            : base(message)
         {
         }
 
-		public SecurityUtilityException(
-            string		message,
-            Exception	exception)
-			: base(message, exception)
+        public SecurityUtilityException(
+            string message,
+            Exception exception)
+            : base(message, exception)
         {
         }
     }

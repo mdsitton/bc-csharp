@@ -37,7 +37,7 @@ namespace Org.BouncyCastle.Cms
         {
         }
 
-		public CmsTypedStream GetContent()
+        public CmsTypedStream GetContent()
         {
             try
             {

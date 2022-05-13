@@ -26,7 +26,7 @@ namespace Org.BouncyCastle.Pkcs.Tests
     {
         public override string Name
         {
-			get { return "Pkcs10"; }
+            get { return "Pkcs10"; }
         }
 
         [Test]
@@ -137,7 +137,7 @@ namespace Org.BouncyCastle.Pkcs.Tests
         {
             IAsymmetricCipherKeyPairGenerator pGen = GeneratorUtilities.GetKeyPairGenerator("RSA");
             RsaKeyGenerationParameters genParam = new RsaKeyGenerationParameters(
-				BigInteger.ValueOf(0x10001), new SecureRandom(), 512, 25);
+                BigInteger.ValueOf(0x10001), new SecureRandom(), 512, 25);
 
             pGen.Init(genParam);
 
@@ -154,17 +154,17 @@ namespace Org.BouncyCastle.Pkcs.Tests
             X509Name subject = new X509Name(new ArrayList(attrs.Keys), attrs);
 
             Pkcs10CertificationRequest req1 = new Pkcs10CertificationRequest(
-				"SHA1withRSA",
-				subject,
-				pair.Public,
-				null,
-				pair.Private);
+                "SHA1withRSA",
+                subject,
+                pair.Public,
+                null,
+                pair.Private);
 
-			byte[] bytes = req1.GetEncoded();
+            byte[] bytes = req1.GetEncoded();
 
-			Pkcs10CertificationRequest req2 = new Pkcs10CertificationRequest(bytes);
+            Pkcs10CertificationRequest req2 = new Pkcs10CertificationRequest(bytes);
 
-			if (!req2.Verify())
+            if (!req2.Verify())
             {
                 Fail("Failed verify check.");
             }
@@ -178,15 +178,15 @@ namespace Org.BouncyCastle.Pkcs.Tests
         public static void Main(
             string[] args)
         {
-			RunTest(new Pkcs10Test());
+            RunTest(new Pkcs10Test());
         }
 
-		[Test]
+        [Test]
         public void TestFunction()
         {
             string resultText = Perform().ToString();
 
-			Assert.AreEqual(Name + ": Okay", resultText);
+            Assert.AreEqual(Name + ": Okay", resultText);
         }
     }
 }

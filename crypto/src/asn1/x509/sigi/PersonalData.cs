@@ -7,7 +7,7 @@ using Org.BouncyCastle.Utilities;
 
 namespace Org.BouncyCastle.Asn1.X509.SigI
 {
-	/**
+    /**
 	* Contains personal data for the otherName field in the subjectAltNames
 	* extension.
 	* <p/>
@@ -25,33 +25,33 @@ namespace Org.BouncyCastle.Asn1.X509.SigI
 	* @see org.bouncycastle.asn1.x509.sigi.NameOrPseudonym
 	* @see org.bouncycastle.asn1.x509.sigi.SigIObjectIdentifiers
 	*/
-	public class PersonalData
-		: Asn1Encodable
-	{
-		private readonly NameOrPseudonym	nameOrPseudonym;
-		private readonly BigInteger			nameDistinguisher;
-		private readonly DerGeneralizedTime	dateOfBirth;
-		private readonly DirectoryString	placeOfBirth;
-		private readonly string				gender;
-		private readonly DirectoryString	postalAddress;
+    public class PersonalData
+        : Asn1Encodable
+    {
+        private readonly NameOrPseudonym nameOrPseudonym;
+        private readonly BigInteger nameDistinguisher;
+        private readonly DerGeneralizedTime dateOfBirth;
+        private readonly DirectoryString placeOfBirth;
+        private readonly string gender;
+        private readonly DirectoryString postalAddress;
 
-		public static PersonalData GetInstance(
-			object obj)
-		{
-			if (obj == null || obj is PersonalData)
-			{
-				return (PersonalData) obj;
-			}
+        public static PersonalData GetInstance(
+            object obj)
+        {
+            if (obj == null || obj is PersonalData)
+            {
+                return (PersonalData)obj;
+            }
 
-			if (obj is Asn1Sequence)
-			{
-				return new PersonalData((Asn1Sequence) obj);
-			}
+            if (obj is Asn1Sequence)
+            {
+                return new PersonalData((Asn1Sequence)obj);
+            }
 
             throw new ArgumentException("unknown object in factory: " + Platform.GetTypeName(obj), "obj");
-		}
+        }
 
-		/**
+        /**
 		* Constructor from Asn1Sequence.
 		* <p/>
 		* The sequence is of type NameOrPseudonym:
@@ -69,45 +69,45 @@ namespace Org.BouncyCastle.Asn1.X509.SigI
 		*
 		* @param seq The ASN.1 sequence.
 		*/
-		private PersonalData(
-			Asn1Sequence seq)
-		{
-			if (seq.Count < 1)
-				throw new ArgumentException("Bad sequence size: " + seq.Count);
+        private PersonalData(
+            Asn1Sequence seq)
+        {
+            if (seq.Count < 1)
+                throw new ArgumentException("Bad sequence size: " + seq.Count);
 
-			IEnumerator e = seq.GetEnumerator();
-			e.MoveNext();
+            IEnumerator e = seq.GetEnumerator();
+            e.MoveNext();
 
-			nameOrPseudonym = NameOrPseudonym.GetInstance(e.Current);
+            nameOrPseudonym = NameOrPseudonym.GetInstance(e.Current);
 
-			while (e.MoveNext())
-			{
-				Asn1TaggedObject o = Asn1TaggedObject.GetInstance(e.Current);
-				int tag = o.TagNo;
-				switch (tag)
-				{
-					case 0:
-						nameDistinguisher = DerInteger.GetInstance(o, false).Value;
-						break;
-					case 1:
-						dateOfBirth = DerGeneralizedTime.GetInstance(o, false);
-						break;
-					case 2:
-						placeOfBirth = DirectoryString.GetInstance(o, true);
-						break;
-					case 3:
-						gender = DerPrintableString.GetInstance(o, false).GetString();
-						break;
-					case 4:
-						postalAddress = DirectoryString.GetInstance(o, true);
-						break;
-					default:
-						throw new ArgumentException("Bad tag number: " + o.TagNo);
-				}
-			}
-		}
+            while (e.MoveNext())
+            {
+                Asn1TaggedObject o = Asn1TaggedObject.GetInstance(e.Current);
+                int tag = o.TagNo;
+                switch (tag)
+                {
+                    case 0:
+                        nameDistinguisher = DerInteger.GetInstance(o, false).Value;
+                        break;
+                    case 1:
+                        dateOfBirth = DerGeneralizedTime.GetInstance(o, false);
+                        break;
+                    case 2:
+                        placeOfBirth = DirectoryString.GetInstance(o, true);
+                        break;
+                    case 3:
+                        gender = DerPrintableString.GetInstance(o, false).GetString();
+                        break;
+                    case 4:
+                        postalAddress = DirectoryString.GetInstance(o, true);
+                        break;
+                    default:
+                        throw new ArgumentException("Bad tag number: " + o.TagNo);
+                }
+            }
+        }
 
-		/**
+        /**
 		* Constructor from a given details.
 		*
 		* @param nameOrPseudonym  Name or pseudonym.
@@ -117,53 +117,53 @@ namespace Org.BouncyCastle.Asn1.X509.SigI
 		* @param gender           Gender.
 		* @param postalAddress    Postal Address.
 		*/
-		public PersonalData(
-			NameOrPseudonym		nameOrPseudonym,
-			BigInteger			nameDistinguisher,
-			DerGeneralizedTime	dateOfBirth,
-			DirectoryString		placeOfBirth,
-			string				gender,
-			DirectoryString		postalAddress)
-		{
-			this.nameOrPseudonym = nameOrPseudonym;
-			this.dateOfBirth = dateOfBirth;
-			this.gender = gender;
-			this.nameDistinguisher = nameDistinguisher;
-			this.postalAddress = postalAddress;
-			this.placeOfBirth = placeOfBirth;
-		}
+        public PersonalData(
+            NameOrPseudonym nameOrPseudonym,
+            BigInteger nameDistinguisher,
+            DerGeneralizedTime dateOfBirth,
+            DirectoryString placeOfBirth,
+            string gender,
+            DirectoryString postalAddress)
+        {
+            this.nameOrPseudonym = nameOrPseudonym;
+            this.dateOfBirth = dateOfBirth;
+            this.gender = gender;
+            this.nameDistinguisher = nameDistinguisher;
+            this.postalAddress = postalAddress;
+            this.placeOfBirth = placeOfBirth;
+        }
 
-		public NameOrPseudonym NameOrPseudonym
-		{
-			get { return nameOrPseudonym; }
-		}
+        public NameOrPseudonym NameOrPseudonym
+        {
+            get { return nameOrPseudonym; }
+        }
 
-		public BigInteger NameDistinguisher
-		{
-			get { return nameDistinguisher; }
-		}
+        public BigInteger NameDistinguisher
+        {
+            get { return nameDistinguisher; }
+        }
 
-		public DerGeneralizedTime DateOfBirth
-		{
-			get { return dateOfBirth; }
-		}
+        public DerGeneralizedTime DateOfBirth
+        {
+            get { return dateOfBirth; }
+        }
 
-		public DirectoryString PlaceOfBirth
-		{
-			get { return placeOfBirth; }
-		}
+        public DirectoryString PlaceOfBirth
+        {
+            get { return placeOfBirth; }
+        }
 
-		public string Gender
-		{
-			get { return gender; }
-		}
+        public string Gender
+        {
+            get { return gender; }
+        }
 
-		public DirectoryString PostalAddress
-		{
-			get { return postalAddress; }
-		}
+        public DirectoryString PostalAddress
+        {
+            get { return postalAddress; }
+        }
 
-		/**
+        /**
 		* Produce an object suitable for an Asn1OutputStream.
 		* <p/>
 		* Returns:
@@ -201,5 +201,5 @@ namespace Org.BouncyCastle.Asn1.X509.SigI
             v.AddOptionalTagged(true, 4, postalAddress);
             return new DerSequence(v);
         }
-	}
+    }
 }

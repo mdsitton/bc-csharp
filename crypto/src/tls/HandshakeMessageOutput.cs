@@ -47,13 +47,8 @@ namespace Org.BouncyCastle.Tls
             Seek(1L, SeekOrigin.Begin);
             TlsUtilities.WriteUint24(bodyLength, this);
 
-#if PORTABLE
-            byte[] buf = ToArray();
-            int count = buf.Length;
-#else
             byte[] buf = GetBuffer();
             int count = (int)Length;
-#endif
             protocol.WriteHandshakeMessage(buf, 0, count);
 
             Platform.Dispose(this);
@@ -68,13 +63,8 @@ namespace Org.BouncyCastle.Tls
             Seek(1L, SeekOrigin.Begin);
             TlsUtilities.WriteUint24(bodyLength, this);
 
-#if PORTABLE
-            byte[] buf = ToArray();
-            int count = buf.Length;
-#else
             byte[] buf = GetBuffer();
             int count = (int)Length;
-#endif
 
             handshakeHash.Update(buf, 0, count);
 
@@ -83,13 +73,8 @@ namespace Org.BouncyCastle.Tls
 
         internal void SendClientHello(TlsClientProtocol clientProtocol, TlsHandshakeHash handshakeHash, int bindersSize)
         {
-#if PORTABLE
-            byte[] buf = ToArray();
-            int count = buf.Length;
-#else
             byte[] buf = GetBuffer();
             int count = (int)Length;
-#endif
 
             if (bindersSize > 0)
             {

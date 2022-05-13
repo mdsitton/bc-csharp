@@ -12,38 +12,38 @@ namespace Org.BouncyCastle.Asn1.Pkcs
     public class SignerInfo
         : Asn1Encodable
     {
-        private DerInteger              version;
-        private IssuerAndSerialNumber   issuerAndSerialNumber;
-        private AlgorithmIdentifier     digAlgorithm;
-        private Asn1Set                 authenticatedAttributes;
-        private AlgorithmIdentifier     digEncryptionAlgorithm;
-        private Asn1OctetString         encryptedDigest;
-        private Asn1Set                 unauthenticatedAttributes;
+        private DerInteger version;
+        private IssuerAndSerialNumber issuerAndSerialNumber;
+        private AlgorithmIdentifier digAlgorithm;
+        private Asn1Set authenticatedAttributes;
+        private AlgorithmIdentifier digEncryptionAlgorithm;
+        private Asn1OctetString encryptedDigest;
+        private Asn1Set unauthenticatedAttributes;
 
-		public static SignerInfo GetInstance(
+        public static SignerInfo GetInstance(
             object obj)
         {
             if (obj is SignerInfo)
             {
-                return (SignerInfo) obj;
+                return (SignerInfo)obj;
             }
 
-			if (obj is Asn1Sequence)
+            if (obj is Asn1Sequence)
             {
-                return new SignerInfo((Asn1Sequence) obj);
+                return new SignerInfo((Asn1Sequence)obj);
             }
 
-			throw new ArgumentException("Unknown object in factory: " + Platform.GetTypeName(obj), "obj");
-		}
+            throw new ArgumentException("Unknown object in factory: " + Platform.GetTypeName(obj), "obj");
+        }
 
-		public SignerInfo(
-            DerInteger              version,
-            IssuerAndSerialNumber   issuerAndSerialNumber,
-            AlgorithmIdentifier     digAlgorithm,
-            Asn1Set                 authenticatedAttributes,
-            AlgorithmIdentifier     digEncryptionAlgorithm,
-            Asn1OctetString         encryptedDigest,
-            Asn1Set                 unauthenticatedAttributes)
+        public SignerInfo(
+            DerInteger version,
+            IssuerAndSerialNumber issuerAndSerialNumber,
+            AlgorithmIdentifier digAlgorithm,
+            Asn1Set authenticatedAttributes,
+            AlgorithmIdentifier digEncryptionAlgorithm,
+            Asn1OctetString encryptedDigest,
+            Asn1Set unauthenticatedAttributes)
         {
             this.version = version;
             this.issuerAndSerialNumber = issuerAndSerialNumber;
@@ -54,28 +54,28 @@ namespace Org.BouncyCastle.Asn1.Pkcs
             this.unauthenticatedAttributes = unauthenticatedAttributes;
         }
 
-		public SignerInfo(
+        public SignerInfo(
             Asn1Sequence seq)
         {
             IEnumerator e = seq.GetEnumerator();
 
-			e.MoveNext();
-            version = (DerInteger) e.Current;
+            e.MoveNext();
+            version = (DerInteger)e.Current;
 
-			e.MoveNext();
+            e.MoveNext();
             issuerAndSerialNumber = IssuerAndSerialNumber.GetInstance(e.Current);
 
-			e.MoveNext();
+            e.MoveNext();
             digAlgorithm = AlgorithmIdentifier.GetInstance(e.Current);
 
-			e.MoveNext();
+            e.MoveNext();
             object obj = e.Current;
 
-			if (obj is Asn1TaggedObject)
+            if (obj is Asn1TaggedObject)
             {
-                authenticatedAttributes = Asn1Set.GetInstance((Asn1TaggedObject) obj, false);
+                authenticatedAttributes = Asn1Set.GetInstance((Asn1TaggedObject)obj, false);
 
-				e.MoveNext();
+                e.MoveNext();
                 digEncryptionAlgorithm = AlgorithmIdentifier.GetInstance(e.Current);
             }
             else
@@ -84,10 +84,10 @@ namespace Org.BouncyCastle.Asn1.Pkcs
                 digEncryptionAlgorithm = AlgorithmIdentifier.GetInstance(obj);
             }
 
-			e.MoveNext();
+            e.MoveNext();
             encryptedDigest = DerOctetString.GetInstance(e.Current);
 
-			if (e.MoveNext())
+            if (e.MoveNext())
             {
                 unauthenticatedAttributes = Asn1Set.GetInstance((Asn1TaggedObject)e.Current, false);
             }
@@ -97,21 +97,21 @@ namespace Org.BouncyCastle.Asn1.Pkcs
             }
         }
 
-		public DerInteger Version { get { return version; } }
+        public DerInteger Version { get { return version; } }
 
-		public IssuerAndSerialNumber IssuerAndSerialNumber { get { return issuerAndSerialNumber; } }
+        public IssuerAndSerialNumber IssuerAndSerialNumber { get { return issuerAndSerialNumber; } }
 
-		public Asn1Set AuthenticatedAttributes { get { return authenticatedAttributes; } }
+        public Asn1Set AuthenticatedAttributes { get { return authenticatedAttributes; } }
 
-		public AlgorithmIdentifier DigestAlgorithm { get { return digAlgorithm; } }
+        public AlgorithmIdentifier DigestAlgorithm { get { return digAlgorithm; } }
 
-		public Asn1OctetString EncryptedDigest { get { return encryptedDigest; } }
+        public Asn1OctetString EncryptedDigest { get { return encryptedDigest; } }
 
-		public AlgorithmIdentifier DigestEncryptionAlgorithm { get { return digEncryptionAlgorithm; } }
+        public AlgorithmIdentifier DigestEncryptionAlgorithm { get { return digEncryptionAlgorithm; } }
 
-		public Asn1Set UnauthenticatedAttributes { get { return unauthenticatedAttributes; } }
+        public Asn1Set UnauthenticatedAttributes { get { return unauthenticatedAttributes; } }
 
-		/**
+        /**
          * Produce an object suitable for an Asn1OutputStream.
          * <pre>
          *  SignerInfo ::= Sequence {

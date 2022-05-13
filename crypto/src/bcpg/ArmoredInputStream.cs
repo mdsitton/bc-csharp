@@ -103,20 +103,20 @@ namespace Org.BouncyCastle.Bcpg
          */
         private bool detectMissingChecksum = false;
 
-        Stream      input;
-        bool        start = true;
-        int[]       outBuf = new int[3];
-        int         bufPtr = 3;
-        Crc24       crc = new Crc24();
-        bool        crcFound = false;
-        bool        hasHeaders = true;
-        string      header = null;
-        bool        newLineFound = false;
-        bool        clearText = false;
-        bool        restart = false;
-        IList       headerList = Platform.CreateArrayList();
-        int         lastC = 0;
-		bool		isEndOfStream;
+        Stream input;
+        bool start = true;
+        int[] outBuf = new int[3];
+        int bufPtr = 3;
+        Crc24 crc = new Crc24();
+        bool crcFound = false;
+        bool hasHeaders = true;
+        string header = null;
+        bool newLineFound = false;
+        bool clearText = false;
+        bool restart = false;
+        IList headerList = Platform.CreateArrayList();
+        int lastC = 0;
+        bool isEndOfStream;
 
         /**
         * Create a stream for reading a PGP armoured message, parsing up to a header
@@ -125,11 +125,11 @@ namespace Org.BouncyCastle.Bcpg
         * @param input
         */
         public ArmoredInputStream(Stream input)
-			: this(input, true)
+            : this(input, true)
         {
         }
 
-		/**
+        /**
         * Create an armoured input stream which will assume the data starts
         * straight away, or parse for headers first depending on the value of
         * hasHeaders.
@@ -142,25 +142,25 @@ namespace Org.BouncyCastle.Bcpg
             this.input = input;
             this.hasHeaders = hasHeaders;
 
-			if (hasHeaders)
+            if (hasHeaders)
             {
                 ParseHeaders();
             }
 
-			start = false;
+            start = false;
         }
 
-		private bool ParseHeaders()
+        private bool ParseHeaders()
         {
             header = null;
 
-			int		c;
-            int		last = 0;
-            bool	headerFound = false;
+            int c;
+            int last = 0;
+            bool headerFound = false;
 
             headerList = Platform.CreateArrayList();
 
-			//
+            //
             // if restart we already have a header
             //
             if (restart)
@@ -177,22 +177,22 @@ namespace Org.BouncyCastle.Bcpg
                         break;
                     }
 
-					last = c;
+                    last = c;
                 }
             }
 
-			if (headerFound)
+            if (headerFound)
             {
-                StringBuilder    buf = new StringBuilder("-");
-                bool             eolReached = false;
-                bool             crLf = false;
+                StringBuilder buf = new StringBuilder("-");
+                bool eolReached = false;
+                bool crLf = false;
 
-				if (restart)    // we've had to look ahead two '-'
+                if (restart)    // we've had to look ahead two '-'
                 {
                     buf.Append('-');
                 }
 
-				while ((c = input.ReadByte()) >= 0)
+                while ((c = input.ReadByte()) >= 0)
                 {
                     if (last == '\r' && c == '\n')
                     {
@@ -208,9 +208,9 @@ namespace Org.BouncyCastle.Bcpg
                     }
                     if (c == '\r' || (last != '\r' && c == '\n'))
                     {
-						string line = buf.ToString();
-						if (line.Trim().Length < 1)
-							break;
+                        string line = buf.ToString();
+                        if (line.Trim().Length < 1)
+                            break;
 
                         if (headerList.Count > 0 && line.IndexOf(':') < 0)
                             throw new IOException("invalid armor header");
@@ -232,27 +232,27 @@ namespace Org.BouncyCastle.Bcpg
                         }
                     }
 
-					last = c;
+                    last = c;
                 }
 
-				if (crLf)
+                if (crLf)
                 {
                     input.ReadByte(); // skip last \n
                 }
             }
 
-			if (headerList.Count > 0)
+            if (headerList.Count > 0)
             {
                 header = (string)headerList[0];
             }
 
-			clearText = "-----BEGIN PGP SIGNED MESSAGE-----".Equals(header);
+            clearText = "-----BEGIN PGP SIGNED MESSAGE-----".Equals(header);
             newLineFound = true;
 
-			return headerFound;
+            return headerFound;
         }
 
-		/**
+        /**
         * @return true if we are inside the clear text section of a PGP
         * signed message.
         */
@@ -261,15 +261,15 @@ namespace Org.BouncyCastle.Bcpg
             return clearText;
         }
 
-		/**
+        /**
 		 * @return true if the stream is actually at end of file.
 		 */
-		public bool IsEndOfStream()
-		{
-			return isEndOfStream;
-		}
+        public bool IsEndOfStream()
+        {
+            return isEndOfStream;
+        }
 
-		/**
+        /**
         * Return the armor header line (if there is one)
         * @return the armor header line, null if none present.
         */
@@ -278,7 +278,7 @@ namespace Org.BouncyCastle.Bcpg
             return header;
         }
 
-		/**
+        /**
         * Return the armor headers (the lines after the armor header line),
         * @return an array of armor headers, null if there aren't any.
         */
@@ -287,23 +287,23 @@ namespace Org.BouncyCastle.Bcpg
             if (headerList.Count <= 1)
                 return null;
 
-			string[] hdrs = new string[headerList.Count - 1];
+            string[] hdrs = new string[headerList.Count - 1];
             for (int i = 0; i != hdrs.Length; i++)
             {
                 hdrs[i] = (string)headerList[i + 1];
             }
 
-			return hdrs;
+            return hdrs;
         }
 
-		private int ReadIgnoreSpace()
+        private int ReadIgnoreSpace()
         {
             int c;
             do
             {
                 c = input.ReadByte();
             }
-            while (c == ' ' || c == '\t' || c == '\f' || c == '\u000B') ; // \u000B ~ \v
+            while (c == ' ' || c == '\t' || c == '\f' || c == '\u000B'); // \u000B ~ \v
 
             if (c >= 128)
                 throw new IOException("invalid armor");
@@ -356,25 +356,25 @@ namespace Org.BouncyCastle.Bcpg
                         newLineFound = false;
                     }
                 }
-            
+
                 lastC = c;
 
                 if (c < 0)
                 {
                     isEndOfStream = true;
                 }
-            
+
                 return c;
             }
 
             if (bufPtr > 2 || crcFound)
             {
                 c = ReadIgnoreSpace();
-            
+
                 if (c == '\r' || c == '\n')
                 {
                     c = ReadIgnoreSpace();
-                
+
                     while (c == '\n' || c == '\r')
                     {
                         c = ReadIgnoreSpace();
@@ -509,7 +509,6 @@ namespace Org.BouncyCastle.Bcpg
                 throw new IndexOutOfRangeException("Invalid offset and length.");
         }
 
-#if PORTABLE
         protected override void Dispose(bool disposing)
         {
             if (disposing)
@@ -518,13 +517,12 @@ namespace Org.BouncyCastle.Bcpg
             }
             base.Dispose(disposing);
         }
-#else
+
         public override void Close()
-		{
+        {
             Platform.Dispose(input);
-			base.Close();
-		}
-#endif
+            base.Close();
+        }
 
         /**
          * Change how the stream should react if it encounters missing CRC checksum.

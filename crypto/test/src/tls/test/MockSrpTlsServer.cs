@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.IO;
 
@@ -131,7 +131,7 @@ namespace Org.BouncyCastle.Tls.Tests
                     BigInteger verifier = verifierGenerator.GenerateVerifier(TEST_SALT, identity, TEST_PASSWORD);
 
                     TlsSrpConfig srpConfig = new TlsSrpConfig();
-                    srpConfig.SetExplicitNG(new BigInteger[]{ TEST_GROUP.N, TEST_GROUP.G });
+                    srpConfig.SetExplicitNG(new BigInteger[] { TEST_GROUP.N, TEST_GROUP.G });
 
                     return new TlsSrpLoginParameters(identity, srpConfig, verifier, TEST_SALT);
                 }

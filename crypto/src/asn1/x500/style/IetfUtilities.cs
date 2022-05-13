@@ -57,17 +57,17 @@ namespace Org.BouncyCastle.Asn1.X500.Style
                     case '<':
                     case '>':
                     case ';':
-                    {
-                        vBuf.Insert(index, "\\");
-                        index += 2;
-                        ++end;
-                        break;
-                    }
+                        {
+                            vBuf.Insert(index, "\\");
+                            index += 2;
+                            ++end;
+                            break;
+                        }
                     default:
-                    {
-                        ++index;
-                        break;
-                    }
+                        {
+                            ++index;
+                            break;
+                        }
                 }
             }
 
@@ -94,7 +94,7 @@ namespace Org.BouncyCastle.Asn1.X500.Style
 
         public static string Canonicalize(string s)
         {
-            string value = Platform.ToLowerInvariant(s);
+            string value = s.ToLowerInvariant();
 
             if (value.Length > 0 && value[0] == '#')
             {
@@ -102,7 +102,7 @@ namespace Org.BouncyCastle.Asn1.X500.Style
 
                 if (obj is IAsn1String)
                 {
-                    value = Platform.ToLowerInvariant(((IAsn1String)obj).GetString());
+                    value = ((IAsn1String)obj).GetString().ToLowerInvariant();
                 }
             }
 

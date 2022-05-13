@@ -45,7 +45,7 @@ namespace Org.BouncyCastle.Asn1.CryptoPro
         internal class Holder_gostR3410_2001_CryptoPro_A
             : X9ECParametersHolder
         {
-            private Holder_gostR3410_2001_CryptoPro_A() {}
+            private Holder_gostR3410_2001_CryptoPro_A() { }
 
             internal static readonly X9ECParametersHolder Instance = new Holder_gostR3410_2001_CryptoPro_A();
 
@@ -80,7 +80,7 @@ namespace Org.BouncyCastle.Asn1.CryptoPro
         internal class Holder_gostR3410_2001_CryptoPro_B
             : X9ECParametersHolder
         {
-            private Holder_gostR3410_2001_CryptoPro_B() {}
+            private Holder_gostR3410_2001_CryptoPro_B() { }
 
             internal static readonly X9ECParametersHolder Instance = new Holder_gostR3410_2001_CryptoPro_B();
 
@@ -115,7 +115,7 @@ namespace Org.BouncyCastle.Asn1.CryptoPro
         internal class Holder_gostR3410_2001_CryptoPro_C
             : X9ECParametersHolder
         {
-            private Holder_gostR3410_2001_CryptoPro_C() {}
+            private Holder_gostR3410_2001_CryptoPro_C() { }
 
             internal static readonly X9ECParametersHolder Instance = new Holder_gostR3410_2001_CryptoPro_C();
 
@@ -150,7 +150,7 @@ namespace Org.BouncyCastle.Asn1.CryptoPro
         internal class Holder_gostR3410_2001_CryptoPro_XchB
             : X9ECParametersHolder
         {
-            private Holder_gostR3410_2001_CryptoPro_XchB() {}
+            private Holder_gostR3410_2001_CryptoPro_XchB() { }
 
             internal static readonly X9ECParametersHolder Instance = new Holder_gostR3410_2001_CryptoPro_XchB();
 
@@ -185,7 +185,7 @@ namespace Org.BouncyCastle.Asn1.CryptoPro
         internal class Holder_id_tc26_gost_3410_12_256_paramSetA
             : X9ECParametersHolder
         {
-            private Holder_id_tc26_gost_3410_12_256_paramSetA() {}
+            private Holder_id_tc26_gost_3410_12_256_paramSetA() { }
 
             internal static readonly X9ECParametersHolder Instance = new Holder_id_tc26_gost_3410_12_256_paramSetA();
 
@@ -220,7 +220,7 @@ namespace Org.BouncyCastle.Asn1.CryptoPro
         internal class Holder_id_tc26_gost_3410_12_512_paramSetA
             : X9ECParametersHolder
         {
-            private Holder_id_tc26_gost_3410_12_512_paramSetA() {}
+            private Holder_id_tc26_gost_3410_12_512_paramSetA() { }
 
             internal static readonly X9ECParametersHolder Instance = new Holder_id_tc26_gost_3410_12_512_paramSetA();
 
@@ -255,7 +255,7 @@ namespace Org.BouncyCastle.Asn1.CryptoPro
         internal class Holder_id_tc26_gost_3410_12_512_paramSetB
             : X9ECParametersHolder
         {
-            private Holder_id_tc26_gost_3410_12_512_paramSetB() {}
+            private Holder_id_tc26_gost_3410_12_512_paramSetB() { }
 
             internal static readonly X9ECParametersHolder Instance = new Holder_id_tc26_gost_3410_12_512_paramSetB();
 
@@ -290,7 +290,7 @@ namespace Org.BouncyCastle.Asn1.CryptoPro
         internal class Holder_id_tc26_gost_3410_12_512_paramSetC
             : X9ECParametersHolder
         {
-            private Holder_id_tc26_gost_3410_12_512_paramSetC() {}
+            private Holder_id_tc26_gost_3410_12_512_paramSetC() { }
 
             internal static readonly X9ECParametersHolder Instance = new Holder_id_tc26_gost_3410_12_512_paramSetC();
 

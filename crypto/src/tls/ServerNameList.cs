@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.IO;
 
@@ -77,7 +77,7 @@ namespace Org.BouncyCastle.Tls
 
         private static short[] CheckNameType(short[] nameTypesSeen, short nameType)
         {
-             // RFC 6066 3. The ServerNameList MUST NOT contain more than one name of the same NameType.
+            // RFC 6066 3. The ServerNameList MUST NOT contain more than one name of the same NameType.
             if (Arrays.Contains(nameTypesSeen, nameType))
                 return null;
 

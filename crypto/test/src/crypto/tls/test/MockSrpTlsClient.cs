@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.IO;
 
@@ -9,12 +9,12 @@ using Org.BouncyCastle.Utilities.Encoders;
 namespace Org.BouncyCastle.Crypto.Tls.Tests
 {
     internal class MockSrpTlsClient
-        :   SrpTlsClient
+        : SrpTlsClient
     {
         internal TlsSession mSession;
 
         internal MockSrpTlsClient(TlsSession session, byte[] identity, byte[] password)
-            :   base(identity, password)
+            : base(identity, password)
         {
             this.mSession = session;
         }

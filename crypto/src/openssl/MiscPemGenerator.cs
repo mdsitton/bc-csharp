@@ -37,10 +37,10 @@ namespace Org.BouncyCastle.OpenSsl
         }
 
         public MiscPemGenerator(
-            object			obj,
-            string			algorithm,
-            char[]			password,
-            SecureRandom	random)
+            object obj,
+            string algorithm,
+            char[] password,
+            SecureRandom random)
         {
             this.obj = obj;
             this.algorithm = algorithm;
@@ -94,7 +94,7 @@ namespace Org.BouncyCastle.OpenSsl
             }
             else if (obj is AsymmetricKeyParameter)
             {
-                AsymmetricKeyParameter akp = (AsymmetricKeyParameter) obj;
+                AsymmetricKeyParameter akp = (AsymmetricKeyParameter)obj;
                 if (akp.IsPrivate)
                 {
                     encoding = EncodePrivateKey(akp, out type);
@@ -129,25 +129,25 @@ namespace Org.BouncyCastle.OpenSsl
             return new PemObject(type, encoding);
         }
 
-//		private string GetHexEncoded(byte[] bytes)
-//		{
-//			bytes = Hex.Encode(bytes);
-//
-//			char[] chars = new char[bytes.Length];
-//
-//			for (int i = 0; i != bytes.Length; i++)
-//			{
-//				chars[i] = (char)bytes[i];
-//			}
-//
-//			return new string(chars);
-//		}
+        //		private string GetHexEncoded(byte[] bytes)
+        //		{
+        //			bytes = Hex.Encode(bytes);
+        //
+        //			char[] chars = new char[bytes.Length];
+        //
+        //			for (int i = 0; i != bytes.Length; i++)
+        //			{
+        //				chars[i] = (char)bytes[i];
+        //			}
+        //
+        //			return new string(chars);
+        //		}
 
         private static PemObject CreatePemObject(
-            object			obj,
-            string			algorithm,
-            char[]			password,
-            SecureRandom	random)
+            object obj,
+            string algorithm,
+            char[] password,
+            SecureRandom random)
         {
             if (obj == null)
                 throw new ArgumentNullException("obj");
@@ -168,7 +168,7 @@ namespace Org.BouncyCastle.OpenSsl
 
             if (obj is AsymmetricKeyParameter)
             {
-                AsymmetricKeyParameter akp = (AsymmetricKeyParameter) obj;
+                AsymmetricKeyParameter akp = (AsymmetricKeyParameter)obj;
                 if (akp.IsPrivate)
                 {
                     keyData = EncodePrivateKey(akp, out type);
@@ -207,8 +207,8 @@ namespace Org.BouncyCastle.OpenSsl
         }
 
         private static byte[] EncodePrivateKey(
-            AsymmetricKeyParameter	akp,
-            out string				keyType)
+            AsymmetricKeyParameter akp,
+            out string keyType)
         {
             PrivateKeyInfo info = PrivateKeyInfoFactory.CreatePrivateKeyInfo(akp);
             AlgorithmIdentifier algID = info.PrivateKeyAlgorithm;
@@ -220,7 +220,7 @@ namespace Org.BouncyCastle.OpenSsl
 
                 DsaParameter p = DsaParameter.GetInstance(algID.Parameters);
 
-                BigInteger x = ((DsaPrivateKeyParameters) akp).X;
+                BigInteger x = ((DsaPrivateKeyParameters)akp).X;
                 BigInteger y = p.G.ModPow(x, p.P);
 
                 // TODO Create an ASN1 object somewhere for this?

@@ -267,14 +267,14 @@ namespace Org.BouncyCastle.Crypto.Digests
                 First = true;
             }
 
-            public uint Type 
+            public uint Type
             {
-                get 
+                get
                 {
                     return (uint)((tweak[1] >> 56) & 0x3FUL);
                 }
 
-                set 
+                set
                 {
                     // Bits 120..125 = type
                     tweak[1] = (tweak[1] & 0xFFFFFFC000000000UL) | ((value & 0x3FUL) << 56);
@@ -529,7 +529,7 @@ namespace Org.BouncyCastle.Crypto.Digests
             this.outputSizeBytes = outputSizeBits / 8;
 
             this.threefish = new ThreefishEngine(blockSizeBits);
-            this.ubi = new UBI(this,threefish.GetBlockSize());
+            this.ubi = new UBI(this, threefish.GetBlockSize());
         }
 
         /// <summary>
@@ -587,7 +587,7 @@ namespace Org.BouncyCastle.Crypto.Digests
 
         public int BlockSize
         {
-            get { return threefish.GetBlockSize (); }
+            get { return threefish.GetBlockSize(); }
         }
 
         /// <summary>

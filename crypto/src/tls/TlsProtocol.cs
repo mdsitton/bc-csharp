@@ -43,32 +43,32 @@ namespace Org.BouncyCastle.Tls
         {
             switch (m_connectionState)
             {
-            case CS_START:
-            case CS_CLIENT_HELLO:
-            case CS_SERVER_HELLO:
-            case CS_SERVER_SUPPLEMENTAL_DATA:
-            case CS_SERVER_CERTIFICATE:
-            case CS_SERVER_CERTIFICATE_STATUS:
-            case CS_SERVER_KEY_EXCHANGE:
-            case CS_SERVER_CERTIFICATE_REQUEST:
-            case CS_SERVER_HELLO_DONE:
-            case CS_CLIENT_SUPPLEMENTAL_DATA:
-            case CS_CLIENT_CERTIFICATE:
-            case CS_CLIENT_KEY_EXCHANGE:
-            case CS_CLIENT_CERTIFICATE_VERIFY:
-            case CS_CLIENT_FINISHED:
-            case CS_SERVER_SESSION_TICKET:
-            case CS_SERVER_FINISHED:
-            case CS_END:
-                return true;
+                case CS_START:
+                case CS_CLIENT_HELLO:
+                case CS_SERVER_HELLO:
+                case CS_SERVER_SUPPLEMENTAL_DATA:
+                case CS_SERVER_CERTIFICATE:
+                case CS_SERVER_CERTIFICATE_STATUS:
+                case CS_SERVER_KEY_EXCHANGE:
+                case CS_SERVER_CERTIFICATE_REQUEST:
+                case CS_SERVER_HELLO_DONE:
+                case CS_CLIENT_SUPPLEMENTAL_DATA:
+                case CS_CLIENT_CERTIFICATE:
+                case CS_CLIENT_KEY_EXCHANGE:
+                case CS_CLIENT_CERTIFICATE_VERIFY:
+                case CS_CLIENT_FINISHED:
+                case CS_SERVER_SESSION_TICKET:
+                case CS_SERVER_FINISHED:
+                case CS_END:
+                    return true;
 
-            case CS_SERVER_HELLO_RETRY_REQUEST:
-            case CS_CLIENT_HELLO_RETRY:
-            case CS_SERVER_ENCRYPTED_EXTENSIONS:
-            case CS_SERVER_CERTIFICATE_VERIFY:
-            case CS_CLIENT_END_OF_EARLY_DATA:
-            default:
-                return false;
+                case CS_SERVER_HELLO_RETRY_REQUEST:
+                case CS_CLIENT_HELLO_RETRY:
+                case CS_SERVER_ENCRYPTED_EXTENSIONS:
+                case CS_SERVER_CERTIFICATE_VERIFY:
+                case CS_CLIENT_END_OF_EARLY_DATA:
+                default:
+                    return false;
             }
         }
 
@@ -76,32 +76,32 @@ namespace Org.BouncyCastle.Tls
         {
             switch (m_connectionState)
             {
-            case CS_START:
-            case CS_CLIENT_HELLO:
-            case CS_SERVER_HELLO_RETRY_REQUEST:
-            case CS_CLIENT_HELLO_RETRY:
-            case CS_SERVER_HELLO:
-            case CS_SERVER_ENCRYPTED_EXTENSIONS:
-            case CS_SERVER_CERTIFICATE_REQUEST:
-            case CS_SERVER_CERTIFICATE:
-            case CS_SERVER_CERTIFICATE_VERIFY:
-            case CS_SERVER_FINISHED:
-            case CS_CLIENT_END_OF_EARLY_DATA:
-            case CS_CLIENT_CERTIFICATE:
-            case CS_CLIENT_CERTIFICATE_VERIFY:
-            case CS_CLIENT_FINISHED:
-            case CS_END:
-                return true;
+                case CS_START:
+                case CS_CLIENT_HELLO:
+                case CS_SERVER_HELLO_RETRY_REQUEST:
+                case CS_CLIENT_HELLO_RETRY:
+                case CS_SERVER_HELLO:
+                case CS_SERVER_ENCRYPTED_EXTENSIONS:
+                case CS_SERVER_CERTIFICATE_REQUEST:
+                case CS_SERVER_CERTIFICATE:
+                case CS_SERVER_CERTIFICATE_VERIFY:
+                case CS_SERVER_FINISHED:
+                case CS_CLIENT_END_OF_EARLY_DATA:
+                case CS_CLIENT_CERTIFICATE:
+                case CS_CLIENT_CERTIFICATE_VERIFY:
+                case CS_CLIENT_FINISHED:
+                case CS_END:
+                    return true;
 
-            case CS_SERVER_SUPPLEMENTAL_DATA:
-            case CS_SERVER_CERTIFICATE_STATUS:
-            case CS_SERVER_KEY_EXCHANGE:
-            case CS_SERVER_HELLO_DONE:
-            case CS_CLIENT_SUPPLEMENTAL_DATA:
-            case CS_CLIENT_KEY_EXCHANGE:
-            case CS_SERVER_SESSION_TICKET:
-            default:
-                return false;
+                case CS_SERVER_SUPPLEMENTAL_DATA:
+                case CS_SERVER_CERTIFICATE_STATUS:
+                case CS_SERVER_KEY_EXCHANGE:
+                case CS_SERVER_HELLO_DONE:
+                case CS_CLIENT_SUPPLEMENTAL_DATA:
+                case CS_CLIENT_KEY_EXCHANGE:
+                case CS_SERVER_SESSION_TICKET:
+                default:
+                    return false;
             }
         }
 
@@ -224,27 +224,27 @@ namespace Org.BouncyCastle.Tls
         {
             switch (alertDescription)
             {
-            /*
-             * RFC 5246 7.2.1. The other party MUST respond with a close_notify alert of its own
-             * and close down the connection immediately, discarding any pending writes.
-             */
-            case AlertDescription.close_notify:
-            {
-                if (!m_appDataReady)
-                    throw new TlsFatalAlert(AlertDescription.handshake_failure);
+                /*
+                 * RFC 5246 7.2.1. The other party MUST respond with a close_notify alert of its own
+                 * and close down the connection immediately, discarding any pending writes.
+                 */
+                case AlertDescription.close_notify:
+                    {
+                        if (!m_appDataReady)
+                            throw new TlsFatalAlert(AlertDescription.handshake_failure);
 
-                HandleClose(false);
-                break;
-            }
-            case AlertDescription.no_certificate:
-            {
-                throw new TlsFatalAlert(AlertDescription.unexpected_message);
-            }
-            case AlertDescription.no_renegotiation:
-            {
-                // TODO[reneg] Give peer the option to tolerate this
-                throw new TlsFatalAlert(AlertDescription.handshake_failure);
-            }
+                        HandleClose(false);
+                        break;
+                    }
+                case AlertDescription.no_certificate:
+                    {
+                        throw new TlsFatalAlert(AlertDescription.unexpected_message);
+                    }
+                case AlertDescription.no_renegotiation:
+                    {
+                        // TODO[reneg] Give peer the option to tolerate this
+                        throw new TlsFatalAlert(AlertDescription.handshake_failure);
+                    }
             }
         }
 
@@ -476,57 +476,57 @@ namespace Org.BouncyCastle.Tls
              */
             switch (protocol)
             {
-            case ContentType.alert:
-            {
-                m_alertQueue.AddData(buf, off, len);
-                ProcessAlertQueue();
-                break;
-            }
-            case ContentType.application_data:
-            {
-                if (!m_appDataReady)
-                    throw new TlsFatalAlert(AlertDescription.unexpected_message);
-
-                m_applicationDataQueue.AddData(buf, off, len);
-                ProcessApplicationDataQueue();
-                break;
-            }
-            case ContentType.change_cipher_spec:
-            {
-                ProcessChangeCipherSpec(buf, off, len);
-                break;
-            }
-            case ContentType.handshake:
-            {
-                if (m_handshakeQueue.Available > 0)
-                {
-                    m_handshakeQueue.AddData(buf, off, len);
-                    ProcessHandshakeQueue(m_handshakeQueue);
-                }
-                else
-                {
-                    ByteQueue tmpQueue = new ByteQueue(buf, off, len);
-                    ProcessHandshakeQueue(tmpQueue);
-                    int remaining = tmpQueue.Available;
-                    if (remaining > 0)
+                case ContentType.alert:
                     {
-                        m_handshakeQueue.AddData(buf, off + len - remaining, remaining);
+                        m_alertQueue.AddData(buf, off, len);
+                        ProcessAlertQueue();
+                        break;
                     }
-                }
-                break;
-            }
-            //case ContentType.heartbeat:
-            //{
-            //    if (!m_appDataReady)
-            //        throw new TlsFatalAlert(AlertDescription.unexpected_message);
+                case ContentType.application_data:
+                    {
+                        if (!m_appDataReady)
+                            throw new TlsFatalAlert(AlertDescription.unexpected_message);
 
-            //    // TODO[RFC 6520]
-            //    m_heartbeatQueue.addData(buf, off, len);
-            //    ProcessHeartbeatQueue();
-            //    break;
-            //}
-            default:
-                throw new TlsFatalAlert(AlertDescription.unexpected_message);
+                        m_applicationDataQueue.AddData(buf, off, len);
+                        ProcessApplicationDataQueue();
+                        break;
+                    }
+                case ContentType.change_cipher_spec:
+                    {
+                        ProcessChangeCipherSpec(buf, off, len);
+                        break;
+                    }
+                case ContentType.handshake:
+                    {
+                        if (m_handshakeQueue.Available > 0)
+                        {
+                            m_handshakeQueue.AddData(buf, off, len);
+                            ProcessHandshakeQueue(m_handshakeQueue);
+                        }
+                        else
+                        {
+                            ByteQueue tmpQueue = new ByteQueue(buf, off, len);
+                            ProcessHandshakeQueue(tmpQueue);
+                            int remaining = tmpQueue.Available;
+                            if (remaining > 0)
+                            {
+                                m_handshakeQueue.AddData(buf, off + len - remaining, remaining);
+                            }
+                        }
+                        break;
+                    }
+                //case ContentType.heartbeat:
+                //{
+                //    if (!m_appDataReady)
+                //        throw new TlsFatalAlert(AlertDescription.unexpected_message);
+
+                //    // TODO[RFC 6520]
+                //    m_heartbeatQueue.addData(buf, off, len);
+                //    ProcessHeartbeatQueue();
+                //    break;
+                //}
+                default:
+                    throw new TlsFatalAlert(AlertDescription.unexpected_message);
             }
         }
 
@@ -567,62 +567,62 @@ namespace Org.BouncyCastle.Tls
                  */
                 switch (type)
                 {
-                case HandshakeType.hello_request:
-                    break;
-
-                default:
-                {
-                    ProtocolVersion negotiatedVersion = Context.ServerVersion;
-                    if (null != negotiatedVersion && TlsUtilities.IsTlsV13(negotiatedVersion))
+                    case HandshakeType.hello_request:
                         break;
 
-                    CheckReceivedChangeCipherSpec(HandshakeType.finished == type);
-                    break;
-                }
+                    default:
+                        {
+                            ProtocolVersion negotiatedVersion = Context.ServerVersion;
+                            if (null != negotiatedVersion && TlsUtilities.IsTlsV13(negotiatedVersion))
+                                break;
+
+                            CheckReceivedChangeCipherSpec(HandshakeType.finished == type);
+                            break;
+                        }
                 }
 
                 HandshakeMessageInput buf = queue.ReadHandshakeMessage(totalLength);
 
                 switch (type)
                 {
-                /*
-                 * These message types aren't included in the transcript.
-                 */
-                case HandshakeType.hello_request:
-                case HandshakeType.key_update:
-                    break;
+                    /*
+                     * These message types aren't included in the transcript.
+                     */
+                    case HandshakeType.hello_request:
+                    case HandshakeType.key_update:
+                        break;
 
-                /*
-                 * Not included in the transcript for (D)TLS 1.3+
-                 */
-                case HandshakeType.new_session_ticket:
-                {
-                    ProtocolVersion negotiatedVersion = Context.ServerVersion;
-                    if (null != negotiatedVersion && !TlsUtilities.IsTlsV13(negotiatedVersion))
-                    {
-                        buf.UpdateHash(m_handshakeHash);
-                    }
+                    /*
+                     * Not included in the transcript for (D)TLS 1.3+
+                     */
+                    case HandshakeType.new_session_ticket:
+                        {
+                            ProtocolVersion negotiatedVersion = Context.ServerVersion;
+                            if (null != negotiatedVersion && !TlsUtilities.IsTlsV13(negotiatedVersion))
+                            {
+                                buf.UpdateHash(m_handshakeHash);
+                            }
 
-                    break;
-                }
+                            break;
+                        }
 
-                /*
-                 * These message types are deferred to the handler to explicitly update the transcript.
-                 */
-                case HandshakeType.certificate_verify:
-                case HandshakeType.client_hello:
-                case HandshakeType.finished:
-                case HandshakeType.server_hello:
-                    break;
+                    /*
+                     * These message types are deferred to the handler to explicitly update the transcript.
+                     */
+                    case HandshakeType.certificate_verify:
+                    case HandshakeType.client_hello:
+                    case HandshakeType.finished:
+                    case HandshakeType.server_hello:
+                        break;
 
-                /*
-                 * For all others we automatically update the transcript immediately. 
-                 */
-                default:
-                {
-                    buf.UpdateHash(m_handshakeHash);
-                    break;
-                }
+                    /*
+                     * For all others we automatically update the transcript immediately. 
+                     */
+                    default:
+                        {
+                            buf.UpdateHash(m_handshakeHash);
+                            break;
+                        }
                 }
 
                 buf.Seek(4L, SeekOrigin.Current);
@@ -892,28 +892,28 @@ namespace Org.BouncyCastle.Tls
                          */
                         switch (m_appDataSplitMode)
                         {
-                        case ADS_MODE_0_N_FIRSTONLY:
-                        {
-                            this.m_appDataSplitEnabled = false;
-                            SafeWriteRecord(ContentType.application_data, TlsUtilities.EmptyBytes, 0, 0);
-                            break;
-                        }
-                        case ADS_MODE_0_N:
-                        {
-                            SafeWriteRecord(ContentType.application_data, TlsUtilities.EmptyBytes, 0, 0);
-                            break;
-                        }
-                        case ADS_MODE_1_Nsub1:
-                        default:
-                        {
-                            if (len > 1)
-                            {
-                                SafeWriteRecord(ContentType.application_data, buf, off, 1);
-                                ++off;
-                                --len;
-                            }
-                            break;
-                        }
+                            case ADS_MODE_0_N_FIRSTONLY:
+                                {
+                                    this.m_appDataSplitEnabled = false;
+                                    SafeWriteRecord(ContentType.application_data, TlsUtilities.EmptyBytes, 0, 0);
+                                    break;
+                                }
+                            case ADS_MODE_0_N:
+                                {
+                                    SafeWriteRecord(ContentType.application_data, TlsUtilities.EmptyBytes, 0, 0);
+                                    break;
+                                }
+                            case ADS_MODE_1_Nsub1:
+                            default:
+                                {
+                                    if (len > 1)
+                                    {
+                                        SafeWriteRecord(ContentType.application_data, buf, off, 1);
+                                        ++off;
+                                        --len;
+                                    }
+                                    break;
+                                }
                         }
                     }
                     else if (m_keyUpdateEnabled)
@@ -964,41 +964,41 @@ namespace Org.BouncyCastle.Tls
             short type = TlsUtilities.ReadUint8(buf, off);
             switch (type)
             {
-            /*
-             * These message types aren't included in the transcript.
-             */
-            case HandshakeType.hello_request:
-            case HandshakeType.key_update:
-                break;
+                /*
+                 * These message types aren't included in the transcript.
+                 */
+                case HandshakeType.hello_request:
+                case HandshakeType.key_update:
+                    break;
 
-            /*
-             * Not included in the transcript for (D)TLS 1.3+
-             */
-            case HandshakeType.new_session_ticket:
-            {
-                ProtocolVersion negotiatedVersion = Context.ServerVersion;
-                if (null != negotiatedVersion && !TlsUtilities.IsTlsV13(negotiatedVersion))
-                {
-                    m_handshakeHash.Update(buf, off, len);
-                }
+                /*
+                 * Not included in the transcript for (D)TLS 1.3+
+                 */
+                case HandshakeType.new_session_ticket:
+                    {
+                        ProtocolVersion negotiatedVersion = Context.ServerVersion;
+                        if (null != negotiatedVersion && !TlsUtilities.IsTlsV13(negotiatedVersion))
+                        {
+                            m_handshakeHash.Update(buf, off, len);
+                        }
 
-                break;
-            }
+                        break;
+                    }
 
-            /*
-             * These message types are deferred to the writer to explicitly update the transcript.
-             */
-            case HandshakeType.client_hello:
-                break;
+                /*
+                 * These message types are deferred to the writer to explicitly update the transcript.
+                 */
+                case HandshakeType.client_hello:
+                    break;
 
-            /*
-             * For all others we automatically update the transcript. 
-             */
-            default:
-            {
-                m_handshakeHash.Update(buf, off, len);
-                break;
-            }
+                /*
+                 * For all others we automatically update the transcript. 
+                 */
+                default:
+                    {
+                        m_handshakeHash.Update(buf, off, len);
+                        break;
+                    }
             }
 
             int total = 0;
@@ -1086,24 +1086,24 @@ namespace Org.BouncyCastle.Tls
             {
                 switch (m_appDataSplitMode)
                 {
-                case ADS_MODE_0_N_FIRSTONLY:
-                case ADS_MODE_0_N:
-                {
-                    RecordPreview a = m_recordStream.PreviewOutputRecord(0);
-                    RecordPreview b = m_recordStream.PreviewOutputRecord(applicationDataSize);
-                    return RecordPreview.CombineAppData(a, b);
-                }
-                case ADS_MODE_1_Nsub1:
-                default:
-                {
-                    RecordPreview a = m_recordStream.PreviewOutputRecord(1);
-                    if (applicationDataSize > 1)
-                    {
-                        RecordPreview b = m_recordStream.PreviewOutputRecord(applicationDataSize - 1);
-                        a = RecordPreview.CombineAppData(a, b);
-                    }
-                    return a;
-                }
+                    case ADS_MODE_0_N_FIRSTONLY:
+                    case ADS_MODE_0_N:
+                        {
+                            RecordPreview a = m_recordStream.PreviewOutputRecord(0);
+                            RecordPreview b = m_recordStream.PreviewOutputRecord(applicationDataSize);
+                            return RecordPreview.CombineAppData(a, b);
+                        }
+                    case ADS_MODE_1_Nsub1:
+                    default:
+                        {
+                            RecordPreview a = m_recordStream.PreviewOutputRecord(1);
+                            if (applicationDataSize > 1)
+                            {
+                                RecordPreview b = m_recordStream.PreviewOutputRecord(applicationDataSize - 1);
+                                a = RecordPreview.CombineAppData(a, b);
+                            }
+                            return a;
+                        }
                 }
             }
             else
@@ -1399,7 +1399,7 @@ namespace Org.BouncyCastle.Tls
         {
             Peer.NotifyAlertRaised(AlertLevel.fatal, alertDescription, message, cause);
 
-            byte[] alert = new byte[]{ (byte)AlertLevel.fatal, (byte)alertDescription };
+            byte[] alert = new byte[] { (byte)AlertLevel.fatal, (byte)alertDescription };
 
             try
             {
@@ -1416,7 +1416,7 @@ namespace Org.BouncyCastle.Tls
         {
             Peer.NotifyAlertRaised(AlertLevel.warning, alertDescription, message, null);
 
-            byte[] alert = new byte[]{ (byte)AlertLevel.warning, (byte)alertDescription };
+            byte[] alert = new byte[] { (byte)AlertLevel.warning, (byte)alertDescription };
 
             SafeWriteRecord(ContentType.alert, alert, 0, 2);
         }
@@ -1510,7 +1510,7 @@ namespace Org.BouncyCastle.Tls
         /// <exception cref="IOException"/>
         protected virtual void SendChangeCipherSpecMessage()
         {
-            byte[] message = new byte[]{ 1 };
+            byte[] message = new byte[] { 1 };
             SafeWriteRecord(ContentType.change_cipher_spec, message, 0, message.Length);
         }
 

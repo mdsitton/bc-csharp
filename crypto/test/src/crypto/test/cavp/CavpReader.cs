@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.IO;
 
@@ -120,26 +120,26 @@ namespace Org.BouncyCastle.Crypto.Tests.Cavp
                             // Not a valid line so we assume this is a break between vectors.
                             //
                             if (headerState == 2 && !Contains(line, '='))
-                            {
-                                headerState = 0;
-                            }
-                            else
+                        {
+                            headerState = 0;
+                        }
+                        else
 
                                 //
                                 // Vector parameter.
                                 //
                                 if (!line.StartsWith("[") && Contains(line, '='))
-                                {
-                                    if (currentVector == null)
-                                    {
-                                        currentVector = new Vector(header);
-                                        vectors.Add(currentVector);
-                                    }
+                        {
+                            if (currentVector == null)
+                            {
+                                currentVector = new Vector(header);
+                                vectors.Add(currentVector);
+                            }
 
-                                    string[] parts = line.Split('=');
-                                    currentVector[parts[0].Trim()] = parts[1].Trim();
-                                    headerState = 2;
-                                }
+                            string[] parts = line.Split('=');
+                            currentVector[parts[0].Trim()] = parts[1].Trim();
+                            headerState = 2;
+                        }
                     }
 
                     //

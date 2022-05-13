@@ -3,24 +3,21 @@ using System.Collections;
 using System.Diagnostics;
 using System.IO;
 
-#if PORTABLE
 using System.Collections.Generic;
 using System.Linq;
-#endif
 
 using Org.BouncyCastle.Utilities;
 using Org.BouncyCastle.Utilities.Collections;
 
 namespace Org.BouncyCastle.Asn1
 {
-    public abstract class Asn1Set
-        : Asn1Object, IEnumerable
+    public abstract class Asn1Set : Asn1Object, IEnumerable
     {
         internal class Meta : Asn1UniversalType
         {
             internal static readonly Asn1UniversalType Instance = new Meta();
 
-            private Meta() : base(typeof(Asn1Set), Asn1Tags.Set) {}
+            private Meta() : base(typeof(Asn1Set), Asn1Tags.Set) { }
 
             internal override Asn1Object FromImplicitConstructed(Asn1Sequence sequence)
             {
@@ -96,7 +93,7 @@ namespace Org.BouncyCastle.Asn1
             if (null == element)
                 throw new ArgumentNullException("element");
 
-            this.elements = new Asn1Encodable[]{ element };
+            this.elements = new Asn1Encodable[] { element };
             this.isSorted = true;
         }
 
@@ -194,8 +191,8 @@ namespace Org.BouncyCastle.Asn1
                     return ((Asn1Set)obj).Parser;
 
                 // NB: Asn1OctetString implements Asn1OctetStringParser directly
-//				if (obj is Asn1OctetString)
-//					return ((Asn1OctetString)obj).Parser;
+                //				if (obj is Asn1OctetString)
+                //					return ((Asn1OctetString)obj).Parser;
 
                 return obj;
             }
@@ -260,14 +257,6 @@ namespace Org.BouncyCastle.Asn1
             if (count < 2)
                 return elements;
 
-#if PORTABLE
-            return elements
-                .Cast<Asn1Encodable>()
-                .Select(a => new { Item = a, Key = a.GetEncoded(Asn1Encodable.Der) })
-                .OrderBy(t => t.Key, new DerComparer())
-                .Select(t => t.Item)
-                .ToArray();
-#else
             byte[][] keys = new byte[count][];
             for (int i = 0; i < count; ++i)
             {
@@ -275,24 +264,14 @@ namespace Org.BouncyCastle.Asn1
             }
             Array.Sort(keys, elements, new DerComparer());
             return elements;
-#endif
         }
 
-#if PORTABLE
         private class DerComparer
             : IComparer<byte[]>
         {
             public int Compare(byte[] x, byte[] y)
             {
                 byte[] a = x, b = y;
-#else
-        private class DerComparer
-            : IComparer
-        {
-            public int Compare(object x, object y)
-            {
-                byte[] a = (byte[])x, b = (byte[])y;
-#endif
                 Debug.Assert(a.Length >= 2 && b.Length >= 2);
 
                 /*

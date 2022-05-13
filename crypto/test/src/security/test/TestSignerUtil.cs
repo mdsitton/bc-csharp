@@ -146,8 +146,8 @@ namespace Org.BouncyCastle.Security.Tests
                 int withPos = upper.LastIndexOf("WITH");
 
                 string cipherName = withPos < 0
-                    ?	upper
-                    :	upper.Substring(withPos + "WITH".Length);
+                    ? upper
+                    : upper.Substring(withPos + "WITH".Length);
 
                 ICipherParameters signParams = null, verifyParams = null;
 

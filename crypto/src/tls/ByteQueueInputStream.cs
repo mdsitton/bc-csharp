@@ -58,15 +58,8 @@ namespace Org.BouncyCastle.Tls
             get { return m_buffer.Available; }
         }
 
-#if PORTABLE
-        //protected override void Dispose(bool disposing)
-        //{
-        //    base.Dispose(disposing);
-        //}
-#else
         public override void Close()
         {
         }
-#endif
     }
 }

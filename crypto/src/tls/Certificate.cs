@@ -160,8 +160,8 @@ namespace Org.BouncyCastle.Tls
                 {
                     IDictionary extensions = entry.Extensions;
                     byte[] extEncoding = (null == extensions)
-                        ?   TlsUtilities.EmptyBytes
-                        :   TlsProtocol.WriteExtensionsData(extensions);
+                        ? TlsUtilities.EmptyBytes
+                        : TlsProtocol.WriteExtensionsData(extensions);
 
                     extEncodings.Add(extEncoding);
                     totalLength += extEncoding.Length;
@@ -209,8 +209,8 @@ namespace Org.BouncyCastle.Tls
             if (totalLength == 0)
             {
                 return !isTlsV13 ? EmptyChain
-                    :  certificateRequestContext.Length < 1 ? EmptyChainTls13
-                    :  new Certificate(certificateRequestContext, EmptyCertEntries);
+                    : certificateRequestContext.Length < 1 ? EmptyChainTls13
+                    : new Certificate(certificateRequestContext, EmptyCertEntries);
             }
 
             byte[] certListData = TlsUtilities.ReadFully(totalLength, messageInput);

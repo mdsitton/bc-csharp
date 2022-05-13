@@ -9,33 +9,33 @@ namespace Org.BouncyCastle.Asn1.Cms
     public class SignerInfo
         : Asn1Encodable
     {
-        private DerInteger              version;
-        private SignerIdentifier        sid;
-        private AlgorithmIdentifier     digAlgorithm;
-        private Asn1Set                 authenticatedAttributes;
-        private AlgorithmIdentifier     digEncryptionAlgorithm;
-        private Asn1OctetString         encryptedDigest;
-        private Asn1Set                 unauthenticatedAttributes;
+        private DerInteger version;
+        private SignerIdentifier sid;
+        private AlgorithmIdentifier digAlgorithm;
+        private Asn1Set authenticatedAttributes;
+        private AlgorithmIdentifier digEncryptionAlgorithm;
+        private Asn1OctetString encryptedDigest;
+        private Asn1Set unauthenticatedAttributes;
 
         public static SignerInfo GetInstance(
             object obj)
         {
             if (obj == null || obj is SignerInfo)
-                return (SignerInfo) obj;
+                return (SignerInfo)obj;
 
             if (obj is Asn1Sequence)
-                return new SignerInfo((Asn1Sequence) obj);
+                return new SignerInfo((Asn1Sequence)obj);
 
             throw new ArgumentException("Unknown object in factory: " + Platform.GetTypeName(obj), "obj");
         }
 
         public SignerInfo(
-            SignerIdentifier        sid,
-            AlgorithmIdentifier     digAlgorithm,
-            Asn1Set                 authenticatedAttributes,
-            AlgorithmIdentifier     digEncryptionAlgorithm,
-            Asn1OctetString         encryptedDigest,
-            Asn1Set                 unauthenticatedAttributes)
+            SignerIdentifier sid,
+            AlgorithmIdentifier digAlgorithm,
+            Asn1Set authenticatedAttributes,
+            AlgorithmIdentifier digEncryptionAlgorithm,
+            Asn1OctetString encryptedDigest,
+            Asn1Set unauthenticatedAttributes)
         {
             this.version = new DerInteger(sid.IsTagged ? 3 : 1);
             this.sid = sid;
@@ -47,12 +47,12 @@ namespace Org.BouncyCastle.Asn1.Cms
         }
 
         public SignerInfo(
-            SignerIdentifier        sid,
-            AlgorithmIdentifier     digAlgorithm,
-            Attributes              authenticatedAttributes,
-            AlgorithmIdentifier     digEncryptionAlgorithm,
-            Asn1OctetString         encryptedDigest,
-            Attributes              unauthenticatedAttributes)
+            SignerIdentifier sid,
+            AlgorithmIdentifier digAlgorithm,
+            Attributes authenticatedAttributes,
+            AlgorithmIdentifier digEncryptionAlgorithm,
+            Asn1OctetString encryptedDigest,
+            Attributes unauthenticatedAttributes)
         {
             this.version = new DerInteger(sid.IsTagged ? 3 : 1);
             this.sid = sid;
@@ -70,7 +70,7 @@ namespace Org.BouncyCastle.Asn1.Cms
             IEnumerator e = seq.GetEnumerator();
 
             e.MoveNext();
-            version = (DerInteger) e.Current;
+            version = (DerInteger)e.Current;
 
             e.MoveNext();
             sid = SignerIdentifier.GetInstance(e.Current);
@@ -83,7 +83,7 @@ namespace Org.BouncyCastle.Asn1.Cms
 
             if (obj is Asn1TaggedObject)
             {
-                authenticatedAttributes = Asn1Set.GetInstance((Asn1TaggedObject) obj, false);
+                authenticatedAttributes = Asn1Set.GetInstance((Asn1TaggedObject)obj, false);
 
                 e.MoveNext();
                 digEncryptionAlgorithm = AlgorithmIdentifier.GetInstance(e.Current);
@@ -99,7 +99,7 @@ namespace Org.BouncyCastle.Asn1.Cms
 
             if (e.MoveNext())
             {
-                unauthenticatedAttributes = Asn1Set.GetInstance((Asn1TaggedObject) e.Current, false);
+                unauthenticatedAttributes = Asn1Set.GetInstance((Asn1TaggedObject)e.Current, false);
             }
             else
             {

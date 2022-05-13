@@ -17,16 +17,6 @@ namespace Org.BouncyCastle.Security.Tests
     [TestFixture]
     public class SecureRandomTest
     {
-#if !(NETCF_1_0 || PORTABLE)
-        [Test]
-        public void TestCryptoApi()
-        {
-            SecureRandom random = new SecureRandom(
-                new CryptoApiRandomGenerator());
-
-            CheckSecureRandom(random);
-        }
-#endif
 
         [Test]
         public void TestDefault()
@@ -201,7 +191,7 @@ namespace Org.BouncyCastle.Security.Tests
             double chi2 = 0;
             for (int k = 0; k < counts.Length; ++k)
             {
-                double diff = ((double) counts[k]) - total;
+                double diff = ((double)counts[k]) - total;
                 double diff2 = diff * diff;
 
                 chi2 += diff2;

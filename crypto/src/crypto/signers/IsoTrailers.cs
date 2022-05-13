@@ -9,17 +9,17 @@ namespace Org.BouncyCastle.Crypto.Signers
 {
     public class IsoTrailers
     {
-        public const int TRAILER_IMPLICIT    = 0xBC;
-        public const int TRAILER_RIPEMD160   = 0x31CC;
-        public const int TRAILER_RIPEMD128   = 0x32CC;
-        public const int TRAILER_SHA1        = 0x33CC;
-        public const int TRAILER_SHA256      = 0x34CC;
-        public const int TRAILER_SHA512      = 0x35CC;
-        public const int TRAILER_SHA384      = 0x36CC;
-        public const int TRAILER_WHIRLPOOL   = 0x37CC;
-        public const int TRAILER_SHA224      = 0x38CC;
-        public const int TRAILER_SHA512_224  = 0x39CC;
-        public const int TRAILER_SHA512_256  = 0x40CC;
+        public const int TRAILER_IMPLICIT = 0xBC;
+        public const int TRAILER_RIPEMD160 = 0x31CC;
+        public const int TRAILER_RIPEMD128 = 0x32CC;
+        public const int TRAILER_SHA1 = 0x33CC;
+        public const int TRAILER_SHA256 = 0x34CC;
+        public const int TRAILER_SHA512 = 0x35CC;
+        public const int TRAILER_SHA384 = 0x36CC;
+        public const int TRAILER_WHIRLPOOL = 0x37CC;
+        public const int TRAILER_SHA224 = 0x38CC;
+        public const int TRAILER_SHA512_224 = 0x39CC;
+        public const int TRAILER_SHA512_256 = 0x40CC;
 
         private static IDictionary CreateTrailerMap()
         {

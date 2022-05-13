@@ -205,26 +205,26 @@ namespace Org.BouncyCastle.Tls
             short msg_type = message.Type;
             switch (msg_type)
             {
-            case HandshakeType.hello_request:
-            case HandshakeType.hello_verify_request:
-            case HandshakeType.key_update:
-                break;
+                case HandshakeType.hello_request:
+                case HandshakeType.hello_verify_request:
+                case HandshakeType.key_update:
+                    break;
 
-            // TODO[dtls13] Not included in the transcript for (D)TLS 1.3+
-            case HandshakeType.new_session_ticket:
-            default:
-            {
-                byte[] body = message.Body;
-                byte[] buf = new byte[MESSAGE_HEADER_LENGTH];
-                TlsUtilities.WriteUint8(msg_type, buf, 0);
-                TlsUtilities.WriteUint24(body.Length, buf, 1);
-                TlsUtilities.WriteUint16(message.Seq, buf, 4);
-                TlsUtilities.WriteUint24(0, buf, 6);
-                TlsUtilities.WriteUint24(body.Length, buf, 9);
-                m_handshakeHash.Update(buf, 0, buf.Length);
-                m_handshakeHash.Update(body, 0, body.Length);
-                break;
-            }
+                // TODO[dtls13] Not included in the transcript for (D)TLS 1.3+
+                case HandshakeType.new_session_ticket:
+                default:
+                    {
+                        byte[] body = message.Body;
+                        byte[] buf = new byte[MESSAGE_HEADER_LENGTH];
+                        TlsUtilities.WriteUint8(msg_type, buf, 0);
+                        TlsUtilities.WriteUint24(body.Length, buf, 1);
+                        TlsUtilities.WriteUint16(message.Seq, buf, 4);
+                        TlsUtilities.WriteUint24(0, buf, 6);
+                        TlsUtilities.WriteUint24(body.Length, buf, 9);
+                        m_handshakeHash.Update(buf, 0, buf.Length);
+                        m_handshakeHash.Update(body, 0, body.Length);
+                        break;
+                    }
             }
         }
 
@@ -308,7 +308,7 @@ namespace Org.BouncyCastle.Tls
 
             byte[] buf = null;
 
-            for (;;)
+            for (; ; )
             {
                 if (m_recordLayer.IsClosed)
                     throw new TlsFatalAlert(AlertDescription.user_canceled);
@@ -542,21 +542,15 @@ namespace Org.BouncyCastle.Tls
 
             internal void SendToRecordLayer(DtlsRecordLayer recordLayer)
             {
-#if PORTABLE
-                byte[] buf = ToArray();
-                int bufLen = buf.Length;
-#else
                 byte[] buf = GetBuffer();
                 int bufLen = (int)Length;
-#endif
 
                 recordLayer.Send(buf, 0, bufLen);
                 Platform.Dispose(this);
             }
         }
 
-        internal class Retransmit
-            : DtlsHandshakeRetransmit
+        internal class Retransmit : DtlsHandshakeRetransmit
         {
             private readonly DtlsReliableHandshake m_outer;
 

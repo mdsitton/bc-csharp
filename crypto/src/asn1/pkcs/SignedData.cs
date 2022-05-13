@@ -11,12 +11,12 @@ namespace Org.BouncyCastle.Asn1.Pkcs
     public class SignedData
         : Asn1Encodable
     {
-        private readonly DerInteger		version;
-        private readonly Asn1Set		digestAlgorithms;
-        private readonly ContentInfo	contentInfo;
-        private readonly Asn1Set		certificates;
-        private readonly Asn1Set		crls;
-        private readonly Asn1Set		signerInfos;
+        private readonly DerInteger version;
+        private readonly Asn1Set digestAlgorithms;
+        private readonly ContentInfo contentInfo;
+        private readonly Asn1Set certificates;
+        private readonly Asn1Set crls;
+        private readonly Asn1Set signerInfos;
 
         public static SignedData GetInstance(object obj)
         {
@@ -29,19 +29,19 @@ namespace Org.BouncyCastle.Asn1.Pkcs
         }
 
         public SignedData(
-            DerInteger        _version,
-            Asn1Set           _digestAlgorithms,
-            ContentInfo       _contentInfo,
-            Asn1Set           _certificates,
-            Asn1Set           _crls,
-            Asn1Set           _signerInfos)
+            DerInteger _version,
+            Asn1Set _digestAlgorithms,
+            ContentInfo _contentInfo,
+            Asn1Set _certificates,
+            Asn1Set _crls,
+            Asn1Set _signerInfos)
         {
-            version          = _version;
+            version = _version;
             digestAlgorithms = _digestAlgorithms;
-            contentInfo      = _contentInfo;
-            certificates     = _certificates;
-            crls             = _crls;
-            signerInfos      = _signerInfos;
+            contentInfo = _contentInfo;
+            certificates = _certificates;
+            crls = _crls;
+            signerInfos = _signerInfos;
         }
 
         private SignedData(
@@ -50,17 +50,17 @@ namespace Org.BouncyCastle.Asn1.Pkcs
             IEnumerator e = seq.GetEnumerator();
 
             e.MoveNext();
-            version = (DerInteger) e.Current;
+            version = (DerInteger)e.Current;
 
             e.MoveNext();
-            digestAlgorithms = (Asn1Set) e.Current;
+            digestAlgorithms = (Asn1Set)e.Current;
 
             e.MoveNext();
             contentInfo = ContentInfo.GetInstance(e.Current);
 
             while (e.MoveNext())
             {
-                Asn1Object o = (Asn1Object) e.Current;
+                Asn1Object o = (Asn1Object)e.Current;
 
                 //
                 // an interesting feature of SignedData is that there appear to be varying implementations...
@@ -84,7 +84,7 @@ namespace Org.BouncyCastle.Asn1.Pkcs
                 }
                 else
                 {
-                    signerInfos = (Asn1Set) o;
+                    signerInfos = (Asn1Set)o;
                 }
             }
         }

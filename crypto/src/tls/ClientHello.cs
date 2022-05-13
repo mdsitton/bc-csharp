@@ -86,7 +86,7 @@ namespace Org.BouncyCastle.Tls
 
             TlsUtilities.WriteUint16ArrayWithUint16Length(m_cipherSuites, output);
 
-            TlsUtilities.WriteUint8ArrayWithUint8Length(new short[]{ CompressionMethod.cls_null }, output);
+            TlsUtilities.WriteUint8ArrayWithUint8Length(new short[] { CompressionMethod.cls_null }, output);
 
             TlsProtocol.WriteExtensions(output, m_extensions, m_bindersSize);
         }

@@ -31,7 +31,7 @@ namespace Org.BouncyCastle.Tls
             if (maxFragmentLength >= 0)
             {
                 if (!MaxFragmentLength.IsValid(maxFragmentLength))
-                    throw new TlsFatalAlert(AlertDescription.internal_error); 
+                    throw new TlsFatalAlert(AlertDescription.internal_error);
 
                 int plainTextLimit = 1 << (8 + maxFragmentLength);
                 recordLayer.SetPlaintextLimit(plainTextLimit);
@@ -95,12 +95,12 @@ namespace Org.BouncyCastle.Tls
         {
             switch (TlsUtilities.GetEncryptionAlgorithm(selectedCipherSuite))
             {
-            case EncryptionAlgorithm.RC4_40:
-            case EncryptionAlgorithm.RC4_128:
-            case -1:
-                throw new TlsFatalAlert(alertDescription);
-            default:
-                return selectedCipherSuite;
+                case EncryptionAlgorithm.RC4_40:
+                case EncryptionAlgorithm.RC4_128:
+                case -1:
+                    throw new TlsFatalAlert(alertDescription);
+                default:
+                    return selectedCipherSuite;
             }
         }
     }

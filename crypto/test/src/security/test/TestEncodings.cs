@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Text;
 
@@ -21,16 +21,16 @@ namespace Org.BouncyCastle.Security.Tests
     [TestFixture]
     public class TestEncodings
     {
-		[Test]
-		public void TestEC()
-		{
-			BigInteger ECParraGX = new BigInteger(Base64.Decode("D/qWPNyogWzMM7hkK+35BcPTWFc9Pyf7vTs8uaqv"));
-			BigInteger ECParraGY = new BigInteger(Base64.Decode("AhQXGxb1olGRv6s1LPRfuatMF+cx3ZTGgzSE/Q5R"));
-			BigInteger ECParraH = new BigInteger(Base64.Decode("AQ=="));
-			BigInteger ECParraN = new BigInteger(Base64.Decode("f///////////////f///nl6an12QcfvRUiaIkJ0L"));
-			BigInteger ECPubQX = new BigInteger(Base64.Decode("HWWi17Yb+Bm3PYr/DMjLOYNFhyOwX1QY7ZvqqM+l"));
-			BigInteger ECPubQY = new BigInteger(Base64.Decode("JrlJfxu3WGhqwtL/55BOs/wsUeiDFsvXcGhB8DGx"));
-			BigInteger ECPrivD = new BigInteger(Base64.Decode("GYQmd/NF1B+He1iMkWt3by2Az6Eu07t0ynJ4YCAo"));
+        [Test]
+        public void TestEC()
+        {
+            BigInteger ECParraGX = new BigInteger(Base64.Decode("D/qWPNyogWzMM7hkK+35BcPTWFc9Pyf7vTs8uaqv"));
+            BigInteger ECParraGY = new BigInteger(Base64.Decode("AhQXGxb1olGRv6s1LPRfuatMF+cx3ZTGgzSE/Q5R"));
+            BigInteger ECParraH = new BigInteger(Base64.Decode("AQ=="));
+            BigInteger ECParraN = new BigInteger(Base64.Decode("f///////////////f///nl6an12QcfvRUiaIkJ0L"));
+            BigInteger ECPubQX = new BigInteger(Base64.Decode("HWWi17Yb+Bm3PYr/DMjLOYNFhyOwX1QY7ZvqqM+l"));
+            BigInteger ECPubQY = new BigInteger(Base64.Decode("JrlJfxu3WGhqwtL/55BOs/wsUeiDFsvXcGhB8DGx"));
+            BigInteger ECPrivD = new BigInteger(Base64.Decode("GYQmd/NF1B+He1iMkWt3by2Az6Eu07t0ynJ4YCAo"));
 
             FpCurve curve = new FpCurve(
                 new BigInteger("883423532389192164791648750360308885314476597252960362792450860609699839"), // q
@@ -38,26 +38,26 @@ namespace Org.BouncyCastle.Security.Tests
                 new BigInteger("6b016c3bdcf18941d0d654921475ca71a9db2fb27d1d37796185c2942c0a", 16), // b
                 ECParraN, ECParraH);
 
-			ECDomainParameters ecDomain = new ECDomainParameters(
-				curve,
+            ECDomainParameters ecDomain = new ECDomainParameters(
+                curve,
                 curve.ValidatePoint(ECParraGX, ECParraGY),
                 ECParraN, ECParraH);
 
             ECPublicKeyParameters ecPub = new ECPublicKeyParameters(
                 curve.ValidatePoint(ECPubQX, ECPubQY),
-				ecDomain);
+                ecDomain);
 
-			ECPrivateKeyParameters ecPriv = new ECPrivateKeyParameters(ECPrivD, ecDomain);
+            ECPrivateKeyParameters ecPriv = new ECPrivateKeyParameters(ECPrivD, ecDomain);
 
-			SubjectPublicKeyInfo subinfo = SubjectPublicKeyInfoFactory.CreateSubjectPublicKeyInfo(ecPub);
-			PrivateKeyInfo privInfo = PrivateKeyInfoFactory.CreatePrivateKeyInfo(ecPriv);
+            SubjectPublicKeyInfo subinfo = SubjectPublicKeyInfoFactory.CreateSubjectPublicKeyInfo(ecPub);
+            PrivateKeyInfo privInfo = PrivateKeyInfoFactory.CreatePrivateKeyInfo(ecPriv);
 
-			ECPublicKeyParameters tecPub = (ECPublicKeyParameters)PublicKeyFactory.CreateKey(subinfo);
-			ECPrivateKeyParameters tecPriv = (ECPrivateKeyParameters)PrivateKeyFactory.CreateKey(privInfo);
+            ECPublicKeyParameters tecPub = (ECPublicKeyParameters)PublicKeyFactory.CreateKey(subinfo);
+            ECPrivateKeyParameters tecPriv = (ECPrivateKeyParameters)PrivateKeyFactory.CreateKey(privInfo);
 
-			Assert.IsTrue(tecPub.Equals(ecPub), "EC: public key to info back to public key");
-			Assert.IsTrue(tecPriv.Equals(ecPriv), "EC: private key to info back to private key");
-		}
+            Assert.IsTrue(tecPub.Equals(ecPub), "EC: public key to info back to public key");
+            Assert.IsTrue(tecPriv.Equals(ecPriv), "EC: private key to info back to private key");
+        }
 
         [Test]
         public void TestDH()
@@ -75,8 +75,8 @@ namespace Org.BouncyCastle.Security.Tests
             SubjectPublicKeyInfo pubInfo = SubjectPublicKeyInfoFactory.CreateSubjectPublicKeyInfo(dhPublic);
             PrivateKeyInfo privInfo = PrivateKeyInfoFactory.CreatePrivateKeyInfo(dhPrivate);
 
-            DHPublicKeyParameters testPubKey = (DHPublicKeyParameters) PublicKeyFactory.CreateKey(pubInfo);
-            DHPrivateKeyParameters testPrivKey = (DHPrivateKeyParameters) PrivateKeyFactory.CreateKey(privInfo);
+            DHPublicKeyParameters testPubKey = (DHPublicKeyParameters)PublicKeyFactory.CreateKey(pubInfo);
+            DHPrivateKeyParameters testPrivKey = (DHPrivateKeyParameters)PrivateKeyFactory.CreateKey(privInfo);
 
             Assert.IsFalse(!testPrivKey.Equals(dhPrivate), "DH: Private key to info back to key");
             Assert.IsFalse(!testPubKey.Equals(dhPublic), "DH: Public key to info back to key");
@@ -89,35 +89,35 @@ namespace Org.BouncyCastle.Security.Tests
         public void TestElGamal()
         {
 
-                BigInteger ELGamalParaG = new BigInteger(Base64.Decode("QAZPRcsH8kHVKS5065R1Xy6QtsPvDkmDZtPuq18EJkvLrCIZivE/m5puQp3/VKJrG7dKgz4NBGpONp3HT+Cn/g=="));
-                BigInteger ELGamalParaP = new BigInteger(Base64.Decode("AKXmAwgkudDLI/Yxk6wk3APn+mSjX5QSyDwpchmegSIi1ZNC0Jb+IbxjroKNhRTBKjtv4/JTXtJS6IqaZv9uKes="));
-                BigInteger ELGamalPubY = new BigInteger(Base64.Decode("AJ/gXuZuCA2X044otNkzs8FI36XuFu1L/YHg5cEmDvICTigycRN2E1DnhP+CTqxEqgEqX8rBe5tuGDlkTLwgNqM="));
-                BigInteger ELGamalPriv = new BigInteger(Base64.Decode("CqVr+K0TpuJKQnc76MjKhxrJzGr93jnuE3mTpth486Meymt8uWEVAQj1tGc9DTt14F9aV9WIT2oYYbvLJRcwow=="));
+            BigInteger ELGamalParaG = new BigInteger(Base64.Decode("QAZPRcsH8kHVKS5065R1Xy6QtsPvDkmDZtPuq18EJkvLrCIZivE/m5puQp3/VKJrG7dKgz4NBGpONp3HT+Cn/g=="));
+            BigInteger ELGamalParaP = new BigInteger(Base64.Decode("AKXmAwgkudDLI/Yxk6wk3APn+mSjX5QSyDwpchmegSIi1ZNC0Jb+IbxjroKNhRTBKjtv4/JTXtJS6IqaZv9uKes="));
+            BigInteger ELGamalPubY = new BigInteger(Base64.Decode("AJ/gXuZuCA2X044otNkzs8FI36XuFu1L/YHg5cEmDvICTigycRN2E1DnhP+CTqxEqgEqX8rBe5tuGDlkTLwgNqM="));
+            BigInteger ELGamalPriv = new BigInteger(Base64.Decode("CqVr+K0TpuJKQnc76MjKhxrJzGr93jnuE3mTpth486Meymt8uWEVAQj1tGc9DTt14F9aV9WIT2oYYbvLJRcwow=="));
 
 
 
-                ElGamalParameters elPara = new ElGamalParameters(ELGamalParaP, ELGamalParaG);
+            ElGamalParameters elPara = new ElGamalParameters(ELGamalParaP, ELGamalParaG);
 
-                ElGamalPrivateKeyParameters elPriv = new ElGamalPrivateKeyParameters(ELGamalPriv, elPara);
-                ElGamalPublicKeyParameters elPub = new ElGamalPublicKeyParameters(ELGamalPubY, elPara);
+            ElGamalPrivateKeyParameters elPriv = new ElGamalPrivateKeyParameters(ELGamalPriv, elPara);
+            ElGamalPublicKeyParameters elPub = new ElGamalPublicKeyParameters(ELGamalPubY, elPara);
 
-                SubjectPublicKeyInfo subInfo = SubjectPublicKeyInfoFactory.CreateSubjectPublicKeyInfo(elPub);
-                PrivateKeyInfo privInfo = PrivateKeyInfoFactory.CreatePrivateKeyInfo(elPriv);
+            SubjectPublicKeyInfo subInfo = SubjectPublicKeyInfoFactory.CreateSubjectPublicKeyInfo(elPub);
+            PrivateKeyInfo privInfo = PrivateKeyInfoFactory.CreatePrivateKeyInfo(elPriv);
 
-                ElGamalPrivateKeyParameters telPriv = (ElGamalPrivateKeyParameters)PrivateKeyFactory.CreateKey(privInfo);
-                ElGamalPublicKeyParameters telPub = (ElGamalPublicKeyParameters)PublicKeyFactory.CreateKey(subInfo);
-
-
-                             // Console.WriteLine(telPriv.Equals(elPriv));
+            ElGamalPrivateKeyParameters telPriv = (ElGamalPrivateKeyParameters)PrivateKeyFactory.CreateKey(privInfo);
+            ElGamalPublicKeyParameters telPub = (ElGamalPublicKeyParameters)PublicKeyFactory.CreateKey(subInfo);
 
 
+            // Console.WriteLine(telPriv.Equals(elPriv));
 
-                Assert.IsTrue(telPriv.Equals(elPriv), "ELGamal Private key to into back to private key.");
-                Assert.IsTrue(telPub.Equals(elPub), "ELGamal Public key to into back to private key.");
 
-                Assert.IsTrue(true, "ELGamal Test worked.");
 
-            }
+            Assert.IsTrue(telPriv.Equals(elPriv), "ELGamal Private key to into back to private key.");
+            Assert.IsTrue(telPub.Equals(elPub), "ELGamal Public key to into back to private key.");
+
+            Assert.IsTrue(true, "ELGamal Test worked.");
+
+        }
 
         [Test]
         public void TestRsa()
@@ -133,12 +133,12 @@ namespace Org.BouncyCastle.Security.Tests
             BigInteger rsaPrivQ = new BigInteger(Base64.Decode("AM3JfD79dNJ5A3beScSzPtWxx/tSLi0QHFtkuhtSizeXdkv5FSba7lVzwEOGKHmW829bRoNxThDy4ds1IihW1w0="));
             BigInteger rsaPrivQinv = new BigInteger(Base64.Decode("Lt0g7wrsNsQxuDdB8q/rH8fSFeBXMGLtCIqfOec1j7FEIuYA/ACiRDgXkHa0WgN7nLXSjHoy630wC5Toq8vvUg=="));
             RsaKeyParameters rsaPublic = new RsaKeyParameters(false, rsaPubMod, rsaPubExp);
-			RsaPrivateCrtKeyParameters rsaPrivate = new RsaPrivateCrtKeyParameters(rsaPrivMod, rsaPubExp, rsaPrivExp, rsaPrivP, rsaPrivQ, rsaPrivDP, rsaPrivDQ, rsaPrivQinv);
+            RsaPrivateCrtKeyParameters rsaPrivate = new RsaPrivateCrtKeyParameters(rsaPrivMod, rsaPubExp, rsaPrivExp, rsaPrivP, rsaPrivQ, rsaPrivDP, rsaPrivDQ, rsaPrivQinv);
 
-			SubjectPublicKeyInfo subInfo = SubjectPublicKeyInfoFactory.CreateSubjectPublicKeyInfo(rsaPublic);
+            SubjectPublicKeyInfo subInfo = SubjectPublicKeyInfoFactory.CreateSubjectPublicKeyInfo(rsaPublic);
             RsaKeyParameters testResult = (RsaKeyParameters)PublicKeyFactory.CreateKey(subInfo);
 
-			// check RSA public key.
+            // check RSA public key.
 
             Assert.IsFalse(!testResult.Equals(rsaPublic), "RSA: test failed on public key to info and back to public key.");
 

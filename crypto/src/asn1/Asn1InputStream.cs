@@ -12,8 +12,7 @@ namespace Org.BouncyCastle.Asn1
      * the stream. If an ASN.1 Null is encountered a Der/BER Null object is
      * returned.
      */
-    public class Asn1InputStream
-        : FilterStream
+    public class Asn1InputStream : FilterStream
     {
         private readonly int limit;
 
@@ -36,8 +35,7 @@ namespace Org.BouncyCastle.Asn1
             return int.MaxValue;
         }
 
-        public Asn1InputStream(Stream input)
-            : this(input, FindLimit(input))
+        public Asn1InputStream(Stream input) : this(input, FindLimit(input))
         {
         }
 
@@ -47,8 +45,7 @@ namespace Org.BouncyCastle.Asn1
          *
          * @param input array containing ASN.1 encoded data.
          */
-        public Asn1InputStream(byte[] input)
-            : this(new MemoryStream(input, false), input.Length)
+        public Asn1InputStream(byte[] input) : this(new MemoryStream(input, false), input.Length)
         {
         }
 
@@ -58,13 +55,11 @@ namespace Org.BouncyCastle.Asn1
          * @param input stream containing ASN.1 encoded data.
          * @param limit maximum size of a DER encoded object.
          */
-        public Asn1InputStream(Stream input, int limit)
-            : this(input, limit, new byte[16][])
+        public Asn1InputStream(Stream input, int limit) : this(input, limit, new byte[16][])
         {
         }
 
-        internal Asn1InputStream(Stream input, int limit, byte[][] tmpBuffers)
-            : base(input)
+        internal Asn1InputStream(Stream input, int limit, byte[][] tmpBuffers) : base(input)
         {
             this.limit = limit;
             this.tmpBuffers = tmpBuffers;
@@ -91,18 +86,18 @@ namespace Org.BouncyCastle.Asn1
 
             switch (tagNo)
             {
-            case Asn1Tags.BitString:
-                return BuildConstructedBitString(ReadVector(defIn));
-            case Asn1Tags.OctetString:
-                return BuildConstructedOctetString(ReadVector(defIn));
-            case Asn1Tags.Sequence:
-                return CreateDLSequence(defIn);
-            case Asn1Tags.Set:
-                return CreateDLSet(defIn);
-            case Asn1Tags.External:
-                return DLSequence.FromVector(ReadVector(defIn)).ToAsn1External();
-            default:
-                throw new IOException("unknown tag " + tagNo + " encountered");
+                case Asn1Tags.BitString:
+                    return BuildConstructedBitString(ReadVector(defIn));
+                case Asn1Tags.OctetString:
+                    return BuildConstructedOctetString(ReadVector(defIn));
+                case Asn1Tags.Sequence:
+                    return CreateDLSequence(defIn);
+                case Asn1Tags.Set:
+                    return CreateDLSet(defIn);
+                case Asn1Tags.External:
+                    return DLSequence.FromVector(ReadVector(defIn)).ToAsn1External();
+                default:
+                    throw new IOException("unknown tag " + tagNo + " encountered");
             }
         }
 
@@ -193,19 +188,19 @@ namespace Org.BouncyCastle.Asn1
 
             switch (tagNo)
             {
-            case Asn1Tags.BitString:
-                return BerBitStringParser.Parse(sp);
-            case Asn1Tags.OctetString:
-                return BerOctetStringParser.Parse(sp);
-            case Asn1Tags.Sequence:
-                return BerSequenceParser.Parse(sp);
-            case Asn1Tags.Set:
-                return BerSetParser.Parse(sp);
-            case Asn1Tags.External:
-                // TODO[asn1] BerExternalParser
-                return DerExternalParser.Parse(sp);
-            default:
-                throw new IOException("unknown BER object encountered");
+                case Asn1Tags.BitString:
+                    return BerBitStringParser.Parse(sp);
+                case Asn1Tags.OctetString:
+                    return BerOctetStringParser.Parse(sp);
+                case Asn1Tags.Sequence:
+                    return BerSequenceParser.Parse(sp);
+                case Asn1Tags.Set:
+                    return BerSetParser.Parse(sp);
+                case Asn1Tags.External:
+                    // TODO[asn1] BerExternalParser
+                    return DerExternalParser.Parse(sp);
+                default:
+                    throw new IOException("unknown BER object encountered");
             }
         }
 
@@ -370,7 +365,7 @@ namespace Org.BouncyCastle.Asn1
                 if (Streams.ReadFully(defIn, buf, 0, 8) != 8)
                     throw new EndOfStreamException("EOF encountered in middle of BMPString");
 
-                str[stringPos    ] = (char)((buf[0] << 8) | (buf[1] & 0xFF));
+                str[stringPos] = (char)((buf[0] << 8) | (buf[1] & 0xFF));
                 str[stringPos + 1] = (char)((buf[2] << 8) | (buf[3] & 0xFF));
                 str[stringPos + 2] = (char)((buf[4] << 8) | (buf[5] & 0xFF));
                 str[stringPos + 3] = (char)((buf[6] << 8) | (buf[7] & 0xFF));
@@ -403,60 +398,60 @@ namespace Org.BouncyCastle.Asn1
         {
             switch (tagNo)
             {
-            case Asn1Tags.BmpString:
-                return DerBmpString.CreatePrimitive(GetBmpCharBuffer(defIn));
-            case Asn1Tags.Boolean:
-                return DerBoolean.CreatePrimitive(GetBuffer(defIn, tmpBuffers));
-            case Asn1Tags.Enumerated:
-                // TODO Ideally only clone if we used a buffer
-                return DerEnumerated.CreatePrimitive(GetBuffer(defIn, tmpBuffers), true);
-            case Asn1Tags.ObjectIdentifier:
-                // TODO Ideally only clone if we used a buffer
-                return DerObjectIdentifier.CreatePrimitive(GetBuffer(defIn, tmpBuffers), true);
+                case Asn1Tags.BmpString:
+                    return DerBmpString.CreatePrimitive(GetBmpCharBuffer(defIn));
+                case Asn1Tags.Boolean:
+                    return DerBoolean.CreatePrimitive(GetBuffer(defIn, tmpBuffers));
+                case Asn1Tags.Enumerated:
+                    // TODO Ideally only clone if we used a buffer
+                    return DerEnumerated.CreatePrimitive(GetBuffer(defIn, tmpBuffers), true);
+                case Asn1Tags.ObjectIdentifier:
+                    // TODO Ideally only clone if we used a buffer
+                    return DerObjectIdentifier.CreatePrimitive(GetBuffer(defIn, tmpBuffers), true);
             }
 
             byte[] bytes = defIn.ToArray();
 
             switch (tagNo)
             {
-            case Asn1Tags.BitString:
-                return DerBitString.CreatePrimitive(bytes);
-            case Asn1Tags.GeneralizedTime:
-                return DerGeneralizedTime.CreatePrimitive(bytes);
-            case Asn1Tags.GeneralString:
-                return DerGeneralString.CreatePrimitive(bytes);
-            case Asn1Tags.GraphicString:
-                return DerGraphicString.CreatePrimitive(bytes);
-            case Asn1Tags.IA5String:
-                return DerIA5String.CreatePrimitive(bytes);
-            case Asn1Tags.Integer:
-                return DerInteger.CreatePrimitive(bytes);
-            case Asn1Tags.Null:
-                return Asn1Null.CreatePrimitive(bytes);
-            case Asn1Tags.NumericString:
-                return DerNumericString.CreatePrimitive(bytes);
-            case Asn1Tags.ObjectDescriptor:
-                return Asn1ObjectDescriptor.CreatePrimitive(bytes);
-            case Asn1Tags.OctetString:
-                return Asn1OctetString.CreatePrimitive(bytes);
-            case Asn1Tags.PrintableString:
-                return DerPrintableString.CreatePrimitive(bytes);
-            case Asn1Tags.RelativeOid:
-                return Asn1RelativeOid.CreatePrimitive(bytes, false);
-            case Asn1Tags.T61String:
-                return DerT61String.CreatePrimitive(bytes);
-            case Asn1Tags.UniversalString:
-                return DerUniversalString.CreatePrimitive(bytes);
-            case Asn1Tags.UtcTime:
-                return DerUtcTime.CreatePrimitive(bytes);
-            case Asn1Tags.Utf8String:
-                return DerUtf8String.CreatePrimitive(bytes);
-            case Asn1Tags.VideotexString:
-                return DerVideotexString.CreatePrimitive(bytes);
-            case Asn1Tags.VisibleString:
-                return DerVisibleString.CreatePrimitive(bytes);
-            default:
-                throw new IOException("unknown tag " + tagNo + " encountered");
+                case Asn1Tags.BitString:
+                    return DerBitString.CreatePrimitive(bytes);
+                case Asn1Tags.GeneralizedTime:
+                    return DerGeneralizedTime.CreatePrimitive(bytes);
+                case Asn1Tags.GeneralString:
+                    return DerGeneralString.CreatePrimitive(bytes);
+                case Asn1Tags.GraphicString:
+                    return DerGraphicString.CreatePrimitive(bytes);
+                case Asn1Tags.IA5String:
+                    return DerIA5String.CreatePrimitive(bytes);
+                case Asn1Tags.Integer:
+                    return DerInteger.CreatePrimitive(bytes);
+                case Asn1Tags.Null:
+                    return Asn1Null.CreatePrimitive(bytes);
+                case Asn1Tags.NumericString:
+                    return DerNumericString.CreatePrimitive(bytes);
+                case Asn1Tags.ObjectDescriptor:
+                    return Asn1ObjectDescriptor.CreatePrimitive(bytes);
+                case Asn1Tags.OctetString:
+                    return Asn1OctetString.CreatePrimitive(bytes);
+                case Asn1Tags.PrintableString:
+                    return DerPrintableString.CreatePrimitive(bytes);
+                case Asn1Tags.RelativeOid:
+                    return Asn1RelativeOid.CreatePrimitive(bytes, false);
+                case Asn1Tags.T61String:
+                    return DerT61String.CreatePrimitive(bytes);
+                case Asn1Tags.UniversalString:
+                    return DerUniversalString.CreatePrimitive(bytes);
+                case Asn1Tags.UtcTime:
+                    return DerUtcTime.CreatePrimitive(bytes);
+                case Asn1Tags.Utf8String:
+                    return DerUtf8String.CreatePrimitive(bytes);
+                case Asn1Tags.VideotexString:
+                    return DerVideotexString.CreatePrimitive(bytes);
+                case Asn1Tags.VisibleString:
+                    return DerVisibleString.CreatePrimitive(bytes);
+                default:
+                    throw new IOException("unknown tag " + tagNo + " encountered");
             }
         }
     }

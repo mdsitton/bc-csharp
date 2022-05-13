@@ -67,7 +67,7 @@ namespace Org.BouncyCastle.Bcpg.OpenPgp
         /// <summary>Return the first public key in the ring.</summary>
         public virtual PgpPublicKey GetPublicKey()
         {
-            return (PgpPublicKey) keys[0];
+            return (PgpPublicKey)keys[0];
         }
 
         /// <summary>Return the public key referred to by the passed in key ID if it is present.</summary>
@@ -121,8 +121,8 @@ namespace Org.BouncyCastle.Bcpg.OpenPgp
         /// <param name="pubKey">The public key to be inserted.</param>
         /// <returns>A new <c>PgpPublicKeyRing</c></returns>
         public static PgpPublicKeyRing InsertPublicKey(
-            PgpPublicKeyRing	pubRing,
-            PgpPublicKey		pubKey)
+            PgpPublicKeyRing pubRing,
+            PgpPublicKey pubKey)
         {
             IList keys = Platform.CreateArrayList(pubRing.keys);
             bool found = false;
@@ -130,7 +130,7 @@ namespace Org.BouncyCastle.Bcpg.OpenPgp
 
             for (int i = 0; i != keys.Count; i++)
             {
-                PgpPublicKey key = (PgpPublicKey) keys[i];
+                PgpPublicKey key = (PgpPublicKey)keys[i];
 
                 if (key.KeyId == pubKey.KeyId)
                 {
@@ -166,15 +166,15 @@ namespace Org.BouncyCastle.Bcpg.OpenPgp
         /// <param name="pubKey">The public key to be removed.</param>
         /// <returns>A new <c>PgpPublicKeyRing</c>, or null if pubKey is not found.</returns>
         public static PgpPublicKeyRing RemovePublicKey(
-            PgpPublicKeyRing	pubRing,
-            PgpPublicKey		pubKey)
+            PgpPublicKeyRing pubRing,
+            PgpPublicKey pubKey)
         {
             IList keys = Platform.CreateArrayList(pubRing.keys);
             bool found = false;
 
             for (int i = 0; i < keys.Count; i++)
             {
-                PgpPublicKey key = (PgpPublicKey) keys[i];
+                PgpPublicKey key = (PgpPublicKey)keys[i];
 
                 if (key.KeyId == pubKey.KeyId)
                 {
@@ -197,7 +197,7 @@ namespace Org.BouncyCastle.Bcpg.OpenPgp
 
         internal static PgpPublicKey ReadSubkey(BcpgInputStream bcpgInput)
         {
-            PublicKeyPacket	pk = ReadPublicKeyPacket(bcpgInput);
+            PublicKeyPacket pk = ReadPublicKeyPacket(bcpgInput);
             TrustPacket kTrust = ReadOptionalTrustPacket(bcpgInput);
 
             // PGP 8 actually leaves out the signature.

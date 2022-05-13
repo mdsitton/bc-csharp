@@ -14,14 +14,14 @@ using Org.BouncyCastle.Utilities.Collections;
 
 namespace Org.BouncyCastle.Ocsp
 {
-	class OcspUtilities
-	{
-		private static readonly IDictionary algorithms = Platform.CreateHashtable();
+    class OcspUtilities
+    {
+        private static readonly IDictionary algorithms = Platform.CreateHashtable();
         private static readonly IDictionary oids = Platform.CreateHashtable();
-		private static readonly ISet noParams = new HashSet();
+        private static readonly ISet noParams = new HashSet();
 
-		static OcspUtilities()
-		{
+        static OcspUtilities()
+        {
             algorithms.Add("MD2WITHRSAENCRYPTION", PkcsObjectIdentifiers.MD2WithRsaEncryption);
             algorithms.Add("MD2WITHRSA", PkcsObjectIdentifiers.MD2WithRsaEncryption);
             algorithms.Add("MD5WITHRSAENCRYPTION", PkcsObjectIdentifiers.MD5WithRsaEncryption);
@@ -111,47 +111,47 @@ namespace Org.BouncyCastle.Ocsp
             noParams.Add(OiwObjectIdentifiers.DsaWithSha1);
             noParams.Add(NistObjectIdentifiers.DsaWithSha224);
             noParams.Add(NistObjectIdentifiers.DsaWithSha256);
-		}
+        }
 
-		internal static DerObjectIdentifier GetAlgorithmOid(
-			string algorithmName)
-		{
-			algorithmName = Platform.ToUpperInvariant(algorithmName);
+        internal static DerObjectIdentifier GetAlgorithmOid(
+            string algorithmName)
+        {
+            algorithmName = Platform.ToUpperInvariant(algorithmName);
 
             if (algorithms.Contains(algorithmName))
-			{
-				return (DerObjectIdentifier)algorithms[algorithmName];
-			}
+            {
+                return (DerObjectIdentifier)algorithms[algorithmName];
+            }
 
-			return new DerObjectIdentifier(algorithmName);
-		}
+            return new DerObjectIdentifier(algorithmName);
+        }
 
 
-		internal static string GetAlgorithmName(
-			DerObjectIdentifier oid)
-		{
-			if (oids.Contains(oid))
-			{
-				return (string)oids[oid];
-			}
+        internal static string GetAlgorithmName(
+            DerObjectIdentifier oid)
+        {
+            if (oids.Contains(oid))
+            {
+                return (string)oids[oid];
+            }
 
-			return oid.Id;
-		}
+            return oid.Id;
+        }
 
-		internal static AlgorithmIdentifier GetSigAlgID(
-			DerObjectIdentifier sigOid)
-		{
-			if (noParams.Contains(sigOid))
-			{
-				return new AlgorithmIdentifier(sigOid);
-			}
+        internal static AlgorithmIdentifier GetSigAlgID(
+            DerObjectIdentifier sigOid)
+        {
+            if (noParams.Contains(sigOid))
+            {
+                return new AlgorithmIdentifier(sigOid);
+            }
 
-			return new AlgorithmIdentifier(sigOid, DerNull.Instance);
-		}
+            return new AlgorithmIdentifier(sigOid, DerNull.Instance);
+        }
 
-		internal static IEnumerable AlgNames
-		{
-			get { return new EnumerableProxy(algorithms.Keys); }
-		}
-	}
+        internal static IEnumerable AlgNames
+        {
+            get { return new EnumerableProxy(algorithms.Keys); }
+        }
+    }
 }

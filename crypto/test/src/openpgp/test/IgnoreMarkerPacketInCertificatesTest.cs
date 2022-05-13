@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.IO;
 using System.Text;
@@ -58,10 +58,10 @@ namespace Org.BouncyCastle.Bcpg.OpenPgp.Tests
             "=6mfA\n" +
             "-----END PGP PUBLIC KEY BLOCK-----";
 
-		public override string Name
-		{
-			get { return "IgnoreMarkerPacketInCertificatesTest"; }
-		}
+        public override string Name
+        {
+            get { return "IgnoreMarkerPacketInCertificatesTest"; }
+        }
 
         public override void PerformTest()
         {
@@ -86,18 +86,18 @@ namespace Org.BouncyCastle.Bcpg.OpenPgp.Tests
             IsEquals(1, Count(signatures));
         }
 
-		public static void Main(string[] args)
-		{
-			RunTest(new IgnoreMarkerPacketInCertificatesTest());
-		}
+        public static void Main(string[] args)
+        {
+            RunTest(new IgnoreMarkerPacketInCertificatesTest());
+        }
 
-		[Test]
-		public void TestFunction()
-		{
-			string resultText = Perform().ToString();
+        [Test]
+        public void TestFunction()
+        {
+            string resultText = Perform().ToString();
 
-			Assert.AreEqual(Name + ": Okay", resultText);
-		}
+            Assert.AreEqual(Name + ": Okay", resultText);
+        }
 
         private int Count(IEnumerable e)
         {

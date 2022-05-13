@@ -20,15 +20,15 @@ namespace Org.BouncyCastle.Crypto.Modes
     {
         private static readonly int BlockSize = 16;
 
-        private readonly IBlockCipher	cipher;
-        private readonly byte[]			macBlock;
-        private bool					forEncryption;
-        private byte[]					nonce;
-        private byte[]					initialAssociatedText;
-        private int						macSize;
-        private ICipherParameters		keyParam;
-        private readonly MemoryStream   associatedText = new MemoryStream();
-        private readonly MemoryStream   data = new MemoryStream();
+        private readonly IBlockCipher cipher;
+        private readonly byte[] macBlock;
+        private bool forEncryption;
+        private byte[] nonce;
+        private byte[] initialAssociatedText;
+        private int macSize;
+        private ICipherParameters keyParam;
+        private readonly MemoryStream associatedText = new MemoryStream();
+        private readonly MemoryStream data = new MemoryStream();
 
         /**
         * Basic constructor.
@@ -56,15 +56,15 @@ namespace Org.BouncyCastle.Crypto.Modes
         }
 
         public virtual void Init(
-            bool				forEncryption,
-            ICipherParameters	parameters)
+            bool forEncryption,
+            ICipherParameters parameters)
         {
             this.forEncryption = forEncryption;
 
             ICipherParameters cipherParameters;
             if (parameters is AeadParameters)
             {
-                AeadParameters param = (AeadParameters) parameters;
+                AeadParameters param = (AeadParameters)parameters;
 
                 nonce = param.GetNonce();
                 initialAssociatedText = param.GetAssociatedText();
@@ -73,7 +73,7 @@ namespace Org.BouncyCastle.Crypto.Modes
             }
             else if (parameters is ParametersWithIV)
             {
-                ParametersWithIV param = (ParametersWithIV) parameters;
+                ParametersWithIV param = (ParametersWithIV)parameters;
 
                 nonce = param.GetIV();
                 initialAssociatedText = null;
@@ -119,9 +119,9 @@ namespace Org.BouncyCastle.Crypto.Modes
         }
 
         public virtual int ProcessByte(
-            byte	input,
-            byte[]	outBytes,
-            int		outOff)
+            byte input,
+            byte[] outBytes,
+            int outOff)
         {
             data.WriteByte(input);
 
@@ -129,11 +129,11 @@ namespace Org.BouncyCastle.Crypto.Modes
         }
 
         public virtual int ProcessBytes(
-            byte[]	inBytes,
-            int		inOff,
-            int		inLen,
-            byte[]	outBytes,
-            int		outOff)
+            byte[] inBytes,
+            int inOff,
+            int inLen,
+            byte[] outBytes,
+            int outOff)
         {
             Check.DataLength(inBytes, inOff, inLen, "Input buffer too short");
 
@@ -142,18 +142,10 @@ namespace Org.BouncyCastle.Crypto.Modes
             return 0;
         }
 
-        public virtual int DoFinal(
-            byte[]	outBytes,
-            int		outOff)
+        public virtual int DoFinal(byte[] outBytes, int outOff)
         {
-#if PORTABLE
-            byte[] input = data.ToArray();
-            int inLen = input.Length;
-#else
             byte[] input = data.GetBuffer();
             int inLen = (int)data.Position;
-#endif
-
             int len = ProcessPacket(input, 0, inLen, outBytes, outOff);
 
             Reset();
@@ -405,13 +397,8 @@ namespace Org.BouncyCastle.Crypto.Modes
                 }
                 if (associatedText.Position > 0)
                 {
-#if PORTABLE
-                    byte[] input = associatedText.ToArray();
-                    int len = input.Length;
-#else
                     byte[] input = associatedText.GetBuffer();
                     int len = (int)associatedText.Position;
-#endif
 
                     cMac.BlockUpdate(input, 0, len);
                 }

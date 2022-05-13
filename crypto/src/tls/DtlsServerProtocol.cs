@@ -318,10 +318,10 @@ namespace Org.BouncyCastle.Tls
 
             if (state.expectSessionTicket)
             {
-               /*
-                * TODO[new_session_ticket] Check the server-side rules regarding the session ID, since the client
-                * is going to ignore any session ID it received once it sees the new_session_ticket message.
-                */
+                /*
+                 * TODO[new_session_ticket] Check the server-side rules regarding the session ID, since the client
+                 * is going to ignore any session ID it received once it sees the new_session_ticket message.
+                 */
 
                 NewSessionTicket newSessionTicket = state.server.GetNewSessionTicket();
                 byte[] newSessionTicketBody = GenerateNewSessionTicket(state, newSessionTicket);

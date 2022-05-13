@@ -18,7 +18,7 @@ namespace Org.BouncyCastle.Crypto.Signers
      * where PS is a string of bytes all of value 0xBB of length such that |EB|=|n|, and TRAILER is the ISO/IEC 10118 part numberâ€  for the digest. The byte string, EB, is converted to an integer value, the message representative, f.
      */
     public class X931Signer
-        :   ISigner
+        : ISigner
     {
         [Obsolete("Use 'IsoTrailers' instead")]
         public const int TRAILER_IMPLICIT = 0xBC;
@@ -39,13 +39,13 @@ namespace Org.BouncyCastle.Crypto.Signers
         [Obsolete("Use 'IsoTrailers' instead")]
         public const int TRAILER_SHA224 = 0x38CC;
 
-        private IDigest                     digest;
-        private IAsymmetricBlockCipher      cipher;
-        private RsaKeyParameters            kParam;
+        private IDigest digest;
+        private IAsymmetricBlockCipher cipher;
+        private RsaKeyParameters kParam;
 
-        private int         trailer;
-        private int         keyBits;
-        private byte[]      block;
+        private int trailer;
+        private int keyBits;
+        private byte[] block;
 
         /**
          * Generate a signer with either implicit or explicit trailers for X9.31.
@@ -85,7 +85,7 @@ namespace Org.BouncyCastle.Crypto.Signers
          * @param digest digest to sign with.
          */
         public X931Signer(IAsymmetricBlockCipher cipher, IDigest digest)
-            :   this(cipher, digest, false)
+            : this(cipher, digest, false)
         {
         }
 
@@ -196,14 +196,14 @@ namespace Org.BouncyCastle.Crypto.Signers
 
             if ((t.IntValue & 15) == 12)
             {
-                 f = t;
+                f = t;
             }
             else
             {
                 t = kParam.Modulus.Subtract(t);
                 if ((t.IntValue & 15) == 12)
                 {
-                     f = t;
+                    f = t;
                 }
                 else
                 {

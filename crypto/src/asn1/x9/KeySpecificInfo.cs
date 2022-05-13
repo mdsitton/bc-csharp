@@ -9,39 +9,39 @@ namespace Org.BouncyCastle.Asn1.X9
     public class KeySpecificInfo
         : Asn1Encodable
     {
-        private DerObjectIdentifier	algorithm;
-        private Asn1OctetString		counter;
+        private DerObjectIdentifier algorithm;
+        private Asn1OctetString counter;
 
-		public KeySpecificInfo(
-            DerObjectIdentifier	algorithm,
-            Asn1OctetString		counter)
+        public KeySpecificInfo(
+            DerObjectIdentifier algorithm,
+            Asn1OctetString counter)
         {
             this.algorithm = algorithm;
             this.counter = counter;
         }
 
-		public KeySpecificInfo(
+        public KeySpecificInfo(
             Asn1Sequence seq)
         {
             IEnumerator e = seq.GetEnumerator();
 
-			e.MoveNext();
+            e.MoveNext();
             algorithm = (DerObjectIdentifier)e.Current;
             e.MoveNext();
             counter = (Asn1OctetString)e.Current;
         }
 
-		public DerObjectIdentifier Algorithm
+        public DerObjectIdentifier Algorithm
         {
             get { return algorithm; }
         }
 
-		public Asn1OctetString Counter
+        public Asn1OctetString Counter
         {
             get { return counter; }
         }
 
-		/**
+        /**
          * Produce an object suitable for an Asn1OutputStream.
          * <pre>
          *  KeySpecificInfo ::= Sequence {
@@ -52,7 +52,7 @@ namespace Org.BouncyCastle.Asn1.X9
          */
         public override Asn1Object ToAsn1Object()
         {
-			return new DerSequence(algorithm, counter);
+            return new DerSequence(algorithm, counter);
         }
     }
 }

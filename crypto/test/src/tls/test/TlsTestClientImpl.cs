@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.IO;
 
@@ -87,7 +87,7 @@ namespace Org.BouncyCastle.Tls.Tests
             return clientExtensions;
         }
 
-        public override IList GetEarlyKeyShareGroups()
+        public override List<int> GetEarlyKeyShareGroups()
         {
             if (m_config.clientEmptyKeyShare)
                 return null;

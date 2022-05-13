@@ -36,7 +36,7 @@ namespace Org.BouncyCastle.Asn1.TeleTrust
         internal class BrainpoolP160r1Holder
             : X9ECParametersHolder
         {
-            private BrainpoolP160r1Holder() {}
+            private BrainpoolP160r1Holder() { }
 
             internal static readonly X9ECParametersHolder Instance = new BrainpoolP160r1Holder();
 
@@ -66,7 +66,7 @@ namespace Org.BouncyCastle.Asn1.TeleTrust
         internal class BrainpoolP160t1Holder
             : X9ECParametersHolder
         {
-            private BrainpoolP160t1Holder() {}
+            private BrainpoolP160t1Holder() { }
 
             internal static readonly X9ECParametersHolder Instance = new BrainpoolP160t1Holder();
 
@@ -97,7 +97,7 @@ namespace Org.BouncyCastle.Asn1.TeleTrust
         internal class BrainpoolP192r1Holder
             : X9ECParametersHolder
         {
-            private BrainpoolP192r1Holder() {}
+            private BrainpoolP192r1Holder() { }
 
             internal static readonly X9ECParametersHolder Instance = new BrainpoolP192r1Holder();
 
@@ -127,7 +127,7 @@ namespace Org.BouncyCastle.Asn1.TeleTrust
         internal class BrainpoolP192t1Holder
             : X9ECParametersHolder
         {
-            private BrainpoolP192t1Holder() {}
+            private BrainpoolP192t1Holder() { }
 
             internal static readonly X9ECParametersHolder Instance = new BrainpoolP192t1Holder();
 
@@ -158,7 +158,7 @@ namespace Org.BouncyCastle.Asn1.TeleTrust
         internal class BrainpoolP224r1Holder
             : X9ECParametersHolder
         {
-            private BrainpoolP224r1Holder() {}
+            private BrainpoolP224r1Holder() { }
 
             internal static readonly X9ECParametersHolder Instance = new BrainpoolP224r1Holder();
 
@@ -188,7 +188,7 @@ namespace Org.BouncyCastle.Asn1.TeleTrust
         internal class BrainpoolP224t1Holder
             : X9ECParametersHolder
         {
-            private BrainpoolP224t1Holder() {}
+            private BrainpoolP224t1Holder() { }
 
             internal static readonly X9ECParametersHolder Instance = new BrainpoolP224t1Holder();
 
@@ -219,7 +219,7 @@ namespace Org.BouncyCastle.Asn1.TeleTrust
         internal class BrainpoolP256r1Holder
             : X9ECParametersHolder
         {
-            private BrainpoolP256r1Holder() {}
+            private BrainpoolP256r1Holder() { }
 
             internal static readonly X9ECParametersHolder Instance = new BrainpoolP256r1Holder();
 
@@ -249,7 +249,7 @@ namespace Org.BouncyCastle.Asn1.TeleTrust
         internal class BrainpoolP256t1Holder
             : X9ECParametersHolder
         {
-            private BrainpoolP256t1Holder() {}
+            private BrainpoolP256t1Holder() { }
 
             internal static readonly X9ECParametersHolder Instance = new BrainpoolP256t1Holder();
 
@@ -280,7 +280,7 @@ namespace Org.BouncyCastle.Asn1.TeleTrust
         internal class BrainpoolP320r1Holder
             : X9ECParametersHolder
         {
-            private BrainpoolP320r1Holder() {}
+            private BrainpoolP320r1Holder() { }
 
             internal static readonly X9ECParametersHolder Instance = new BrainpoolP320r1Holder();
 
@@ -310,7 +310,7 @@ namespace Org.BouncyCastle.Asn1.TeleTrust
         internal class BrainpoolP320t1Holder
             : X9ECParametersHolder
         {
-            private BrainpoolP320t1Holder() {}
+            private BrainpoolP320t1Holder() { }
 
             internal static readonly X9ECParametersHolder Instance = new BrainpoolP320t1Holder();
 
@@ -341,7 +341,7 @@ namespace Org.BouncyCastle.Asn1.TeleTrust
         internal class BrainpoolP384r1Holder
             : X9ECParametersHolder
         {
-            private BrainpoolP384r1Holder() {}
+            private BrainpoolP384r1Holder() { }
 
             internal static readonly X9ECParametersHolder Instance = new BrainpoolP384r1Holder();
 
@@ -371,7 +371,7 @@ namespace Org.BouncyCastle.Asn1.TeleTrust
         internal class BrainpoolP384t1Holder
             : X9ECParametersHolder
         {
-            private BrainpoolP384t1Holder() {}
+            private BrainpoolP384t1Holder() { }
 
             internal static readonly X9ECParametersHolder Instance = new BrainpoolP384t1Holder();
 
@@ -402,7 +402,7 @@ namespace Org.BouncyCastle.Asn1.TeleTrust
         internal class BrainpoolP512r1Holder
             : X9ECParametersHolder
         {
-            private BrainpoolP512r1Holder() {}
+            private BrainpoolP512r1Holder() { }
 
             internal static readonly X9ECParametersHolder Instance = new BrainpoolP512r1Holder();
 
@@ -432,7 +432,7 @@ namespace Org.BouncyCastle.Asn1.TeleTrust
         internal class BrainpoolP512t1Holder
             : X9ECParametersHolder
         {
-            private BrainpoolP512t1Holder() {}
+            private BrainpoolP512t1Holder() { }
 
             internal static readonly X9ECParametersHolder Instance = new BrainpoolP512t1Holder();
 
@@ -466,9 +466,9 @@ namespace Org.BouncyCastle.Asn1.TeleTrust
         private static readonly IDictionary names = Platform.CreateHashtable();
 
         private static void DefineCurve(
-            string					name,
-            DerObjectIdentifier		oid,
-            X9ECParametersHolder	holder)
+            string name,
+            DerObjectIdentifier oid,
+            X9ECParametersHolder holder)
         {
             objIds.Add(Platform.ToUpperInvariant(name), oid);
             names.Add(oid, name);
@@ -553,8 +553,8 @@ namespace Org.BouncyCastle.Asn1.TeleTrust
         }
 
         public static DerObjectIdentifier GetOid(
-            short	curvesize,
-            bool	twisted)
+            short curvesize,
+            bool twisted)
         {
             return GetOid("brainpoolP" + curvesize + (twisted ? "t" : "r") + "1");
         }

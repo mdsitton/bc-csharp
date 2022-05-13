@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.IO;
 
@@ -132,7 +132,7 @@ namespace Org.BouncyCastle.Tls.Tests
         protected override TlsCredentialedDecryptor GetRsaEncryptionCredentials()
         {
             return TlsTestUtilities.LoadEncryptionCredentials(m_context,
-                new string[]{ "x509-server-rsa-enc.pem", "x509-ca-rsa.pem" }, "x509-server-key-rsa-enc.pem");
+                new string[] { "x509-server-rsa-enc.pem", "x509-ca-rsa.pem" }, "x509-server-key-rsa-enc.pem");
         }
 
         protected override TlsCredentialedSigner GetRsaSignerCredentials()

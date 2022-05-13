@@ -83,18 +83,18 @@ namespace Org.BouncyCastle.Tls
 
             switch (keyExchangeAlgorithm)
             {
-            case KeyExchangeAlgorithm.SRP:
-                return null;
+                case KeyExchangeAlgorithm.SRP:
+                    return null;
 
-            case KeyExchangeAlgorithm.SRP_DSS:
-                return GetDsaSignerCredentials();
+                case KeyExchangeAlgorithm.SRP_DSS:
+                    return GetDsaSignerCredentials();
 
-            case KeyExchangeAlgorithm.SRP_RSA:
-                return GetRsaSignerCredentials();
+                case KeyExchangeAlgorithm.SRP_RSA:
+                    return GetRsaSignerCredentials();
 
-            default:
-                // Note: internal error here; selected a key exchange we don't implement!
-                throw new TlsFatalAlert(AlertDescription.internal_error);
+                default:
+                    // Note: internal error here; selected a key exchange we don't implement!
+                    throw new TlsFatalAlert(AlertDescription.internal_error);
             }
         }
 

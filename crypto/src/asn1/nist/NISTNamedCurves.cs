@@ -22,8 +22,8 @@ namespace Org.BouncyCastle.Asn1.Nist
         private static readonly IDictionary names = Platform.CreateHashtable();
 
         private static void DefineCurveAlias(
-            string				name,
-            DerObjectIdentifier	oid)
+            string name,
+            DerObjectIdentifier oid)
         {
             objIds.Add(Platform.ToUpperInvariant(name), oid);
             names.Add(oid, name);
@@ -87,16 +87,16 @@ namespace Org.BouncyCastle.Asn1.Nist
         public static DerObjectIdentifier GetOid(
             string name)
         {
-            return (DerObjectIdentifier) objIds[Platform.ToUpperInvariant(name)];
+            return (DerObjectIdentifier)objIds[Platform.ToUpperInvariant(name)];
         }
 
         /**
         * return the named curve name represented by the given object identifier.
         */
         public static string GetName(
-            DerObjectIdentifier  oid)
+            DerObjectIdentifier oid)
         {
-            return (string) names[oid];
+            return (string)names[oid];
         }
 
         /**

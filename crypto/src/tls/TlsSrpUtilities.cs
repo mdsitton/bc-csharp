@@ -56,13 +56,13 @@ namespace Org.BouncyCastle.Tls
         {
             switch (TlsUtilities.GetKeyExchangeAlgorithm(cipherSuite))
             {
-            case KeyExchangeAlgorithm.SRP:
-            case KeyExchangeAlgorithm.SRP_DSS:
-            case KeyExchangeAlgorithm.SRP_RSA:
-                return true;
+                case KeyExchangeAlgorithm.SRP:
+                case KeyExchangeAlgorithm.SRP_DSS:
+                case KeyExchangeAlgorithm.SRP_RSA:
+                    return true;
 
-            default:
-                return false;
+                default:
+                    return false;
             }
         }
     }

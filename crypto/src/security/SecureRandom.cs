@@ -1,7 +1,7 @@
 using System;
 using System.Threading;
 
-using Org.BouncyCastle.Crypto;
+// using Org.BouncyCastle.Crypto;
 using Org.BouncyCastle.Crypto.Digests;
 using Org.BouncyCastle.Crypto.Prng;
 using Org.BouncyCastle.Crypto.Utilities;
@@ -14,7 +14,6 @@ namespace Org.BouncyCastle.Security
     {
         private static long counter = Times.NanoTime();
 
-#if NETCF_1_0 || PORTABLE
         private static object counterLock = new object();
         private static long NextCounterValue()
         {
@@ -47,18 +46,6 @@ namespace Org.BouncyCastle.Security
                 }
             }
         }
-#else
-        private static long NextCounterValue()
-        {
-            return Interlocked.Increment(ref counter);
-        }
-
-        private static readonly SecureRandom master = new SecureRandom(new CryptoApiRandomGenerator());
-        private static SecureRandom Master
-        {
-            get { return master; }
-        }
-#endif
 
         private static DigestRandomGenerator CreatePrng(string digestName, bool autoSeed)
         {
@@ -214,7 +201,7 @@ namespace Org.BouncyCastle.Security
             if (diff > 0)
                 return minValue + Next(diff);
 
-            for (;;)
+            for (; ; )
             {
                 int i = NextInt();
 

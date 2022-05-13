@@ -1,5 +1,3 @@
-#if !(NETCF_1_0 || SILVERLIGHT || PORTABLE)
-
 using System;
 using System.Security.Cryptography;
 using SystemX509 = System.Security.Cryptography.X509Certificates;
@@ -246,5 +244,3 @@ namespace Org.BouncyCastle.Security
         }
     }
 }
-
-#endif

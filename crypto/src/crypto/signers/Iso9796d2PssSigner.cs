@@ -72,10 +72,10 @@ namespace Org.BouncyCastle.Crypto.Signers
         /// <param name="saltLength">length of salt in bytes.</param>
         /// <param name="isImplicit">whether or not the trailer is implicit or gives the hash.</param>
         public Iso9796d2PssSigner(
-            IAsymmetricBlockCipher	cipher,
-            IDigest					digest,
-            int						saltLength,
-            bool					isImplicit)
+            IAsymmetricBlockCipher cipher,
+            IDigest digest,
+            int saltLength,
+            bool isImplicit)
         {
             this.cipher = cipher;
             this.digest = digest;
@@ -106,9 +106,9 @@ namespace Org.BouncyCastle.Crypto.Signers
         /// <param name="saltLength">length of salt in bytes.
         /// </param>
         public Iso9796d2PssSigner(
-            IAsymmetricBlockCipher	cipher,
-            IDigest					digest,
-            int						saltLength)
+            IAsymmetricBlockCipher cipher,
+            IDigest digest,
+            int saltLength)
             : this(cipher, digest, saltLength, false)
         {
         }
@@ -129,15 +129,15 @@ namespace Org.BouncyCastle.Crypto.Signers
         /// salt is passed in which is the wrong length.
         /// </exception>
         public virtual void Init(
-            bool				forSigning,
-            ICipherParameters	parameters)
+            bool forSigning,
+            ICipherParameters parameters)
         {
             RsaKeyParameters kParam;
             if (parameters is ParametersWithRandom)
             {
-                ParametersWithRandom p = (ParametersWithRandom) parameters;
+                ParametersWithRandom p = (ParametersWithRandom)parameters;
 
-                kParam = (RsaKeyParameters) p.Parameters;
+                kParam = (RsaKeyParameters)p.Parameters;
 
                 if (forSigning)
                 {
@@ -149,9 +149,9 @@ namespace Org.BouncyCastle.Crypto.Signers
                 if (!forSigning)
                     throw new ArgumentException("ParametersWithSalt only valid for signing", "parameters");
 
-                ParametersWithSalt p = (ParametersWithSalt) parameters;
+                ParametersWithSalt p = (ParametersWithSalt)parameters;
 
-                kParam = (RsaKeyParameters) p.Parameters;
+                kParam = (RsaKeyParameters)p.Parameters;
                 standardSalt = p.GetSalt();
 
                 if (standardSalt.Length != saltLength)
@@ -159,7 +159,7 @@ namespace Org.BouncyCastle.Crypto.Signers
             }
             else
             {
-                kParam = (RsaKeyParameters) parameters;
+                kParam = (RsaKeyParameters)parameters;
 
                 if (forSigning)
                 {
@@ -207,7 +207,7 @@ namespace Org.BouncyCastle.Crypto.Signers
         }
 
         /// <summary> clear possible sensitive data</summary>
-        private void  ClearBlock(
+        private void ClearBlock(
             byte[] block)
         {
             Array.Clear(block, 0, block.Length);
@@ -311,9 +311,9 @@ namespace Org.BouncyCastle.Crypto.Signers
 
         /// <summary> update the internal digest with the byte array in</summary>
         public virtual void BlockUpdate(
-            byte[]	input,
-            int		inOff,
-            int		length)
+            byte[] input,
+            int inOff,
+            int length)
         {
             if (preSig == null)
             {
@@ -394,7 +394,7 @@ namespace Org.BouncyCastle.Crypto.Signers
 
             int off = block.Length - messageLength - salt.Length - hLen - tLength - 1;
 
-            block[off] = (byte) (0x01);
+            block[off] = (byte)(0x01);
 
             Array.Copy(mBuf, 0, block, off + 1, messageLength);
             Array.Copy(salt, 0, block, off + 1 + messageLength, salt.Length);
@@ -413,11 +413,11 @@ namespace Org.BouncyCastle.Crypto.Signers
             }
             else
             {
-                block[block.Length - 2] = (byte) ((uint)trailer >> 8);
-                block[block.Length - 1] = (byte) trailer;
+                block[block.Length - 2] = (byte)((uint)trailer >> 8);
+                block[block.Length - 1] = (byte)trailer;
             }
 
-            block[0] &= (byte) (0x7f);
+            block[0] &= (byte)(0x7f);
 
             byte[] b = cipher.ProcessBlock(block, 0, block.Length);
 
@@ -554,8 +554,8 @@ namespace Org.BouncyCastle.Crypto.Signers
         /// <summary> int to octet string.</summary>
         /// <summary> int to octet string.</summary>
         private void ItoOSP(
-            int		i,
-            byte[]	sp)
+            int i,
+            byte[] sp)
         {
             sp[0] = (byte)((uint)i >> 24);
             sp[1] = (byte)((uint)i >> 16);
@@ -564,7 +564,7 @@ namespace Org.BouncyCastle.Crypto.Signers
         }
 
         /// <summary> long to octet string.</summary>
-        private void  LtoOSP(long l, byte[] sp)
+        private void LtoOSP(long l, byte[] sp)
         {
             sp[0] = (byte)((ulong)l >> 56);
             sp[1] = (byte)((ulong)l >> 48);
@@ -578,10 +578,10 @@ namespace Org.BouncyCastle.Crypto.Signers
 
         /// <summary> mask generator function, as described in Pkcs1v2.</summary>
         private byte[] MaskGeneratorFunction1(
-            byte[]	Z,
-            int		zOff,
-            int		zLen,
-            int		length)
+            byte[] Z,
+            int zOff,
+            int zLen,
+            int length)
         {
             byte[] mask = new byte[length];
             byte[] hashBuf = new byte[hLen];

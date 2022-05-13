@@ -6,13 +6,12 @@ namespace Org.BouncyCastle.Utilities.IO
 {
     public abstract class BaseOutputStream : Stream
     {
-		private bool closed;
+        private bool closed;
 
-		public sealed override bool CanRead { get { return false; } }
+        public sealed override bool CanRead { get { return false; } }
         public sealed override bool CanSeek { get { return false; } }
         public sealed override bool CanWrite { get { return !closed; } }
 
-#if PORTABLE
         protected override void Dispose(bool disposing)
         {
             if (disposing)
@@ -21,13 +20,12 @@ namespace Org.BouncyCastle.Utilities.IO
             }
             base.Dispose(disposing);
         }
-#else
+
         public override void Close()
         {
             closed = true;
             base.Close();
         }
-#endif
 
         public override void Flush() { }
         public sealed override long Length { get { throw new NotSupportedException(); } }
@@ -56,14 +54,14 @@ namespace Org.BouncyCastle.Utilities.IO
             }
         }
 
-		public virtual void Write(params byte[] buffer)
-		{
-			Write(buffer, 0, buffer.Length);
-		}
+        public virtual void Write(params byte[] buffer)
+        {
+            Write(buffer, 0, buffer.Length);
+        }
 
         public override void WriteByte(byte b)
         {
-            Write(new byte[]{ b }, 0, 1);
+            Write(new byte[] { b }, 0, 1);
         }
     }
 }

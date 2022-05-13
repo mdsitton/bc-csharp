@@ -1,8 +1,6 @@
-﻿using System;
+using System;
 using System.IO;
-#if !PORTABLE || DOTNET
 using System.Net.Sockets;
-#endif
 
 using Org.BouncyCastle.Tls.Crypto;
 using Org.BouncyCastle.Utilities;
@@ -10,8 +8,7 @@ using Org.BouncyCastle.Utilities.Date;
 
 namespace Org.BouncyCastle.Tls
 {
-    internal class DtlsRecordLayer
-        : DatagramTransport
+    internal class DtlsRecordLayer : DatagramTransport
     {
         private const int RECORD_HEADER_LENGTH = 13;
         private const int MAX_FRAGMENT_LENGTH = 1 << 14;
@@ -340,7 +337,7 @@ namespace Org.BouncyCastle.Tls
                     // Implicitly send change_cipher_spec and change to pending cipher state
 
                     // TODO Send change_cipher_spec and finished records in single datagram?
-                    byte[] data = new byte[]{ 1 };
+                    byte[] data = new byte[] { 1 };
                     SendRecord(ContentType.change_cipher_spec, data, 0, data.Length);
 
                     this.m_writeEpoch = nextEpoch;
@@ -452,7 +449,6 @@ namespace Org.BouncyCastle.Tls
             {
                 return -1;
             }
-#if !PORTABLE || DOTNET
             catch (SocketException e)
             {
                 if (TlsUtilities.IsTimeout(e))
@@ -460,7 +456,6 @@ namespace Org.BouncyCastle.Tls
 
                 throw e;
             }
-#endif
             // TODO[tls-port] Can we support interrupted IO on .NET?
             //catch (InterruptedIOException e)
             //{
@@ -486,14 +481,14 @@ namespace Org.BouncyCastle.Tls
 
             switch (recordType)
             {
-            case ContentType.alert:
-            case ContentType.application_data:
-            case ContentType.change_cipher_spec:
-            case ContentType.handshake:
-            case ContentType.heartbeat:
-                break;
-            default:
-                return -1;
+                case ContentType.alert:
+                case ContentType.application_data:
+                case ContentType.change_cipher_spec:
+                case ContentType.handshake:
+                case ContentType.heartbeat:
+                    break;
+                default:
+                    return -1;
             }
 
             int epoch = TlsUtilities.ReadUint16(record, 3);
@@ -529,9 +524,9 @@ namespace Org.BouncyCastle.Tls
                  */
                 bool isClientHelloFragment =
                         ReadEpoch == 0
-                    &&  length > 0
-                    &&  ContentType.handshake == recordType
-                    &&  HandshakeType.client_hello == TlsUtilities.ReadUint8(record, RECORD_HEADER_LENGTH);
+                    && length > 0
+                    && ContentType.handshake == recordType
+                    && HandshakeType.client_hello == TlsUtilities.ReadUint8(record, RECORD_HEADER_LENGTH);
 
                 if (!isClientHelloFragment)
                     return -1;
@@ -554,9 +549,9 @@ namespace Org.BouncyCastle.Tls
             {
                 bool isHelloVerifyRequest =
                         ReadEpoch == 0
-                    &&  length > 0
-                    &&  ContentType.handshake == recordType
-                    &&  HandshakeType.hello_verify_request == TlsUtilities.ReadUint8(record, RECORD_HEADER_LENGTH);
+                    && length > 0
+                    && ContentType.handshake == recordType
+                    && HandshakeType.hello_verify_request == TlsUtilities.ReadUint8(record, RECORD_HEADER_LENGTH);
 
                 if (isHelloVerifyRequest)
                 {
@@ -577,120 +572,120 @@ namespace Org.BouncyCastle.Tls
 
             switch (decoded.contentType)
             {
-            case ContentType.alert:
-            {
-                if (decoded.len == 2)
-                {
-                    short alertLevel = TlsUtilities.ReadUint8(decoded.buf, decoded.off);
-                    short alertDescription = TlsUtilities.ReadUint8(decoded.buf, decoded.off + 1);
-
-                    m_peer.NotifyAlertReceived(alertLevel, alertDescription);
-
-                    if (alertLevel == AlertLevel.fatal)
+                case ContentType.alert:
                     {
-                        Failed();
-                        throw new TlsFatalAlert(alertDescription);
-                    }
-
-                    // TODO Can close_notify be a fatal alert?
-                    if (alertDescription == AlertDescription.close_notify)
-                    {
-                        CloseTransport();
-                    }
-                }
-
-                return -1;
-            }
-            case ContentType.application_data:
-            {
-                if (m_inHandshake)
-                {
-                    // TODO Consider buffering application data for new epoch that arrives
-                    // out-of-order with the Finished message
-                    return -1;
-                }
-                break;
-            }
-            case ContentType.change_cipher_spec:
-            {
-                // Implicitly receive change_cipher_spec and change to pending cipher state
-
-                for (int i = 0; i < decoded.len; ++i)
-                {
-                    short message = TlsUtilities.ReadUint8(decoded.buf, decoded.off + i);
-                    if (message != ChangeCipherSpec.change_cipher_spec)
-                        continue;
-
-                    if (m_pendingEpoch != null)
-                    {
-                        m_readEpoch = m_pendingEpoch;
-                    }
-                }
-
-                return -1;
-            }
-            case ContentType.handshake:
-            {
-                if (!m_inHandshake)
-                {
-                    if (null != m_retransmit)
-                    {
-                        m_retransmit.ReceivedHandshakeRecord(epoch, decoded.buf, decoded.off, decoded.len);
-                    }
-
-                    // TODO Consider support for HelloRequest
-                    return -1;
-                }
-                break;
-            }
-            case ContentType.heartbeat:
-            {
-                if (null != m_heartbeatInFlight || m_heartBeatResponder)
-                {
-                    try
-                    {
-                        MemoryStream input = new MemoryStream(decoded.buf, decoded.off, decoded.len, false);
-                        HeartbeatMessage heartbeatMessage = HeartbeatMessage.Parse(input);
-
-                        if (null != heartbeatMessage)
+                        if (decoded.len == 2)
                         {
-                            switch (heartbeatMessage.Type)
-                            {
-                            case HeartbeatMessageType.heartbeat_request:
-                            {
-                                if (m_heartBeatResponder)
-                                {
-                                    HeartbeatMessage response = HeartbeatMessage.Create(m_context,
-                                        HeartbeatMessageType.heartbeat_response, heartbeatMessage.Payload);
+                            short alertLevel = TlsUtilities.ReadUint8(decoded.buf, decoded.off);
+                            short alertDescription = TlsUtilities.ReadUint8(decoded.buf, decoded.off + 1);
 
-                                    SendHeartbeatMessage(response);
-                                }
-                                break;
-                            }
-                            case HeartbeatMessageType.heartbeat_response:
+                            m_peer.NotifyAlertReceived(alertLevel, alertDescription);
+
+                            if (alertLevel == AlertLevel.fatal)
                             {
-                                if (null != m_heartbeatInFlight
-                                    && Arrays.AreEqual(heartbeatMessage.Payload, m_heartbeatInFlight.Payload))
-                                {
-                                    ResetHeartbeat();
-                                }
-                                break;
+                                Failed();
+                                throw new TlsFatalAlert(alertDescription);
                             }
-                            default:
-                                break;
+
+                            // TODO Can close_notify be a fatal alert?
+                            if (alertDescription == AlertDescription.close_notify)
+                            {
+                                CloseTransport();
                             }
                         }
-                    }
-                    catch (Exception)
-                    {
-                        // Ignore
-                    }
-                }
 
-                return -1;
-            }
-            default:
-                return -1;
+                        return -1;
+                    }
+                case ContentType.application_data:
+                    {
+                        if (m_inHandshake)
+                        {
+                            // TODO Consider buffering application data for new epoch that arrives
+                            // out-of-order with the Finished message
+                            return -1;
+                        }
+                        break;
+                    }
+                case ContentType.change_cipher_spec:
+                    {
+                        // Implicitly receive change_cipher_spec and change to pending cipher state
+
+                        for (int i = 0; i < decoded.len; ++i)
+                        {
+                            short message = TlsUtilities.ReadUint8(decoded.buf, decoded.off + i);
+                            if (message != ChangeCipherSpec.change_cipher_spec)
+                                continue;
+
+                            if (m_pendingEpoch != null)
+                            {
+                                m_readEpoch = m_pendingEpoch;
+                            }
+                        }
+
+                        return -1;
+                    }
+                case ContentType.handshake:
+                    {
+                        if (!m_inHandshake)
+                        {
+                            if (null != m_retransmit)
+                            {
+                                m_retransmit.ReceivedHandshakeRecord(epoch, decoded.buf, decoded.off, decoded.len);
+                            }
+
+                            // TODO Consider support for HelloRequest
+                            return -1;
+                        }
+                        break;
+                    }
+                case ContentType.heartbeat:
+                    {
+                        if (null != m_heartbeatInFlight || m_heartBeatResponder)
+                        {
+                            try
+                            {
+                                MemoryStream input = new MemoryStream(decoded.buf, decoded.off, decoded.len, false);
+                                HeartbeatMessage heartbeatMessage = HeartbeatMessage.Parse(input);
+
+                                if (null != heartbeatMessage)
+                                {
+                                    switch (heartbeatMessage.Type)
+                                    {
+                                        case HeartbeatMessageType.heartbeat_request:
+                                            {
+                                                if (m_heartBeatResponder)
+                                                {
+                                                    HeartbeatMessage response = HeartbeatMessage.Create(m_context,
+                                                        HeartbeatMessageType.heartbeat_response, heartbeatMessage.Payload);
+
+                                                    SendHeartbeatMessage(response);
+                                                }
+                                                break;
+                                            }
+                                        case HeartbeatMessageType.heartbeat_response:
+                                            {
+                                                if (null != m_heartbeatInFlight
+                                                    && Arrays.AreEqual(heartbeatMessage.Payload, m_heartbeatInFlight.Payload))
+                                                {
+                                                    ResetHeartbeat();
+                                                }
+                                                break;
+                                            }
+                                        default:
+                                            break;
+                                    }
+                                }
+                            }
+                            catch (Exception)
+                            {
+                                // Ignore
+                            }
+                        }
+
+                        return -1;
+                    }
+                default:
+                    return -1;
             }
 
             /*

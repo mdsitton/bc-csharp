@@ -61,9 +61,9 @@ namespace Org.BouncyCastle.Cms
         public SignerInformation GetFirstSigner(
             SignerID selector)
         {
-            IList list = (IList) table[selector];
+            IList list = (IList)table[selector];
 
-            return list == null ? null : (SignerInformation) list[0];
+            return list == null ? null : (SignerInformation)list[0];
         }
 
         /// <summary>The number of signers in the collection.</summary>
@@ -87,7 +87,7 @@ namespace Org.BouncyCastle.Cms
         public ICollection GetSigners(
             SignerID selector)
         {
-            IList list = (IList) table[selector];
+            IList list = (IList)table[selector];
 
             return list == null ? Platform.CreateArrayList() : Platform.CreateArrayList(list);
         }

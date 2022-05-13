@@ -59,9 +59,9 @@ namespace Org.BouncyCastle.Crypto.Signers
         /// <param name="digest">digest to use.</param>
         /// <param name="isImplicit">whether or not the trailer is implicit or gives the hash.</param>
         public Iso9796d2Signer(
-            IAsymmetricBlockCipher	cipher,
-            IDigest					digest,
-            bool					isImplicit)
+            IAsymmetricBlockCipher cipher,
+            IDigest digest,
+            bool isImplicit)
         {
             this.cipher = cipher;
             this.digest = digest;
@@ -99,7 +99,7 @@ namespace Org.BouncyCastle.Crypto.Signers
 
         public virtual void Init(bool forSigning, ICipherParameters parameters)
         {
-            RsaKeyParameters kParam = (RsaKeyParameters) parameters;
+            RsaKeyParameters kParam = (RsaKeyParameters)parameters;
 
             cipher.Init(forSigning, kParam);
 
@@ -155,7 +155,7 @@ namespace Org.BouncyCastle.Crypto.Signers
         }
 
         /// <summary> clear possible sensitive data</summary>
-        private void  ClearBlock(
+        private void ClearBlock(
             byte[] block)
         {
             Array.Clear(block, 0, block.Length);
@@ -254,9 +254,9 @@ namespace Org.BouncyCastle.Crypto.Signers
 
         /// <summary> update the internal digest with the byte array in</summary>
         public virtual void BlockUpdate(
-            byte[]	input,
-            int		inOff,
-            int		length)
+            byte[] input,
+            int inOff,
+            int length)
         {
             while (length > 0 && messageLength < mBuf.Length)
             {
@@ -318,8 +318,8 @@ namespace Org.BouncyCastle.Crypto.Signers
                 t = 16;
                 delta = block.Length - digSize - 2;
                 digest.DoFinal(block, delta);
-                block[block.Length - 2] = (byte) ((uint)trailer >> 8);
-                block[block.Length - 1] = (byte) trailer;
+                block[block.Length - 2] = (byte)((uint)trailer >> 8);
+                block[block.Length - 1] = (byte)trailer;
             }
 
             byte header = 0;
@@ -328,7 +328,7 @@ namespace Org.BouncyCastle.Crypto.Signers
             if (x > 0)
             {
                 int mR = messageLength - ((x + 7) / 8);
-                header = (byte) (0x60);
+                header = (byte)(0x60);
 
                 delta -= mR;
 
@@ -336,7 +336,7 @@ namespace Org.BouncyCastle.Crypto.Signers
             }
             else
             {
-                header = (byte) (0x40);
+                header = (byte)(0x40);
                 delta -= messageLength;
 
                 Array.Copy(mBuf, 0, block, delta, messageLength);
@@ -346,15 +346,15 @@ namespace Org.BouncyCastle.Crypto.Signers
             {
                 for (int i = delta - 1; i != 0; i--)
                 {
-                    block[i] = (byte) 0xbb;
+                    block[i] = (byte)0xbb;
                 }
-                block[delta - 1] ^= (byte) 0x01;
-                block[0] = (byte) 0x0b;
+                block[delta - 1] ^= (byte)0x01;
+                block[0] = (byte)0x0b;
                 block[0] |= header;
             }
             else
             {
-                block[0] = (byte) 0x0a;
+                block[0] = (byte)0x0a;
                 block[0] |= header;
             }
 
@@ -469,7 +469,7 @@ namespace Org.BouncyCastle.Crypto.Signers
                 digest.DoFinal(hash, 0);
 
                 bool isOkay = true;
-                
+
                 for (int i = 0; i != hash.Length; i++)
                 {
                     block[off + i] ^= hash[i];

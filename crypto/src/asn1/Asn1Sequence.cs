@@ -14,7 +14,7 @@ namespace Org.BouncyCastle.Asn1
         {
             internal static readonly Asn1UniversalType Instance = new Meta();
 
-            private Meta() : base(typeof(Asn1Sequence), Asn1Tags.Sequence) {}
+            private Meta() : base(typeof(Asn1Sequence), Asn1Tags.Sequence) { }
 
             internal override Asn1Object FromImplicitConstructed(Asn1Sequence sequence)
             {
@@ -88,7 +88,7 @@ namespace Org.BouncyCastle.Asn1
             if (null == element)
                 throw new ArgumentNullException("element");
 
-            this.elements = new Asn1Encodable[]{ element };
+            this.elements = new Asn1Encodable[] { element };
         }
 
         protected internal Asn1Sequence(params Asn1Encodable[] elements)
@@ -146,8 +146,8 @@ namespace Org.BouncyCastle.Asn1
                     return ((Asn1Set)obj).Parser;
 
                 // NB: Asn1OctetString implements Asn1OctetStringParser directly
-//				if (obj is Asn1OctetString)
-//					return ((Asn1OctetString)obj).Parser;
+                //				if (obj is Asn1OctetString)
+                //					return ((Asn1OctetString)obj).Parser;
 
                 return obj;
             }

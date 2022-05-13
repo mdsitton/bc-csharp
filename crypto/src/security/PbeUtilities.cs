@@ -44,13 +44,13 @@ namespace Org.BouncyCastle.Security
             algorithms["PKCS5SCHEME2"] = "Pkcs5scheme2";
             algorithms["PBKDF2"] = "Pkcs5scheme2";
             algorithms[PkcsObjectIdentifiers.IdPbeS2.Id] = "Pkcs5scheme2";
-//			algorithms[PkcsObjectIdentifiers.IdPbkdf2.Id] = "Pkcs5scheme2";
+            //			algorithms[PkcsObjectIdentifiers.IdPbkdf2.Id] = "Pkcs5scheme2";
 
             // FIXME Add support for these? (see Pkcs8Generator)
-//			algorithms[PkcsObjectIdentifiers.DesEde3Cbc.Id] = "Pkcs5scheme2";
-//			algorithms[NistObjectIdentifiers.IdAes128Cbc.Id] = "Pkcs5scheme2";
-//			algorithms[NistObjectIdentifiers.IdAes192Cbc.Id] = "Pkcs5scheme2";
-//			algorithms[NistObjectIdentifiers.IdAes256Cbc.Id] = "Pkcs5scheme2";
+            //			algorithms[PkcsObjectIdentifiers.DesEde3Cbc.Id] = "Pkcs5scheme2";
+            //			algorithms[NistObjectIdentifiers.IdAes128Cbc.Id] = "Pkcs5scheme2";
+            //			algorithms[NistObjectIdentifiers.IdAes192Cbc.Id] = "Pkcs5scheme2";
+            //			algorithms[NistObjectIdentifiers.IdAes256Cbc.Id] = "Pkcs5scheme2";
 
             algorithms["PBEWITHMD2ANDDES-CBC"] = "PBEwithMD2andDES-CBC";
             algorithms[PkcsObjectIdentifiers.PbeWithMD2AndDesCbc.Id] = "PBEwithMD2andDES-CBC";
@@ -204,11 +204,11 @@ namespace Org.BouncyCastle.Security
         }
 
         static PbeParametersGenerator MakePbeGenerator(
-            string	type,
-            IDigest	digest,
-            byte[]	key,
-            byte[]	salt,
-            int		iterationCount)
+            string type,
+            IDigest digest,
+            byte[] key,
+            byte[] salt,
+            int iterationCount)
         {
             PbeParametersGenerator generator;
 
@@ -245,7 +245,7 @@ namespace Org.BouncyCastle.Security
         public static DerObjectIdentifier GetObjectIdentifier(
             string mechanism)
         {
-            mechanism = (string) algorithms[Platform.ToUpperInvariant(mechanism)];
+            mechanism = (string)algorithms[Platform.ToUpperInvariant(mechanism)];
             if (mechanism != null)
             {
                 return (DerObjectIdentifier)oids[mechanism];
@@ -300,16 +300,16 @@ namespace Org.BouncyCastle.Security
 
         public static Asn1Encodable GenerateAlgorithmParameters(
             DerObjectIdentifier algorithmOid,
-            byte[]              salt,
-            int                 iterationCount)
+            byte[] salt,
+            int iterationCount)
         {
             return GenerateAlgorithmParameters(algorithmOid.Id, salt, iterationCount);
         }
 
         public static Asn1Encodable GenerateAlgorithmParameters(
-            string  algorithm,
-            byte[]  salt,
-            int     iterationCount)
+            string algorithm,
+            byte[] salt,
+            int iterationCount)
         {
             if (IsPkcs12(algorithm))
             {
@@ -325,7 +325,7 @@ namespace Org.BouncyCastle.Security
             }
         }
 
-        public static Asn1Encodable GenerateAlgorithmParameters( 
+        public static Asn1Encodable GenerateAlgorithmParameters(
             DerObjectIdentifier cipherAlgorithm,
             DerObjectIdentifier hashAlgorithm,
             byte[] salt,
@@ -356,49 +356,49 @@ namespace Org.BouncyCastle.Security
 
         public static ICipherParameters GenerateCipherParameters(
             DerObjectIdentifier algorithmOid,
-            char[]              password,
-            Asn1Encodable       pbeParameters)
+            char[] password,
+            Asn1Encodable pbeParameters)
         {
             return GenerateCipherParameters(algorithmOid.Id, password, false, pbeParameters);
         }
 
         public static ICipherParameters GenerateCipherParameters(
             DerObjectIdentifier algorithmOid,
-            char[]              password,
-            bool				wrongPkcs12Zero,
-            Asn1Encodable       pbeParameters)
+            char[] password,
+            bool wrongPkcs12Zero,
+            Asn1Encodable pbeParameters)
         {
             return GenerateCipherParameters(algorithmOid.Id, password, wrongPkcs12Zero, pbeParameters);
         }
 
         public static ICipherParameters GenerateCipherParameters(
             AlgorithmIdentifier algID,
-            char[]              password)
+            char[] password)
         {
             return GenerateCipherParameters(algID.Algorithm.Id, password, false, algID.Parameters);
         }
 
         public static ICipherParameters GenerateCipherParameters(
             AlgorithmIdentifier algID,
-            char[]              password,
-            bool				wrongPkcs12Zero)
+            char[] password,
+            bool wrongPkcs12Zero)
         {
             return GenerateCipherParameters(algID.Algorithm.Id, password, wrongPkcs12Zero, algID.Parameters);
         }
 
         public static ICipherParameters GenerateCipherParameters(
-            string          algorithm,
-            char[]          password,
-            Asn1Encodable   pbeParameters)
+            string algorithm,
+            char[] password,
+            Asn1Encodable pbeParameters)
         {
             return GenerateCipherParameters(algorithm, password, false, pbeParameters);
         }
 
         public static ICipherParameters GenerateCipherParameters(
-            string          algorithm,
-            char[]          password,
-            bool			wrongPkcs12Zero,
-            Asn1Encodable   pbeParameters)
+            string algorithm,
+            char[] password,
+            bool wrongPkcs12Zero,
+            Asn1Encodable pbeParameters)
         {
             string mechanism = (string)algorithms[Platform.ToUpperInvariant(algorithm)];
 
@@ -453,8 +453,8 @@ namespace Org.BouncyCastle.Security
                 keyBytes = PbeParametersGenerator.Pkcs5PasswordToBytes(password);
 
                 int keyLength = pbeParams.KeyLength != null
-                    ?	pbeParams.KeyLength.IntValue * 8
-                    :	GeneratorUtilities.GetDefaultKeySize(encOid);
+                    ? pbeParams.KeyLength.IntValue * 8
+                    : GeneratorUtilities.GetDefaultKeySize(encOid);
 
                 PbeParametersGenerator gen = MakePbeGenerator(
                     (string)algorithmType[mechanism], digest, keyBytes, salt, iterationCount);
@@ -477,7 +477,7 @@ namespace Org.BouncyCastle.Security
             else if (Platform.StartsWith(mechanism, "PBEwithSHA-1"))
             {
                 PbeParametersGenerator generator = MakePbeGenerator(
-                    (string) algorithmType[mechanism], new Sha1Digest(), keyBytes, salt, iterationCount);
+                    (string)algorithmType[mechanism], new Sha1Digest(), keyBytes, salt, iterationCount);
 
                 if (mechanism.Equals("PBEwithSHA-1and128bitAES-CBC-BC"))
                 {
@@ -527,7 +527,7 @@ namespace Org.BouncyCastle.Security
             else if (Platform.StartsWith(mechanism, "PBEwithSHA-256"))
             {
                 PbeParametersGenerator generator = MakePbeGenerator(
-                    (string) algorithmType[mechanism], new Sha256Digest(), keyBytes, salt, iterationCount);
+                    (string)algorithmType[mechanism], new Sha256Digest(), keyBytes, salt, iterationCount);
 
                 if (mechanism.Equals("PBEwithSHA-256and128bitAES-CBC-BC"))
                 {
@@ -587,7 +587,7 @@ namespace Org.BouncyCastle.Security
                 IDigest digest = DigestUtilities.GetDigest(digestName);
 
                 PbeParametersGenerator generator = MakePbeGenerator(
-                    (string) algorithmType[mechanism], digest, keyBytes, salt, iterationCount);
+                    (string)algorithmType[mechanism], digest, keyBytes, salt, iterationCount);
 
                 int bitLen = digest.GetDigestSize() * 8;
                 parameters = generator.GenerateDerivedMacParameters(bitLen);
@@ -632,9 +632,9 @@ namespace Org.BouncyCastle.Security
             }
 
             if (Platform.StartsWith(mechanism, "PBEwithMD2")
-                ||	Platform.StartsWith(mechanism, "PBEwithMD5")
-                ||	Platform.StartsWith(mechanism, "PBEwithSHA-1")
-                ||	Platform.StartsWith(mechanism, "PBEwithSHA-256"))
+                || Platform.StartsWith(mechanism, "PBEwithMD5")
+                || Platform.StartsWith(mechanism, "PBEwithSHA-1")
+                || Platform.StartsWith(mechanism, "PBEwithSHA-256"))
             {
                 if (Platform.EndsWith(mechanism, "AES-CBC-BC") || Platform.EndsWith(mechanism, "AES-CBC-OPENSSL"))
                 {
@@ -668,7 +668,7 @@ namespace Org.BouncyCastle.Security
         public static string GetEncodingName(
             DerObjectIdentifier oid)
         {
-            return (string) algorithms[oid.Id];
+            return (string)algorithms[oid.Id];
         }
 
         private static ICipherParameters FixDesParity(string mechanism, ICipherParameters parameters)

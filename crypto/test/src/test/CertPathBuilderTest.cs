@@ -20,7 +20,7 @@ namespace Org.BouncyCastle.Tests
     {
         private void baseTest()
         {
-//			CertificateFactory cf = CertificateFactory.getInstance("X.509", "BC");
+            //			CertificateFactory cf = CertificateFactory.getInstance("X.509", "BC");
             X509CertificateParser certParser = new X509CertificateParser();
             X509CrlParser crlParser = new X509CrlParser();
 
@@ -40,8 +40,8 @@ namespace Org.BouncyCastle.Tests
             crlList.Add(rootCrl);
             crlList.Add(interCrl);
 
-//			CollectionCertStoreParameters ccsp = new CollectionCertStoreParameters(list);
-//			CertStore store = CertStore.getInstance("Collection", ccsp, "BC");
+            //			CollectionCertStoreParameters ccsp = new CollectionCertStoreParameters(list);
+            //			CertStore store = CertStore.getInstance("Collection", ccsp, "BC");
             IX509Store x509CertStore = X509StoreFactory.Create(
                 "Certificate/Collection",
                 new X509CollectionStoreParameters(certList));
@@ -57,12 +57,12 @@ namespace Org.BouncyCastle.Tests
             ISet trust = new HashSet();
             trust.Add(new TrustAnchor(rootCert, null));
 
-//			CertPathBuilder cpb = CertPathBuilder.getInstance("PKIX","BC");
+            //			CertPathBuilder cpb = CertPathBuilder.getInstance("PKIX","BC");
             PkixCertPathBuilder cpb = new PkixCertPathBuilder();
             X509CertStoreSelector targetConstraints = new X509CertStoreSelector();
             targetConstraints.Subject = finalCert.SubjectDN;
             PkixBuilderParameters parameters = new PkixBuilderParameters(trust, targetConstraints);
-//			parameters.addCertStore(store);
+            //			parameters.addCertStore(store);
             parameters.AddStore(x509CertStore);
             parameters.AddStore(x509CrlStore);
             parameters.Date = new DateTimeObject(validDate);
@@ -100,8 +100,8 @@ namespace Org.BouncyCastle.Tests
             crlList.Add(rootCRL);
             crlList.Add(interCRL);
 
-//			CollectionCertStoreParameters parameters = new CollectionCertStoreParameters(list);
-//			CertStore                     store = CertStore.getInstance("Collection", parameters);
+            //			CollectionCertStoreParameters parameters = new CollectionCertStoreParameters(list);
+            //			CertStore                     store = CertStore.getInstance("Collection", parameters);
             IX509Store x509CertStore = X509StoreFactory.Create(
                 "Certificate/Collection",
                 new X509CollectionStoreParameters(certList));
@@ -113,14 +113,14 @@ namespace Org.BouncyCastle.Tests
             trust.Add(new TrustAnchor(rootCert, null));
 
             // build the path
-//			CertPathBuilder  builder = CertPathBuilder.getInstance("PKIX", "BC");
+            //			CertPathBuilder  builder = CertPathBuilder.getInstance("PKIX", "BC");
             PkixCertPathBuilder builder = new PkixCertPathBuilder();
             X509CertStoreSelector pathConstraints = new X509CertStoreSelector();
 
             pathConstraints.Subject = endCert.SubjectDN;
 
             PkixBuilderParameters buildParams = new PkixBuilderParameters(trust, pathConstraints);
-//			buildParams.addCertStore(store);
+            //			buildParams.addCertStore(store);
             buildParams.AddStore(x509CertStore);
             buildParams.AddStore(x509CrlStore);
 
@@ -140,7 +140,7 @@ namespace Org.BouncyCastle.Tests
             baseTest();
             v0Test();
         }
-        
+
         public override string Name
         {
             get { return "CertPathBuilder"; }

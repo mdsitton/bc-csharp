@@ -33,14 +33,14 @@ namespace Org.BouncyCastle.Tsp
         private bool ordering = false;
         private GeneralName tsa = null;
         private DerObjectIdentifier tsaPolicyOID;
-    
+
         private IX509Store x509Certs;
         private IX509Store x509Crls;
         private SignerInfoGenerator signerInfoGenerator;
         IDigestFactory digestCalculator;
 
         private Resolution resolution = Resolution.R_SECONDS;
-      
+
         public Resolution Resolution
         {
             get { return resolution; }
@@ -139,7 +139,7 @@ namespace Org.BouncyCastle.Tsp
            Asn1.Cms.AttributeTable unsignedAttr) : this(
                makeInfoGenerator(key, cert, digestOID, signedAttr, unsignedAttr),
                Asn1DigestFactory.Get(OiwObjectIdentifiers.IdSha1),
-               tsaPolicyOID != null ? new DerObjectIdentifier(tsaPolicyOID):null, false)
+               tsaPolicyOID != null ? new DerObjectIdentifier(tsaPolicyOID) : null, false)
         {
         }
 
@@ -303,7 +303,7 @@ namespace Org.BouncyCastle.Tsp
             {
                 nonce = new DerInteger(request.Nonce);
             }
- 
+
             DerObjectIdentifier tsaPolicy = tsaPolicyOID;
             if (request.ReqPolicy != null)
             {
@@ -311,7 +311,7 @@ namespace Org.BouncyCastle.Tsp
             }
 
             if (tsaPolicy == null)
-            { 
+            {
                 throw new TspValidationException("request contains no policy", PkiFailureInfo.UnacceptedPolicy);
             }
 
@@ -321,12 +321,12 @@ namespace Org.BouncyCastle.Tsp
                 X509ExtensionsGenerator extGen = new X509ExtensionsGenerator();
 
                 if (respExtensions != null)
-                {                    
-                    foreach(object oid in respExtensions.ExtensionOids)
+                {
+                    foreach (object oid in respExtensions.ExtensionOids)
                     {
                         DerObjectIdentifier id = DerObjectIdentifier.GetInstance(oid);
                         extGen.AddExtension(id, respExtensions.GetExtension(DerObjectIdentifier.GetInstance(id)));
-                    }                   
+                    }
                 }
 
                 foreach (object oid in additionalExtensions.ExtensionOids)
@@ -335,7 +335,7 @@ namespace Org.BouncyCastle.Tsp
                     extGen.AddExtension(id, additionalExtensions.GetExtension(DerObjectIdentifier.GetInstance(id)));
 
                 }
-           
+
                 respExtensions = extGen.Generate();
             }
 
@@ -345,7 +345,7 @@ namespace Org.BouncyCastle.Tsp
             if (resolution != Resolution.R_SECONDS)
             {
                 generalizedTime = new DerGeneralizedTime(createGeneralizedTime(genTime));
-            } 
+            }
             else
             {
                 generalizedTime = new DerGeneralizedTime(genTime);
@@ -399,28 +399,28 @@ namespace Org.BouncyCastle.Tsp
         private string createGeneralizedTime(DateTime genTime)
         {
             String format = "yyyyMMddHHmmss.fff";
-           
+
             StringBuilder sBuild = new StringBuilder(genTime.ToString(format));
             int dotIndex = sBuild.ToString().IndexOf(".");
 
-            if (dotIndex <0)
+            if (dotIndex < 0)
             {
                 sBuild.Append("Z");
                 return sBuild.ToString();
             }
 
-            switch(resolution)
+            switch (resolution)
             {
                 case Resolution.R_TENTHS_OF_SECONDS:
                     if (sBuild.Length > dotIndex + 2)
                     {
-                        sBuild.Remove(dotIndex + 2, sBuild.Length-(dotIndex+2));
+                        sBuild.Remove(dotIndex + 2, sBuild.Length - (dotIndex + 2));
                     }
                     break;
                 case Resolution.R_HUNDREDTHS_OF_SECONDS:
                     if (sBuild.Length > dotIndex + 3)
                     {
-                        sBuild.Remove(dotIndex + 3, sBuild.Length-(dotIndex+3));
+                        sBuild.Remove(dotIndex + 3, sBuild.Length - (dotIndex + 3));
                     }
                     break;
 
@@ -429,13 +429,13 @@ namespace Org.BouncyCastle.Tsp
                 case Resolution.R_MILLISECONDS:
                     // do nothing.
                     break;
-             
+
             }
 
-           
+
             while (sBuild[sBuild.Length - 1] == '0')
             {
-                sBuild.Remove(sBuild.Length - 1,1);
+                sBuild.Remove(sBuild.Length - 1, 1);
             }
 
             if (sBuild.Length - 1 == dotIndex)
